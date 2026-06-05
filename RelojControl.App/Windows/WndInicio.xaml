@@ -57,7 +57,8 @@
 
         <!-- Sync pill -->
         <Border Grid.Column="0" CornerRadius="999" Padding="10,7"
-                Background="#33FFFFFF" BorderBrush="#44FFFFFF" BorderThickness="1">
+                Background="#33FFFFFF" BorderBrush="#44FFFFFF" BorderThickness="1"
+                Effect="{x:Null}">
           <StackPanel Orientation="Horizontal">
             <Ellipse x:Name="syncDotInicio" Width="8" Height="8" Fill="#4ADE80" VerticalAlignment="Center"/>
             <TextBlock x:Name="lblSyncInicio" Text="Sincronizado · en línea"
