@@ -20,7 +20,7 @@
         <StackPanel DockPanel.Dock="Top" Margin="0,24,0,0">
           <StackPanel Orientation="Horizontal" VerticalAlignment="Bottom">
             <TextBlock x:Name="lblHora"
-                       FontFamily="{StaticResource FontManrope}" FontWeight="ExtraBold" FontSize="80"
+                       FontFamily="{StaticResource FontManrope}" FontWeight="ExtraBold" FontSize="92"
                        Foreground="{StaticResource RailInkBrush}" VerticalAlignment="Bottom"/>
             <TextBlock x:Name="lblSegundos"
                        FontFamily="{StaticResource FontManrope}" FontWeight="SemiBold" FontSize="28"
@@ -34,13 +34,13 @@
         <Border DockPanel.Dock="Top" Margin="0,20,0,0" HorizontalAlignment="Left"
                 CornerRadius="{StaticResource RadiusBadge}" Padding="10,4">
           <Border.Background>
-            <SolidColorBrush Color="#34B3AB" Opacity="0.2"/>
+            <SolidColorBrush Color="White" Opacity="0.14"/>
           </Border.Background>
           <StackPanel Orientation="Horizontal">
-            <Ellipse x:Name="syncDot" Width="8" Height="8" Fill="#34B3AB" VerticalAlignment="Center"/>
-            <TextBlock x:Name="lblSync" Text="Sincronizado"
+            <Ellipse x:Name="syncDot" Width="8" Height="8" Fill="#4ADE80" VerticalAlignment="Center"/>
+            <TextBlock x:Name="lblSync" Text="Sincronizado · en línea"
                        FontFamily="{StaticResource FontPoppins}" FontSize="11"
-                       Foreground="{StaticResource TealSoftBrush}" Margin="6,0,0,0"/>
+                       Foreground="White" Margin="6,0,0,0"/>
           </StackPanel>
         </Border>
         <StackPanel DockPanel.Dock="Bottom" VerticalAlignment="Bottom">
