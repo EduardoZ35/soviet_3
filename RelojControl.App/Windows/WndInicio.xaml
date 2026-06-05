@@ -4,17 +4,47 @@
         WindowStyle="SingleBorderWindow" ResizeMode="CanResize"
         Width="1366" Height="768" WindowStartupLocation="CenterScreen"
         Background="{StaticResource BgBrush}">
+  <Window.Resources>
+    <CornerRadius x:Key="RadiusInput">13</CornerRadius>
+    <Style x:Key="PasswordInputBase" TargetType="PasswordBox">
+      <Setter Property="FontFamily"      Value="{StaticResource FontPoppins}"/>
+      <Setter Property="FontSize"        Value="14"/>
+      <Setter Property="Foreground"      Value="{StaticResource InkBrush}"/>
+      <Setter Property="Background"      Value="{StaticResource SurfaceBrush}"/>
+      <Setter Property="BorderBrush"     Value="{StaticResource LineBrush}"/>
+      <Setter Property="BorderThickness" Value="1.5"/>
+      <Setter Property="Padding"         Value="12,8"/>
+      <Setter Property="Height"          Value="54"/>
+      <Setter Property="Template">
+        <Setter.Value>
+          <ControlTemplate TargetType="PasswordBox">
+            <Border x:Name="bd" Background="{TemplateBinding Background}"
+                    BorderBrush="{TemplateBinding BorderBrush}"
+                    BorderThickness="{TemplateBinding BorderThickness}"
+                    CornerRadius="13">
+              <ScrollViewer x:Name="PART_ContentHost" Margin="{TemplateBinding Padding}"/>
+            </Border>
+            <ControlTemplate.Triggers>
+              <Trigger Property="IsFocused" Value="True">
+                <Setter TargetName="bd" Property="BorderBrush" Value="{StaticResource AccentBrush}"/>
+              </Trigger>
+            </ControlTemplate.Triggers>
+          </ControlTemplate>
+        </Setter.Value>
+      </Setter>
+    </Style>
+  </Window.Resources>
   <Grid>
     <Viewbox Stretch="Uniform">
       <Grid Width="1366" Height="768">
         <Border>
           <Border.Background>
-      <LinearGradientBrush StartPoint="0.3,0" EndPoint="0.7,1">
-        <GradientStop Color="#5A63A8" Offset="0"/>
-        <GradientStop Color="#454B8F" Offset="0.55"/>
-        <GradientStop Color="#383C6F" Offset="1"/>
-      </LinearGradientBrush>
-    </Border.Background>
+            <LinearGradientBrush StartPoint="0,0" EndPoint="0.4,1">
+              <GradientStop Color="#FF5A63A8" Offset="0"/>
+              <GradientStop Color="#FF454B8F" Offset="0.55"/>
+              <GradientStop Color="#FF383C6F" Offset="1"/>
+            </LinearGradientBrush>
+          </Border.Background>
 
     <DockPanel>
       <!-- TOP BAR -->
@@ -26,13 +56,17 @@
         </Grid.ColumnDefinitions>
 
         <!-- Sync pill -->
-        <Border Grid.Column="0" CornerRadius="999" Padding="14,6"
-                Background="#3034B3AB">
+        <Border Grid.Column="0" CornerRadius="999" Padding="10,6"
+                Background="#33FFFFFF" BorderBrush="#44FFFFFF" BorderThickness="1">
           <StackPanel Orientation="Horizontal">
-            <Ellipse x:Name="syncDotInicio" Width="8" Height="8" Fill="#34B3AB" VerticalAlignment="Center"/>
+            <Ellipse x:Name="syncDotInicio" Width="8" Height="8" Fill="#4ADE80" VerticalAlignment="Center">
+              <Ellipse.Effect>
+                <DropShadowEffect Color="#4ADE80" BlurRadius="8" Opacity="0.5" ShadowDepth="0"/>
+              </Ellipse.Effect>
+            </Ellipse>
             <TextBlock x:Name="lblSyncInicio" Text="Sincronizado · en línea"
-                       FontFamily="{StaticResource FontPoppins}" FontSize="12"
-                       Foreground="#D6F3F1" Margin="8,0,0,0"/>
+                       FontFamily="{StaticResource FontPoppins}" FontSize="13.5" FontWeight="SemiBold"
+                       Foreground="White" Margin="8,0,0,0"/>
           </StackPanel>
         </Border>
 
@@ -53,9 +87,9 @@
       </Grid>
 
       <!-- FOOTER -->
-      <TextBlock DockPanel.Dock="Bottom" Text="rFlex.io"
-                 FontFamily="{StaticResource FontPoppins}" FontSize="13"
-                 Foreground="#80C7C6EE" HorizontalAlignment="Center" Margin="0,0,0,24"/>
+      <Image DockPanel.Dock="Bottom"
+             Source="pack://application:,,,/RelojControl;component/Assets/logo-rflex-white.png"
+             Height="34" HorizontalAlignment="Center" Margin="0,0,0,24"/>
 
       <!-- CARDS CENTER -->
       <Grid VerticalAlignment="Center" HorizontalAlignment="Center" Margin="40,32">
@@ -80,12 +114,9 @@
 
             <StackPanel Margin="0,0,0,16">
               <TextBlock Text="Usuario" Style="{StaticResource TextHint}" Margin="0,0,0,6"/>
-              <TextBox x:Name="txtUsuario" Style="{StaticResource InputBase}" Margin="0,0,0,8"/>
+              <TextBox x:Name="txtUsuario" Style="{StaticResource InputBase}" Height="54" Margin="0,0,0,8"/>
               <TextBlock Text="Contraseña" Style="{StaticResource TextHint}" Margin="0,0,0,6"/>
-              <PasswordBox x:Name="txtPass" FontFamily="{StaticResource FontPoppins}"
-                           FontSize="14" Padding="12,8" BorderThickness="1.5"
-                           BorderBrush="{StaticResource LineBrush}"
-                           Background="{StaticResource SurfaceBrush}"
+              <PasswordBox x:Name="txtPass" Style="{StaticResource PasswordInputBase}"
                            KeyDown="TxtPass_KeyDown"/>
             </StackPanel>
 
@@ -102,10 +133,18 @@
                 Effect="{StaticResource ShadowCard}" Cursor="Hand"
                 MouseLeftButtonUp="CardMarca_Click">
           <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center">
-            <TextBlock Text="📶" FontSize="48" HorizontalAlignment="Center" Margin="0,0,0,16"/>
+            <Path Stroke="{StaticResource AccentDeepBrush}" StrokeThickness="5"
+                  StrokeStartLineCap="Round" StrokeEndLineCap="Round"
+                  Width="64" Height="64" Stretch="Uniform"
+                  HorizontalAlignment="Center" Margin="0,0,0,16"
+                  Data="M14,26 C18,18 25,13 32,13 C39,13 46,18 50,26
+                        M20,33 C22,27 27,23 32,23 C37,23 42,27 44,33
+                        M26,40 C27,36 29,34 32,34 C35,34 37,36 38,40
+                        M32,47 L32,49 M22,47 C22,44 22,41 23,38
+                        M42,47 C42,44 42,41 41,38"/>
             <TextBlock Text="Registrar marca"
-                       FontFamily="{StaticResource FontPoppins}" FontWeight="Bold" FontSize="20"
-                       Foreground="{StaticResource InkBrush}" HorizontalAlignment="Center"/>
+                       FontFamily="{StaticResource FontPoppins}" FontWeight="Bold" FontSize="26"
+                       Foreground="{StaticResource AccentDeepBrush}" HorizontalAlignment="Center"/>
           </StackPanel>
         </Border>
       </Grid>
