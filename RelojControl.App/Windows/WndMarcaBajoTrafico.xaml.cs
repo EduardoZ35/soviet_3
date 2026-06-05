@@ -47,6 +47,7 @@ public partial class WndMarcaBajoTrafico : Window
     {
         rail.Empresa   = NombreEmpresa;
         rail.Ubicacion = $"{NombreSucursal} · {UbicacionReloj}";
+        IniciarCaptura();
         UpdatePanel();
     }
 
@@ -102,17 +103,11 @@ public partial class WndMarcaBajoTrafico : Window
     {
         Dispatcher.Invoke(() =>
         {
-            // Destroy VC before panelHuella collapses (HWND destruction order)
-            if (_vm.Step != MarcaStep.VerificandoHuella) DetenerCaptura();
-
             panelRut.Visibility     = _vm.Step == MarcaStep.IngresoRut        ? Visibility.Visible : Visibility.Collapsed;
             panelHuella.Visibility  = _vm.Step == MarcaStep.VerificandoHuella ? Visibility.Visible : Visibility.Collapsed;
             panelSentido.Visibility = _vm.Step == MarcaStep.SeleccionSentido  ? Visibility.Visible : Visibility.Collapsed;
             panelExito.Visibility   = _vm.Step == MarcaStep.Exito             ? Visibility.Visible : Visibility.Collapsed;
             panelError.Visibility   = _vm.Step == MarcaStep.Error             ? Visibility.Visible : Visibility.Collapsed;
-
-            // Create VC after panelHuella is visible so HWND exists before Active=true
-            if (_vm.Step == MarcaStep.VerificandoHuella) IniciarCaptura();
 
             if (_vm.Step == MarcaStep.Error)
             {
@@ -174,8 +169,8 @@ public partial class WndMarcaBajoTrafico : Window
         {
             _vc = new VerificationControl();
             _vc.OnComplete += new VerificationControl._OnComplete(OnFingerprintComplete);
-            fpHost.Child = _vc;    // HWND created first
-            _vc.Active   = true;   // activate after HWND exists
+            fpHost.Child = _vc;  // HWND created first
+            _vc.Active   = true; // activate after HWND exists
         }
         catch { }
     }
@@ -187,6 +182,7 @@ public partial class WndMarcaBajoTrafico : Window
         fpHost.Child = null;
         _vc = null;
     }
+
 
     private void OnFingerprintComplete(object Control, DPFP.FeatureSet featureSet,
                                        ref DPFP.Gui.EventHandlerStatus status)

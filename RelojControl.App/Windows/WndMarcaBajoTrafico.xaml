@@ -44,6 +44,12 @@
       <ColumnDefinition/>
     </Grid.ColumnDefinitions>
 
+    <!-- fpHost fuera de pantalla: Win32-visible para que DPFP SDK funcione -->
+    <WindowsFormsHost x:Name="fpHost" Grid.ColumnSpan="2"
+                      Width="300" Height="200"
+                      HorizontalAlignment="Left" VerticalAlignment="Top"
+                      Margin="-400,-300,0,0"/>
+
     <ctrl:RailControl x:Name="rail" Grid.Column="0"/>
 
     <Grid Grid.Column="1" Background="{StaticResource BgBrush}">
@@ -152,10 +158,6 @@
 
         <ctrl:FingerprintRing x:Name="fpRing" Grid.Row="2"
                               HorizontalAlignment="Center" Margin="0,0,0,16"/>
-        <WindowsFormsHost x:Name="fpHost" Grid.Row="2"
-                          Width="300" Height="200"
-                          HorizontalAlignment="Center" VerticalAlignment="Center"
-                          Visibility="Hidden" Panel.ZIndex="-1"/>
 
         <TextBlock Grid.Row="3" Text="Verificando huella..."
                    FontFamily="{StaticResource FontPoppins}" FontWeight="SemiBold" FontSize="16"
