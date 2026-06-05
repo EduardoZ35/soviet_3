@@ -27,15 +27,42 @@ soviet_3/
 
 ---
 
-## Tipos de reloj (`soloEnrolador` en tabla `reloj`)
+## Tipos de reloj
 
-| Valor | Significado | Comportamiento en WndInicio |
-|-------|-------------|----------------------------|
-| 0 | Solo asistencia | No muestra cardLogin. Auto-lanza WndMarcaBajoTrafico si `iniciarDesdeMarca=1` |
-| 1 | Solo enrolador | Muestra cardLogin siempre. No va a pantalla de marca |
-| 2 | Enrolador + asistencia | Muestra cardLogin siempre. Si `iniciarDesdeMarca=1`, también lanza WndMarcaBajoTrafico |
+### `tipoReloj_idtipoReloj` (tabla `tipoReloj`, FK en `reloj`)
 
-`mostrar_login_inicio` (columna [11] de `traerDatosRelojPorNombre`) también fuerza cardLogin visible si vale `"1"`.
+| ID | Nombre | Uso |
+|----|--------|-----|
+| 1 | Enrolador | Solo registro de huella digital |
+| 2 | Asistencia Bajo Tráfico | Marcas jornada, <100 personas |
+| 3 | Asistencia Alto Tráfico | Marcas jornada, >100 personas |
+| 4 | Centro Médico Alto Tráfico | UTI/UCI/urgencias |
+| 5 | Centro Médico Bajo Tráfico | Clínicas menores |
+| 6 | Casino | Registro de raciones |
+| 7 | Pruebas | Dev/QA |
+
+⚠️ **La query `traerDatosRelojPorNombre` en v3 NO incluye `tipoReloj_idtipoReloj`** — debe agregarse al SELECT si se necesita en lógica de negocio.
+
+### `soloEnrolador` (bool, columna [18] de la query v3)
+
+Campo booleano de nivel dispositivo — **NO es 0/1/2**:
+- `0` / `false` = dispositivo normal (va a pantalla de marca si `iniciarDesdeMarca=1`)
+- `1` / `true` = solo enrolador (muestra cardLogin, nunca va a pantalla de marca)
+
+### `mostrar_login_inicio` (bool, columna [11] de la query v3)
+
+Fuerza cardLogin visible al iniciar, independiente de `soloEnrolador`. Usar este campo para dispositivos tipo 2 (Asistencia Bajo Tráfico) que también necesitan acceso a enrolamiento.
+
+### Lógica actual en `WndInicio.OnLoaded`
+
+```csharp
+if (_soloEnrolar >= 1 || _mostrarLoginInicio)
+    cardLogin.Visibility = Visibility.Visible;
+if (_soloEnrolar == 1) return;          // solo enrolador: no ir a marca
+if (_iniciarDesdeMarca && _permitidoUso) AbrirMarca();
+```
+
+Para un dispositivo "Asistencia Bajo Tráfico" que también debe mostrar admin: configurar `mostrar_login_inicio = 1` en BD.
 
 ---
 
