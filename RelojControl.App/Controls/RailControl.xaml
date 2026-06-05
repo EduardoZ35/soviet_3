@@ -1,0 +1,58 @@
+<UserControl x:Class="RelojControl.Controls.RailControl"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             x:Name="rail">
+  <Border Background="{StaticResource RailGradientBrush}" ClipToBounds="True">
+    <Grid>
+      <Ellipse Width="320" Height="320" HorizontalAlignment="Right" VerticalAlignment="Top"
+               Margin="0,-120,-120,0" Opacity="0.08">
+        <Ellipse.Fill>
+          <RadialGradientBrush>
+            <GradientStop Color="White" Offset="0"/>
+            <GradientStop Color="Transparent" Offset="1"/>
+          </RadialGradientBrush>
+        </Ellipse.Fill>
+      </Ellipse>
+      <DockPanel Margin="28,32,28,28">
+        <TextBlock DockPanel.Dock="Top" Text="rFlex.io"
+                   FontFamily="{StaticResource FontPoppins}" FontWeight="Bold" FontSize="14"
+                   Foreground="{StaticResource RailInkBrush}"/>
+        <StackPanel DockPanel.Dock="Top" Margin="0,24,0,0">
+          <StackPanel Orientation="Horizontal" VerticalAlignment="Bottom">
+            <TextBlock x:Name="lblHora"
+                       FontFamily="{StaticResource FontManrope}" FontWeight="ExtraBold" FontSize="80"
+                       Foreground="{StaticResource RailInkBrush}" VerticalAlignment="Bottom"/>
+            <TextBlock x:Name="lblSegundos"
+                       FontFamily="{StaticResource FontManrope}" FontWeight="SemiBold" FontSize="28"
+                       Foreground="{StaticResource RailInk2Brush}" VerticalAlignment="Bottom"
+                       Margin="6,0,0,10"/>
+          </StackPanel>
+          <TextBlock x:Name="lblFecha"
+                     FontFamily="{StaticResource FontPoppins}" FontSize="13"
+                     Foreground="{StaticResource RailInk2Brush}" Margin="0,4,0,0"/>
+        </StackPanel>
+        <Border DockPanel.Dock="Top" Margin="0,20,0,0" HorizontalAlignment="Left"
+                CornerRadius="{StaticResource RadiusBadge}" Padding="10,4">
+          <Border.Background>
+            <SolidColorBrush Color="#34B3AB" Opacity="0.2"/>
+          </Border.Background>
+          <StackPanel Orientation="Horizontal">
+            <Ellipse x:Name="syncDot" Width="8" Height="8" Fill="#34B3AB" VerticalAlignment="Center"/>
+            <TextBlock x:Name="lblSync" Text="Sincronizado"
+                       FontFamily="{StaticResource FontPoppins}" FontSize="11"
+                       Foreground="{StaticResource TealSoftBrush}" Margin="6,0,0,0"/>
+          </StackPanel>
+        </Border>
+        <StackPanel DockPanel.Dock="Bottom" VerticalAlignment="Bottom">
+          <TextBlock x:Name="lblUbicacion"
+                     FontFamily="{StaticResource FontPoppins}" FontSize="11"
+                     Foreground="{StaticResource RailInk2Brush}" TextWrapping="Wrap"/>
+          <TextBlock x:Name="lblEmpresa"
+                     FontFamily="{StaticResource FontPoppins}" FontWeight="SemiBold" FontSize="12"
+                     Foreground="{StaticResource RailInkBrush}" TextWrapping="Wrap" Margin="0,4,0,0"/>
+        </StackPanel>
+        <Grid/>
+      </DockPanel>
+    </Grid>
+  </Border>
+</UserControl>
