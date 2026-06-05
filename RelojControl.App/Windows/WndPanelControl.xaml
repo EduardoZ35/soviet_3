@@ -1,0 +1,10 @@
+<Window x:Class="RelojControl.Windows.WndPanelControl"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="Panel de Control" WindowState="Maximized" WindowStyle="None">
+  <Grid Background="{StaticResource BgBrush}">
+    <TextBlock Text="Panel de Control — próximamente"
+               HorizontalAlignment="Center" VerticalAlignment="Center"
+               Style="{StaticResource TextBody}"/>
+  </Grid>
+</Window>
