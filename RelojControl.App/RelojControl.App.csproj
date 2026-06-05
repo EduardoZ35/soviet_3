@@ -60,5 +60,6 @@
 
   <ItemGroup>
     <Resource Include="Fonts\*.ttf" />
+    <Resource Include="Assets\*.png" />
   </ItemGroup>
 </Project>

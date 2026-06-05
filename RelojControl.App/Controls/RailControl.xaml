@@ -14,9 +14,9 @@
         </Ellipse.Fill>
       </Ellipse>
       <DockPanel Margin="28,32,28,28">
-        <TextBlock DockPanel.Dock="Top" Text="rFlex.io"
-                   FontFamily="{StaticResource FontPoppins}" FontWeight="Bold" FontSize="14"
-                   Foreground="{StaticResource RailInkBrush}"/>
+        <Image DockPanel.Dock="Top"
+               Source="/Assets/logo-rflex-white.png"
+               Height="28" HorizontalAlignment="Left" Stretch="Uniform"/>
         <StackPanel DockPanel.Dock="Top" Margin="0,24,0,0">
           <StackPanel Orientation="Horizontal" VerticalAlignment="Bottom">
             <TextBlock x:Name="lblHora"
