@@ -44,6 +44,18 @@
       <HintPath>lib\Interop.DPFPCtlXLib.dll</HintPath>
       <Private>true</Private>
     </Reference>
+    <Reference Include="DPFPCtlXTypeLibNET">
+      <HintPath>lib\DPFPCtlXTypeLibNET.dll</HintPath>
+      <Private>true</Private>
+    </Reference>
+    <Reference Include="DPFPCtlXWrapperNET">
+      <HintPath>lib\DPFPCtlXWrapperNET.dll</HintPath>
+      <Private>true</Private>
+    </Reference>
+    <Reference Include="DPFPShrXTypeLibNET">
+      <HintPath>lib\DPFPShrXTypeLibNET.dll</HintPath>
+      <Private>true</Private>
+    </Reference>
   </ItemGroup>
 
   <ItemGroup>
