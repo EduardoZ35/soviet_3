@@ -1,0 +1,9 @@
+<Window x:Class="RelojControl.Windows.WndInicio"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="WndInicio" Width="800" Height="600">
+  <Grid Background="{StaticResource BgBrush}">
+    <TextBlock Text="Soviet v3 — cargando..." HorizontalAlignment="Center" VerticalAlignment="Center"
+               Style="{StaticResource TextBody}"/>
+  </Grid>
+</Window>
