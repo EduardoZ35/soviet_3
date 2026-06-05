@@ -1,0 +1,27 @@
+<UserControl x:Class="RelojControl.Controls.ResultBadge"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             x:Name="root"
+             Width="150" Height="150">
+  <Grid>
+    <!-- Anillo expansivo (solo decorativo; se anima al cargar) -->
+    <Ellipse x:Name="pulseRing" StrokeThickness="3" Opacity="0">
+      <Ellipse.RenderTransform>
+        <ScaleTransform x:Name="pulseScale" CenterX="75" CenterY="75" ScaleX="1" ScaleY="1"/>
+      </Ellipse.RenderTransform>
+    </Ellipse>
+
+    <!-- Disco de fondo -->
+    <Ellipse x:Name="disc"/>
+
+    <!-- Ícono (check o alerta) dibujándose -->
+    <Viewbox Width="82" Height="82" HorizontalAlignment="Center" VerticalAlignment="Center">
+      <Canvas Width="64" Height="64">
+        <Path x:Name="icon"
+              StrokeThickness="7"
+              StrokeStartLineCap="Round" StrokeEndLineCap="Round" StrokeLineJoin="Round"
+              StrokeDashArray="60 60" StrokeDashOffset="60"/>
+      </Canvas>
+    </Viewbox>
+  </Grid>
+</UserControl>

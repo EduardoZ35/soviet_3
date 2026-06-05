@@ -111,7 +111,6 @@ public partial class WndMarcaBajoTrafico : Window
 
             if (_vm.Step == MarcaStep.Error)
             {
-                fpError.SetState(FingerprintState.Error);
                 lblMensajeError.Text = _vm.MensajeError;
             }
             if (_vm.Step == MarcaStep.IngresoRut) lblRutDisplay.Text = "";
@@ -147,7 +146,6 @@ public partial class WndMarcaBajoTrafico : Window
 
             if (!ok) { _vm.SetError("Error al guardar la marca en la base de datos."); return; }
 
-            fpSuccess.SetState(FingerprintState.Success);
             lblNombreExito.Text  = _vm.NombreTrabajador;
             lblSentidoExito.Text = $"Jornada · {sentido} · {DateTime.Now:HH:mm}";
             _vm.SetExito();
