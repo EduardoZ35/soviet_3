@@ -5,3 +5,4 @@ obj/
 .superpowers/
 soviet_v2/
 Front Soviet/
+**/AssemblyInfo.cs
