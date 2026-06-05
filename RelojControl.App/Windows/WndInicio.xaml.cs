@@ -13,7 +13,7 @@ public partial class WndInicio : Window
     private string _rutEmpresa = "", _nombreEmpresa = "", _codigoEmpresa = "";
     private string _nombreSucursal = "", _ubicacionReloj = "", _direccionSucursal = "";
     private bool   _permiteComida, _permiteJornada, _habilitado, _bloqueado;
-    private bool   _iniciarDesdeMarca, _permitidoUso;
+    private bool   _iniciarDesdeMarca, _permitidoUso, _mostrarLoginInicio;
     private int    _soloEnrolar, _idTipoRolUsuario;
 
     private readonly DispatcherTimer _reloj = new() { Interval = TimeSpan.FromSeconds(1) };
@@ -52,7 +52,11 @@ public partial class WndInicio : Window
                 MostrarMsg("Reloj bloqueado", "Contactar con soporte rFlex.");
                 return;
             }
-            if (_soloEnrolar == 1) { cardLogin.Visibility = Visibility.Visible; return; }
+            // Mostrar login admin si el reloj lo requiere (tipo 1=solo enrolador,
+            // tipo 2=enrolador+asistencia) o si está configurado explícitamente
+            if (_soloEnrolar >= 1 || _mostrarLoginInicio)
+                cardLogin.Visibility = Visibility.Visible;
+            if (_soloEnrolar == 1) return; // solo enrolador: no ir a marca
             if (_iniciarDesdeMarca && _permitidoUso) AbrirMarca();
         }
         catch (Exception ex)
@@ -75,12 +79,13 @@ public partial class WndInicio : Window
         _idReloj           = int.Parse(row[0].ToString()!);
         _idEmpresa         = int.Parse(row[1].ToString()!);
         _ubicacionReloj    = row[4].ToString()!;
-        _habilitado        = row[5].ToString() == "1";
-        _bloqueado         = row[14].ToString() == "1";
-        _permiteComida     = row[9].ToString()  == "1";
-        _permiteJornada    = row[10].ToString() == "1";
-        _iniciarDesdeMarca = row[12].ToString() == "1";
-        _soloEnrolar       = int.Parse(row[18].ToString()!);
+        _habilitado         = row[5].ToString()  == "1";
+        _bloqueado          = row[14].ToString() == "1";
+        _permiteComida      = row[9].ToString()  == "1";
+        _permiteJornada     = row[10].ToString() == "1";
+        _mostrarLoginInicio = row[11].ToString() == "1";
+        _iniciarDesdeMarca  = row[12].ToString() == "1";
+        _soloEnrolar        = int.Parse(row[18].ToString()!);
         _idResolucionMarca = int.Parse(row[20].ToString()!);
 
         lblTituloReloj.Text = $"Registro de Asistencia · {_ubicacionReloj}";
