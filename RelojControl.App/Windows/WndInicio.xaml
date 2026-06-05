@@ -56,14 +56,12 @@
         </Grid.ColumnDefinitions>
 
         <!-- Sync pill -->
-        <Border Grid.Column="0" Padding="10,7" BorderThickness="0">
-          <StackPanel Orientation="Horizontal">
-            <Ellipse x:Name="syncDotInicio" Width="8" Height="8" Fill="#4ADE80" VerticalAlignment="Center"/>
-            <TextBlock x:Name="lblSyncInicio" Text="Sincronizado · en línea"
-                       FontFamily="{StaticResource FontPoppins}" FontSize="13.5" FontWeight="SemiBold"
-                       Foreground="White" Margin="8,0,0,0"/>
-          </StackPanel>
-        </Border>
+        <StackPanel Grid.Column="0" Orientation="Horizontal" VerticalAlignment="Center">
+          <Ellipse x:Name="syncDotInicio" Width="8" Height="8" Fill="#4ADE80" VerticalAlignment="Center"/>
+          <TextBlock x:Name="lblSyncInicio" Text="Sincronizado · en línea"
+                     FontFamily="{StaticResource FontPoppins}" FontSize="13.5" FontWeight="SemiBold"
+                     Foreground="White" VerticalAlignment="Center" Margin="8,0,0,0"/>
+        </StackPanel>
 
         <!-- Title -->
         <TextBlock x:Name="lblTituloReloj" Grid.Column="1" Text="Registro de Asistencia"
