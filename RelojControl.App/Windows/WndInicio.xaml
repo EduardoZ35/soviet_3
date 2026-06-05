@@ -120,9 +120,13 @@
                     <Style TargetType="TextBlock">
                       <Setter Property="Visibility" Value="Collapsed"/>
                       <Style.Triggers>
-                        <DataTrigger Binding="{Binding Text, ElementName=txtUsuario}" Value="">
+                        <MultiDataTrigger>
+                          <MultiDataTrigger.Conditions>
+                            <Condition Binding="{Binding Text, ElementName=txtUsuario}" Value=""/>
+                            <Condition Binding="{Binding IsFocused, ElementName=txtUsuario}" Value="False"/>
+                          </MultiDataTrigger.Conditions>
                           <Setter Property="Visibility" Value="Visible"/>
-                        </DataTrigger>
+                        </MultiDataTrigger>
                       </Style.Triggers>
                     </Style>
                   </TextBlock.Style>

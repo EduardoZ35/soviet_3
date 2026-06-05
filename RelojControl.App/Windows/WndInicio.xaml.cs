@@ -29,6 +29,11 @@ _reloj.Tick += (_, _) => ActualizarReloj();
         txtPass.PasswordChanged += (s, e) =>
             lblPassPlaceholder.Visibility = txtPass.Password.Length == 0
                 ? Visibility.Visible : Visibility.Collapsed;
+        txtPass.GotFocus  += (s, e) => lblPassPlaceholder.Visibility = Visibility.Collapsed;
+        txtPass.LostFocus += (s, e) => {
+            if (txtPass.Password.Length == 0)
+                lblPassPlaceholder.Visibility = Visibility.Visible;
+        };
     }
 
     private void ActualizarReloj()
