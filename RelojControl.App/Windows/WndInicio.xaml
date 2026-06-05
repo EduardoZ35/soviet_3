@@ -56,10 +56,10 @@
         </Grid.ColumnDefinitions>
 
         <!-- Sync pill -->
-        <Border Grid.Column="0" CornerRadius="999" Padding="10,6"
+        <Border Grid.Column="0" CornerRadius="999" Padding="10,7"
                 Background="#33FFFFFF" BorderBrush="#44FFFFFF" BorderThickness="1">
           <StackPanel Orientation="Horizontal">
-            <Ellipse x:Name="syncDotInicio" Width="8" Height="8" Fill="White" VerticalAlignment="Center"/>
+            <Ellipse x:Name="syncDotInicio" Width="8" Height="8" Fill="#4ADE80" VerticalAlignment="Center"/>
             <TextBlock x:Name="lblSyncInicio" Text="Sincronizado · en línea"
                        FontFamily="{StaticResource FontPoppins}" FontSize="13.5" FontWeight="SemiBold"
                        Foreground="White" Margin="8,0,0,0"/>
@@ -131,16 +131,11 @@
                 Effect="{StaticResource ShadowCard}" Cursor="Hand"
                 MouseLeftButtonUp="CardMarca_Click">
           <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center">
-            <Path Stroke="{StaticResource AccentDeepBrush}" StrokeThickness="5"
+            <Path x:Name="pathHuella"
+                  Stroke="{StaticResource AccentDeepBrush}" StrokeThickness="5"
                   StrokeStartLineCap="Round" StrokeEndLineCap="Round"
                   Width="64" Height="64" Stretch="Uniform"
-                  HorizontalAlignment="Center" Margin="0,0,0,16"
-                  Data="M 14,26 C 17,19 24,13 32,13 C 40,13 47,19 50,26
-                        M 20,33 C 22,27 27,23 32,23 C 37,23 42,27 44,33
-                        M 26,40 C 27,36 29,34 32,34 C 35,34 37,36 38,40
-                        M 32,47 L 32,49
-                        M 23,46 C 22,43 22,40 23,37
-                        M 41,46 C 42,43 42,40 41,37"/>
+                  HorizontalAlignment="Center" Margin="0,0,0,16"/>
             <TextBlock Text="Registrar marca"
                        FontFamily="{StaticResource FontPoppins}" FontWeight="Bold" FontSize="26"
                        Foreground="{StaticResource AccentDeepBrush}" HorizontalAlignment="Center"/>
