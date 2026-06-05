@@ -20,7 +20,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\soviet_v2\proyectoReloj-master\proyectoNegocioRflex\proyectoNegocioRflex.csproj" />
+    <ProjectReference Include="..\proyectoNegocioRflex\proyectoNegocioRflex.csproj" />
   </ItemGroup>
 
   <ItemGroup>

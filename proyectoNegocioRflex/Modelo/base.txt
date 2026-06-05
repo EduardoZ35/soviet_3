@@ -1,0 +1,859 @@
+﻿CREATE DATABASE  IF NOT EXISTS `relojControl` /*!40100 DEFAULT CHARACTER SET utf8 COLLATE utf8_general_ci */;
+USE `relojControl`;
+-- MySQL dump 10.16  Distrib 10.2.18-MariaDB, for debian-linux-gnu (x86_64)
+--
+-- Host: localhost    Database: relojControl
+-- ------------------------------------------------------
+-- Server version	10.2.18-MariaDB-10.2.18+maria~xenial-log
+-- Fecha 02/10/2018
+-- Script actualizado el 10-06-2019
+
+/*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
+/*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
+/*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
+/*!40101 SET NAMES utf8 */;
+/*!40103 SET @OLD_TIME_ZONE=@@TIME_ZONE */;
+/*!40103 SET TIME_ZONE='+00:00' */;
+/*!40014 SET @OLD_UNIQUE_CHECKS=@@UNIQUE_CHECKS, UNIQUE_CHECKS=0 */;
+/*!40014 SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0 */;
+/*!40101 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='NO_AUTO_VALUE_ON_ZERO' */;
+/*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
+
+--
+-- Table structure for table `alertaError`
+--
+
+DROP TABLE IF EXISTS `alertaError`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `alertaError` (
+  `idalertaError` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `alerta` varchar(500) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `reloj_idreloj` int(11) DEFAULT NULL,
+  `empresa_idempresa` int(11) DEFAULT NULL,
+  `sucursal_idsucursal` int(11) DEFAULT NULL,
+  `respaldado` bit(1) DEFAULT b'0',
+  `enviado` bit(1) DEFAULT b'0',
+  `fechaAlerta` timestamp NULL DEFAULT current_timestamp(),
+  `checksum` varchar(300) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `created_at` timestamp NOT NULL DEFAULT current_timestamp(),
+  `updated_at` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp(),
+  PRIMARY KEY (`idalertaError`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Table structure for table `avisoConexion`
+--
+
+DROP TABLE IF EXISTS `avisoConexion`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `avisoConexion` (
+  `idavisoConexion` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `reloj_idreloj` int(11) DEFAULT NULL,
+  `fechaLocalEquipo` datetime DEFAULT NULL,
+  `comentario` varchar(400) COLLATE utf8_unicode_ci DEFAULT '',
+  `funcionandoConBateria` bit(1) DEFAULT b'0',
+  `porcentajeBateria` int(10) unsigned NOT NULL DEFAULT 0,
+  `espacioDisponible` int(11) NOT NULL DEFAULT 0,
+  `created_at` timestamp NOT NULL DEFAULT current_timestamp(),
+  `updated_at` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp(),
+  PRIMARY KEY (`idavisoConexion`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Table structure for table `configSlack`
+--
+
+DROP TABLE IF EXISTS `configSlack`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `configSlack` (
+  `idconfigSlack` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `webHook` varchar(500) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `canal` varchar(500) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `userName` varchar(300) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `esCanalReloj` bit(1) DEFAULT b'0',
+  `habilitado` bit(1) DEFAULT b'1',
+  `created_at` timestamp NOT NULL DEFAULT current_timestamp(),
+  `updated_at` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp(),
+  PRIMARY KEY (`idconfigSlack`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Table structure for table `tipoRolUsuario`
+--
+
+DROP TABLE IF EXISTS `tipoRolUsuario`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `tipoRolUsuario` (
+  `idtipoRolUsuario` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `nombreTipoRolUsuario` varchar(30) COLLATE utf8_unicode_ci DEFAULT '',
+  `created_at` timestamp NOT NULL DEFAULT current_timestamp(),
+  `updated_at` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp(),
+  PRIMARY KEY (`idtipoRolUsuario`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+
+--
+-- Table structure for table `config_funcionario_reloj`
+--
+
+DROP TABLE IF EXISTS `config_funcionario_reloj`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `config_funcionario_reloj` (
+  `idconfig_funcionario_reloj` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `persona_rut` varchar(200) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `puedeEnrolar` bit(1) DEFAULT b'0',
+  `registra_asistencia` bit(1) DEFAULT b'0',
+  `requiere_pin` bit(1) DEFAULT b'1',
+  `pin` varchar(100) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `passErolar` varchar(200) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `marcaInicioTerminoComida` bit(1) DEFAULT b'0',
+  `habilitadaRacionCasino` bit(1) DEFAULT b'0',
+  `nombreEquipoEdicion` varchar(200) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `tipoDetalleMarcaComida_idtipoDetalleMarcaComida` int(11) DEFAULT 1,
+  `tipoRolUsuario_idtipoRolUsuario` int(11) DEFAULT 2,
+  `respaldado` bit(1) DEFAULT b'0',
+  `sinRestriccionTicket` bit(1) DEFAULT b'0',
+  `created_by` varchar(300) COLLATE utf8_unicode_ci NOT NULL DEFAULT '',
+  `updated_by` varchar(300) COLLATE utf8_unicode_ci NOT NULL DEFAULT '',
+  `created_at` timestamp NOT NULL DEFAULT current_timestamp(),
+  `updated_at` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp(),
+  PRIMARY KEY (`idconfig_funcionario_reloj`),
+  KEY `cfr_persona_rut_idx` (`persona_rut`),
+  CONSTRAINT `cfr_persona_rut` FOREIGN KEY (`persona_rut`) REFERENCES `persona` (`rut`) ON DELETE NO ACTION ON UPDATE NO ACTION
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Table structure for table `configuracionNotificacion`
+--
+
+DROP TABLE IF EXISTS `configuracionNotificacion`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `configuracionNotificacion` (
+  `idconfiguracionNotificacion` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `usuario` varchar(300) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `correo` varchar(300) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `pass` varchar(300) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `servidor` varchar(300) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `puerto` varchar(300) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `created_at` timestamp NOT NULL DEFAULT current_timestamp(),
+  `updated_at` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp(),
+  PRIMARY KEY (`idconfiguracionNotificacion`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Table structure for table `correoAlerta`
+--
+
+DROP TABLE IF EXISTS `correoAlerta`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `correoAlerta` (
+  `idcorreoAlerta` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `nombreEncargadoCorreo` varchar(800) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `correo` varchar(800) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `habilitado` bit(1) DEFAULT b'1',
+  `created_at` timestamp NOT NULL DEFAULT current_timestamp(),
+  `updated_at` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp(),
+  PRIMARY KEY (`idcorreoAlerta`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+
+--
+-- Table structure for table `detectadaConexion`
+--
+DROP TABLE IF EXISTS `detectadaConexion`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `detectadaConexion` (
+  `iddetectadaConexion` int(11) NOT NULL AUTO_INCREMENT,
+  `tieneConexion` bit(1) DEFAULT b'0',
+  `created_at` timestamp NOT NULL DEFAULT current_timestamp(),
+  `updated_at` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp(),
+  PRIMARY KEY (`iddetectadaConexion`)
+)  ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Table structure for table `empresa`
+--
+
+DROP TABLE IF EXISTS `empresa`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `empresa` (
+  `idempresa` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `rut_empresa` varchar(11) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `razon_social` varchar(200) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `giro` varchar(200) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `rut_repesentante_legal` varchar(11) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `calle` varchar(200) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `numero_calle` varchar(45) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `comuna` varchar(45) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `region` varchar(45) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `pais` varchar(45) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `codigo` varchar(100) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `created_at` timestamp NOT NULL DEFAULT current_timestamp(),
+  `updated_at` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp(),
+  PRIMARY KEY (`idempresa`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Table structure for table `funcionario_has_reloj`
+--
+
+DROP TABLE IF EXISTS `funcionario_has_reloj`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `funcionario_has_reloj` (
+  `idfuncionario_has_reloj` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `reloj_idreloj` int(10) unsigned DEFAULT NULL,
+  `persona_rut` varchar(200) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `nombreEquipoEdicion` varchar(200) COLLATE utf8_unicode_ci NOT NULL,
+  `puedeMarcar` bit(1) DEFAULT b'0',
+  `respaldado` bit(1) DEFAULT b'0',
+  `created_by` varchar(200) COLLATE utf8_unicode_ci NOT NULL DEFAULT '',
+  `updated_by` varchar(200) COLLATE utf8_unicode_ci NOT NULL DEFAULT '',
+  `created_at` timestamp NOT NULL DEFAULT current_timestamp(),
+  `updated_at` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp(),
+  PRIMARY KEY (`idfuncionario_has_reloj`),
+  KEY `fhr_personaRut_idx` (`persona_rut`),
+  KEY `fhr_idreloj_idx` (`reloj_idreloj`),
+  CONSTRAINT `funcionario_has_reloj_persona_rut` FOREIGN KEY (`persona_rut`) REFERENCES `persona` (`rut`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+  CONSTRAINT `funcionario_has_reloj_reloj_idreloj` FOREIGN KEY (`reloj_idreloj`) REFERENCES `reloj` (`idreloj`) ON DELETE NO ACTION ON UPDATE NO ACTION
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Table structure for table `imagenHuella`
+--
+
+DROP TABLE IF EXISTS `imagenHuella`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `imagenHuella` (
+  `idimagenHuella` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `empresa_idempresa` int(11) DEFAULT NULL,
+  `persona_rut` varchar(200) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `numeroDedo` int(11) DEFAULT NULL,
+  `imagen_huella` blob DEFAULT NULL,
+  `nombreEquipoEdicion` varchar(200) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `created_by` varchar(200) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `updated_by` varchar(200) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `respaldado` bit(1) DEFAULT b'0',
+  `created_at` timestamp NOT NULL DEFAULT current_timestamp(),
+  `updated_at` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp(),
+  PRIMARY KEY (`idimagenHuella`),
+  KEY `persona_rut_idx` (`persona_rut`),
+  CONSTRAINT `ih_persona_rut` FOREIGN KEY (`persona_rut`) REFERENCES `persona` (`rut`) ON DELETE NO ACTION ON UPDATE NO ACTION
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Table structure for table `inhabilitacionMarca`
+--
+
+DROP TABLE IF EXISTS `inhabilitacionMarca`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `inhabilitacionMarca` (
+  `idinhabilitacionMarca` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `persona_rut` varchar(200) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `tim_tipoInhabilitacionMarca` int(10) unsigned DEFAULT NULL COMMENT 'tim = tipoInhabilitacionMarca',
+  `fecha` date DEFAULT NULL,
+  `turnoDia` bit(1) DEFAULT b'1',
+  `habilitado` bit(1) DEFAULT b'1',
+  `comentario` varchar(200) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `bloqueoMarca` bit(1) DEFAULT b'0',
+  `respaldado` bit(1) DEFAULT b'0',
+  `nombreEquipoEdicion` varchar(200) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `created_at` timestamp NOT NULL DEFAULT current_timestamp(),
+  `updated_at` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp(),
+  PRIMARY KEY (`idinhabilitacionMarca`),
+  KEY `persona_rut_idx` (`persona_rut`),
+  KEY `im_tim_tipoInhabilitacionMarca` (`tim_tipoInhabilitacionMarca`),
+  CONSTRAINT `im_tim_tipoInhabilitacionMarca` FOREIGN KEY (`tim_tipoInhabilitacionMarca`) REFERENCES `tipoInhabilitacionMarca` (`idtipoInhabilitacionMarca`) ON DELETE NO ACTION ON UPDATE NO ACTION
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Table structure for table `logReloj`
+--
+
+DROP TABLE IF EXISTS `logReloj`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `logReloj` (
+  `idlogReloj` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `nombreEquipo` varchar(100) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `detalleLog` varchar(2000) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `tipoLog` varchar(50) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `fecha` datetime DEFAULT current_timestamp(),
+  `respaldado` bit(1) DEFAULT b'0',
+  `created_at` timestamp NOT NULL DEFAULT current_timestamp(),
+  `updated_at` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp(),
+  PRIMARY KEY (`idlogReloj`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Table structure for table `logSincronizador`
+--
+
+DROP TABLE IF EXISTS `logSincronizador`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `logSincronizador` (
+  `idlogSincronizador` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `equipo` varchar(45) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `incidencia` varchar(2000) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `tipoLog` varchar(50) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `fecha` datetime DEFAULT current_timestamp(),
+  `respaldado` bit(1) DEFAULT b'0',
+  `created_at` timestamp NOT NULL DEFAULT current_timestamp(),
+  `updated_at` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp(),
+  PRIMARY KEY (`idlogSincronizador`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Table structure for table `marca`
+--
+
+DROP TABLE IF EXISTS `marca`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `marca` (
+  `idmarca` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `tipoMarca_idtipoMarca` int(10) unsigned DEFAULT NULL,
+  `persona_rut` varchar(300) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `empresa_idempresa` int(10) unsigned DEFAULT NULL,
+  `sucursal_idsucursal` int(10) unsigned DEFAULT NULL,
+  `codigoMarca` int(11) DEFAULT NULL,
+  `imagenHuella_numeroDedo` int(11) DEFAULT NULL,
+  `fecha_marca` datetime DEFAULT NULL,
+  `zonaHoraria` varchar(10) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `esHoraServidor` bit(1) DEFAULT b'0',
+  `ingresador` varchar(200) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `actualizador` varchar(200) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `reloj_idreloj` int(10) unsigned DEFAULT NULL,
+  `hash` varchar(200) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `marcaConPin` bit(1) DEFAULT b'0',
+  `respaldado` bit(1) DEFAULT b'0',
+  `notificada` bit(1) DEFAULT b'0',
+  `nombreEquipoEdicion` varchar(200) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `incidencia` varchar(300) COLLATE utf8_unicode_ci DEFAULT '',
+  `created_at` timestamp NOT NULL DEFAULT current_timestamp(),
+  `updated_at` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp(),
+  PRIMARY KEY (`idmarca`),
+  KEY `marca_personaRut_idx` (`persona_rut`),
+  KEY `marca_idreloj_idx` (`reloj_idreloj`),
+  KEY `marca_tipoMarca_idtipoMarca` (`tipoMarca_idtipoMarca`),
+  KEY `marca_empresa_idempresa` (`empresa_idempresa`),
+  KEY `marca_sucursal_idsucursal` (`sucursal_idsucursal`),
+  CONSTRAINT `marca_empresa_idempresa` FOREIGN KEY (`empresa_idempresa`) REFERENCES `empresa` (`idempresa`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+  CONSTRAINT `marca_persona_rut` FOREIGN KEY (`persona_rut`) REFERENCES `persona` (`rut`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+  CONSTRAINT `marca_reloj_idreloj` FOREIGN KEY (`reloj_idreloj`) REFERENCES `reloj` (`idreloj`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+  CONSTRAINT `marca_sucursal_idsucursal` FOREIGN KEY (`sucursal_idsucursal`) REFERENCES `sucursal` (`idsucursal`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+  CONSTRAINT `marca_tipoMarca_idtipoMarca` FOREIGN KEY (`tipoMarca_idtipoMarca`) REFERENCES `tipoMarca` (`idtipoMarca`) ON DELETE NO ACTION ON UPDATE NO ACTION
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Table structure for table `persona`
+--
+
+DROP TABLE IF EXISTS `persona`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `persona` (
+  `idpersona` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `rut` varchar(200) COLLATE utf8_unicode_ci NOT NULL,
+  `nombre` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `segundoNombre` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `apellidoPaterno` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `apellidoMaterno` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `centroCosto` varchar(150) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `puesto` varchar(150) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `correo` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `alias` varchar(60) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `fechaNacimiento` datetime DEFAULT NULL,
+  `telefonoUno` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `telefonoDos` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `activoDesde` datetime DEFAULT NULL,
+  `habilitada` bit(1) DEFAULT b'1',
+  `empresa_idempresa` int(10) unsigned DEFAULT 1,
+  `respaldado` bit(1) DEFAULT b'0',
+  `nombreEquipoEdicion` varchar(200) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `created_at` timestamp NOT NULL DEFAULT current_timestamp(),
+  `updated_at` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp(),
+  PRIMARY KEY (`idpersona`),
+  UNIQUE KEY `rut_UNIQUE` (`rut`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Table structure for table `racionFija`
+--
+
+DROP TABLE IF EXISTS `racionFija`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `racionFija` (
+  `idracionFija` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `numeroDia` int(11) DEFAULT NULL COMMENT '1 Lunes, 2 Martes, 3 Miercoles, 4 Jueves , 5 Viernes , 6 Sabado ,7 Domingo',
+  `persona_rut` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `tipoComida_idtipoComida` int(11) DEFAULT NULL,
+  `habilitado` bit(1) DEFAULT b'1',
+  `nombreEquipoEdicion` varchar(100) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `respaldado` bit(1) DEFAULT b'0',
+  `created_by` varchar(300) COLLATE utf8_unicode_ci NOT NULL DEFAULT '',
+  `updated_by` varchar(300) COLLATE utf8_unicode_ci NOT NULL DEFAULT '',
+  `created_at` timestamp NOT NULL DEFAULT current_timestamp(),
+  `updated_at` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp(),
+  PRIMARY KEY (`idracionFija`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Table structure for table `rechazo`
+--
+
+DROP TABLE IF EXISTS `rechazo`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `rechazo` (
+  `idrechazo` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `empresa_idempresa` int(10) unsigned DEFAULT NULL,
+  `sucursal_idsucursal` int(10) unsigned DEFAULT NULL,
+  `persona_rut` varchar(200) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `rechazo_idtipoRechazo` int(10) unsigned DEFAULT NULL,
+  `reloj_idreloj` int(10) unsigned DEFAULT NULL,
+  `centrocosto_funcionario` varchar(200) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `puesto_funcionario` varchar(200) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `fecha_marca` datetime DEFAULT NULL,
+  `zonaHoraria` varchar(10) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `esHoraServidor` bit(1) DEFAULT b'0',
+  `hash` varchar(200) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `notificado` bit(1) DEFAULT b'0',
+  `respaldado` bit(1) DEFAULT b'0',
+  `nombreEquipoEdicion` varchar(200) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `created_at` timestamp NOT NULL DEFAULT current_timestamp(),
+  `updated_at` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp(),
+  PRIMARY KEY (`idrechazo`),
+  KEY `rechazo_tipoRechazo_idx` (`rechazo_idtipoRechazo`),
+  KEY `rechazo_idsucursal_idx` (`sucursal_idsucursal`),
+  KEY `rechazo_idreloj_idx` (`reloj_idreloj`),
+  KEY `rechazo_personaRut_idx` (`persona_rut`),
+  KEY `rechazo_idempresa_idx` (`empresa_idempresa`),
+  CONSTRAINT `rechazo_empresa_idempresa` FOREIGN KEY (`empresa_idempresa`) REFERENCES `empresa` (`idempresa`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+  CONSTRAINT `rechazo_persona_rut` FOREIGN KEY (`persona_rut`) REFERENCES `persona` (`rut`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+  CONSTRAINT `rechazo_rechazo_idtipoRechazo` FOREIGN KEY (`rechazo_idtipoRechazo`) REFERENCES `tipoRechazo` (`idtipoRechazo`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+  CONSTRAINT `rechazo_reloj_idreloj` FOREIGN KEY (`reloj_idreloj`) REFERENCES `reloj` (`idreloj`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+  CONSTRAINT `rechazo_sucursal_idsucursal` FOREIGN KEY (`sucursal_idsucursal`) REFERENCES `sucursal` (`idsucursal`) ON DELETE NO ACTION ON UPDATE NO ACTION
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Table structure for table `reloj`
+--
+
+DROP TABLE IF EXISTS `reloj`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `reloj` (
+  `idreloj` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `empresa_idempresa` int(10) unsigned DEFAULT NULL,
+  `sucursal_idsucursal` int(10) unsigned DEFAULT NULL,
+  `nombre` varchar(100) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `ubicacion` varchar(100) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `estado` varchar(45) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `mac_reloj` varchar(45) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `ip_reloj` varchar(45) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `fecha_activo` date DEFAULT NULL,
+  `marca_comida` bit(1) DEFAULT b'0',
+  `marca_jornada` bit(1) DEFAULT b'0',
+  `mostrar_login_inicio` bit(1) DEFAULT b'0',
+  `iniciarDesdePantallaDeMarca` bit(1) DEFAULT b'0',
+  `bloqueado` bit(1) DEFAULT b'0',
+  `relojCasino` bit(1) DEFAULT b'0',
+  `soloEnrolador` bit(1) DEFAULT b'0',
+  `imprimeTicketAsistencia` bit(1) DEFAULT b'0',
+  `resolucionMarca_idresolucionMarca` int(10) unsigned NOT NULL DEFAULT 1,
+  `autoIniciaPrograma` bit(1) DEFAULT b'1',
+  `horaInicioRangoActualizacion` int(2) unsigned DEFAULT 2,
+  `horaTerminoRangoActualizacion` int(2) unsigned DEFAULT 3,
+  `nombreEquipoEdicion` varchar(200) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `respaldado` bit(1) DEFAULT b'0',
+  `created_at` timestamp NOT NULL DEFAULT current_timestamp(),
+  `updated_at` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp(),
+  PRIMARY KEY (`idreloj`),
+  KEY `idsucursal_idx` (`sucursal_idsucursal`),
+  KEY `idempresa_idx` (`empresa_idempresa`),
+  CONSTRAINT `reloj_empresa_idempresa` FOREIGN KEY (`empresa_idempresa`) REFERENCES `empresa` (`idempresa`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+  CONSTRAINT `reloj_sucursal_idsucursal` FOREIGN KEY (`sucursal_idsucursal`) REFERENCES `sucursal` (`idsucursal`) ON DELETE NO ACTION ON UPDATE NO ACTION
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Table structure for table `resolucionMarca`
+--
+
+DROP TABLE IF EXISTS `resolucionMarca`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `resolucionMarca` (
+  `idresolucionMarca` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `nombreResolucion` varchar(70) COLLATE utf8_unicode_ci NOT NULL,
+  `created_at` timestamp NOT NULL DEFAULT current_timestamp(),
+  `updated_at` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp(),
+  PRIMARY KEY (`idresolucionMarca`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Table structure for table `sucursal`
+--
+
+DROP TABLE IF EXISTS `sucursal`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `sucursal` (
+  `idsucursal` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `empresa_idempresa` int(10) unsigned DEFAULT NULL,
+  `nombre` varchar(200) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `rut_encargado` varchar(11) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `nombre_encargado` varchar(200) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `calle` varchar(200) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `numero_calle` varchar(45) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `comuna` varchar(45) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `ciudad` varchar(45) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `region` varchar(45) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `pais` varchar(45) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `sucursalActual` bit(1) DEFAULT b'0',
+  `respaldado` bit(1) DEFAULT b'0',
+  `created_at` timestamp NOT NULL DEFAULT current_timestamp(),
+  `updated_at` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp(),
+  PRIMARY KEY (`idsucursal`),
+  KEY `empresa_idempresa_idx` (`empresa_idempresa`),
+  CONSTRAINT `sucursal_empresa_idempresa` FOREIGN KEY (`empresa_idempresa`) REFERENCES `empresa` (`idempresa`) ON DELETE NO ACTION ON UPDATE NO ACTION
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Table structure for table `tipoComida`
+--
+
+DROP TABLE IF EXISTS `tipoComida`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `tipoComida` (
+  `idtipoComida` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `nombre` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
+  `horaInicioEmision` time NOT NULL,
+  `horaTerminoEmision` time NOT NULL,
+  `horaInicioCobro` time NOT NULL,
+  `horaTerminoCobro` time NOT NULL,
+  `habilitada` bit(1) DEFAULT b'1',
+  `created_by` VARCHAR(45) NULL DEFAULT '',
+  `updated_by` VARCHAR(45) NULL DEFAULT '',
+  `created_at` timestamp NOT NULL DEFAULT current_timestamp(),
+  `updated_at` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp(),
+  PRIMARY KEY (`idtipoComida`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Table structure for table `tipoDetalleMarcaComida`
+--
+
+DROP TABLE IF EXISTS `tipoDetalleMarcaComida`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `tipoDetalleMarcaComida` (
+  `idtipoDetalleMarcaComida` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `detalleTipoComida` varchar(100) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `created_at` timestamp NOT NULL DEFAULT current_timestamp(),
+  `updated_at` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp(),
+  PRIMARY KEY (`idtipoDetalleMarcaComida`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Table structure for table `tipoInhabilitacionMarca`
+--
+
+DROP TABLE IF EXISTS `tipoInhabilitacionMarca`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `tipoInhabilitacionMarca` (
+  `idtipoInhabilitacionMarca` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `inhabilitacion` varchar(200) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `created_at` timestamp NOT NULL DEFAULT current_timestamp(),
+  `updated_at` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp(),
+  PRIMARY KEY (`idtipoInhabilitacionMarca`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+
+
+--
+-- Table structure for table `perfilCasino`
+--
+
+DROP TABLE IF EXISTS `perfilCasino`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `perfilCasino` (
+    `idperfilCasino` INT NOT NULL AUTO_INCREMENT,
+    `nombrePerfilCasino` VARCHAR(60) NULL,
+    `habilitado` BIT NULL DEFAULT 1,
+    `created_at` TIMESTAMP NULL DEFAULT CURRENT_TIMESTAMP,
+    `updated_at` TIMESTAMP NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE current_timestamp(),
+    PRIMARY KEY(`idperfilCasino`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+
+--
+-- Table structure for table `detallePerfilCasino`
+--
+
+DROP TABLE IF EXISTS `detallePerfilCasino`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `detallePerfilCasino` (
+  `iddetallePerfilCasino` int(11) NOT NULL AUTO_INCREMENT,
+  `perfilCasino_idperfilCasino` int(10) unsigned  DEFAULT NULL,
+  `tipoComida_idtipoComida`int(10) unsigned  DEFAULT NULL,
+  `numeroDia` int(11) DEFAULT NULL,
+  `habilitado` bit(1) DEFAULT b'0',
+  `created_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
+  `updated_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  PRIMARY KEY (`iddetallePerfilCasino`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci COMMENT='numeroDia = 1 Lunes 2 Martes 3 Miercoles 4 Jueves 5 Viernes 6 Sabado 7 Domingo';
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Table structure for table `tipoMarca`
+--
+
+DROP TABLE IF EXISTS `tipoMarca`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `tipoMarca` (
+  `idtipoMarca` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `descripcion` varchar(45) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `respaldado` bit(1) DEFAULT b'0',
+  `created_at` timestamp NOT NULL DEFAULT current_timestamp(),
+  `updated_at` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp(),
+  PRIMARY KEY (`idtipoMarca`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Table structure for table `tipoRechazo`
+--
+
+DROP TABLE IF EXISTS `tipoRechazo`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `tipoRechazo` (
+  `idtipoRechazo` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `mensajeRechazo` varchar(200) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `respaldado` bit(1) DEFAULT b'0',
+  `created_at` timestamp NOT NULL DEFAULT current_timestamp(),
+  `updated_at` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp(),
+  PRIMARY KEY (`idtipoRechazo`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+
+
+--
+-- Table structure for table `puntoCanje`
+--
+
+DROP TABLE IF EXISTS `puntoCanje`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `puntoCanje` (
+  `idpuntoCanje` INT NOT NULL AUTO_INCREMENT,
+  `rutPuntoCanje` VARCHAR(45) NULL DEFAULT '',
+  `nombrePuntoCanje` VARCHAR(100) NULL DEFAULT '',
+  `puntoCanjeRS` VARCHAR(100) NULL DEFAULT '',
+  `direccionCM` VARCHAR(250) NULL DEFAULT '',
+  `direccionPuntoCanje` VARCHAR(250) NULL DEFAULT '',
+  `empresa_idempresa` INT NULL DEFAULT 1,
+  `cobroLiberado` BIT NULL DEFAULT 0,
+  `habilitado` BIT NULL DEFAULT 1,
+  `created_by` VARCHAR(45) NULL DEFAULT '',
+  `updated_by` VARCHAR(45) NULL DEFAULT '',
+  `created_at` TIMESTAMP NULL DEFAULT current_timestamp(),
+  `updated_at` TIMESTAMP NULL DEFAULT current_timestamp() ON UPDATE current_timestamp(),
+  PRIMARY KEY (`idpuntoCanje`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Table structure for table `puntoCanje_has_admin`
+--
+
+DROP TABLE IF EXISTS `puntoCanje_has_admin`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `puntoCanje_has_admin` (
+  `idpuntoCanje_has_admin` INT NOT NULL AUTO_INCREMENT,
+  `puntoCanje_idpuntoCanje` INT UNSIGNED NULL,
+  `admin_idadmin` INT UNSIGNED NULL,
+  `activo` INT NULL DEFAULT 0,
+  `created_by` VARCHAR(45) NULL,
+  `updated_by` VARCHAR(45) NULL,
+  `created_at` TIMESTAMP NULL DEFAULT CURRENT_TIMESTAMP,
+  `updated_at` TIMESTAMP NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  PRIMARY KEY (`idpuntoCanje_has_admin`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+
+
+
+--
+-- Table structure for table `ticketCasino`
+--
+
+DROP TABLE IF EXISTS `ticketCasino`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `ticketCasino`(
+    `idticketCasino` INT NOT NULL AUTO_INCREMENT,
+    `codigoCobroTicket` VARCHAR(45) NULL,
+    `persona_rut` VARCHAR(200) NULL,
+    `reloj_idreloj` INT NULL,
+    `marca_codigoMarca` INT NULL,
+    `huella_idhuella` INT NULL DEFAULT NULL,
+    `marcaPin` BIT NULL DEFAULT 0,
+    `tipoComida_idtipoComida` INT NULL,
+    `cobrado` BIT NULL DEFAULT 0,
+    `fechaHoraCobro` DATETIME NULL DEFAULT NULL,
+	`puntoCanje_idpuntoCanje` int(10) unsigned DEFAULT NULL,
+    `fechaHoraVencimiento` DATETIME NULL,
+	`generadoPorReloj` BIT NULL DEFAULT 1,
+    `checksum` VARCHAR(200) NULL,
+    `notificado` BIT NULL DEFAULT 0,
+    `respaldado` BIT NULL DEFAULT 0,
+    `created_at` TIMESTAMP NULL DEFAULT current_timestamp(),
+    `updated_at` TIMESTAMP NULL DEFAULT current_timestamp() ON UPDATE current_timestamp(),
+    PRIMARY KEY(`idticketCasino`)
+) ENGINE = InnoDB DEFAULT CHARACTER SET = utf8 COLLATE = utf8_unicode_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+
+
+--
+-- Table structure for table `tipoComida_has_tipoInhabilitacionMarca`
+--
+
+DROP TABLE IF EXISTS `tipoComida_has_tipoInhabilitacionMarca`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `tipoComida_has_tipoInhabilitacionMarca` (
+  `idtipoComida_has_tipoInhabilitacionMarca` INT NOT NULL AUTO_INCREMENT,
+  `tipoComida_idtipoComida` INT UNSIGNED NULL,
+  `tipoInhabilitacionMarca_idtipoInhabilitacionMarca` INT UNSIGNED NULL,
+  `tipoMarca_idtipoMarca` INT UNSIGNED NULL,
+  `habilitado` BIT NULL DEFAULT 1,
+  `created_at` TIMESTAMP NULL DEFAULT CURRENT_TIMESTAMP,
+  `updated_at` TIMESTAMP NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  PRIMARY KEY (`idtipoComida_has_tipoInhabilitacionMarca`)
+) ENGINE = InnoDB DEFAULT CHARACTER SET = utf8 COLLATE = utf8_unicode_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+
+--
+-- Table structure for table `tipoTurno`
+--
+
+DROP TABLE IF EXISTS `tipoTurno`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `tipoTurno` (
+  `idtipoTurno` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `descripcion` varchar(300) COLLATE utf8_unicode_ci NOT NULL,
+  `turnoDia` bit(1) DEFAULT b'1',
+  `horaInicio` time NOT NULL,
+  `horaTermino` time NOT NULL,
+  `created_at` timestamp NOT NULL DEFAULT current_timestamp(),
+  `updated_at` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp(),
+  PRIMARY KEY (`idtipoTurno`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+/*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
+
+
+--
+-- Table structure for table `puntoCanje_has_tipoComida`
+--
+
+DROP TABLE IF EXISTS `puntoCanje_has_tipoComida`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `puntoCanje_has_tipoComida` (
+	`idpuntoCanje_has_tipoComida` INT NOT NULL AUTO_INCREMENT,
+	`puntoCanje_idpuntoCanje` INT NULL,
+	`tipoComida_idtipoComida` INT NULL,
+	`activo` BIT NULL DEFAULT 1,
+	`created_by` VARCHAR(45) NULL DEFAULT '',
+	`updated_by` VARCHAR(45) NULL DEFAULT '',
+	`created_at` TIMESTAMP NULL DEFAULT CURRENT_TIMESTAMP,
+	`updated_at` TIMESTAMP NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+	PRIMARY KEY(`idpuntoCanje_has_tipoComida`)
+)ENGINE = InnoDB DEFAULT CHARACTER SET = utf8  COLLATE = utf8_unicode_ci
+
+
+
+--
+-- Table structure for table `tipoComida_has_valor`
+--
+
+DROP TABLE IF EXISTS `tipoComida_has_valor`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `relojControl`.`tipoComida_has_valor` (
+              `idtipoComida_has_valor` INT NOT NULL AUTO_INCREMENT,
+              `tipoComida_idtipoComida` INT NULL,
+              `fechaInicio` DATETIME NULL,
+              `fechaTermino` DATETIME NULL,
+              `valorReal` INT NULL,
+              `valorNominal` INT NULL,
+              `activo` BIT NULL DEFAULT 1,
+              `created_by` VARCHAR(45) NULL,
+              `updated_by` VARCHAR(45) NULL,
+              `created_at` TIMESTAMP NULL DEFAULT CURRENT_TIMESTAMP, 
+			  `updated_at` TIMESTAMP NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP, 
+			 PRIMARY KEY(`idtipoComida_has_valor`))
+             ENGINE = InnoDB DEFAULT CHARACTER SET = utf8  COLLATE = utf8_unicode_ci;
+
+/*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
+/*!40014 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS */;
+/*!40014 SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS */;
+/*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
+/*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
+/*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
+/*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
+
+
+-- Dump completed on 2019-05-10  15:00:00
