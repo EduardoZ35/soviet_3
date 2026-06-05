@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Data;
+using System.Threading.Tasks;
 using System.IO;
 using System.Windows;
 using System.Windows.Controls;
@@ -54,33 +55,43 @@ public partial class WndEnrolador : Window
 
     private void CargarPersonas()
     {
-        try
+        Task.Run(() =>
         {
-            var enc = new Encriptacion();
-            var dt  = new Persona().traerTodasPersonas();
-            if (dt == null) return;
-
-            _allPersonas.Clear();
-            foreach (DataRow row in dt.Rows)
+            try
             {
-                try
+                var enc  = new Encriptacion();
+                var dt   = new Persona().traerTodasPersonasAdmin();
+                var list = new List<PersonaItem>();
+                if (dt != null)
                 {
-                    string rutEnc = row[1].ToString()!;
-                    string rutDec = enc.Desencriptar(rutEnc);
-                    string nombre = $"{enc.Desencriptar(row[2].ToString()!)} " +
-                                    $"{enc.Desencriptar(row[4].ToString()!)} " +
-                                    $"{enc.Desencriptar(row[5].ToString()!)}";
-                    string puesto = enc.Desencriptar(row[6].ToString()!);
-                    _allPersonas.Add(new PersonaItem(rutEnc, FormatRut(rutDec), nombre.Trim(), puesto));
+                    foreach (DataRow row in dt.Rows)
+                    {
+                        try
+                        {
+                            string rutEnc = row[1].ToString()!;
+                            string rutDec = enc.Desencriptar(rutEnc);
+                            string nombre = $"{enc.Desencriptar(row[2].ToString()!)} " +
+                                            $"{enc.Desencriptar(row[4].ToString()!)} " +
+                                            $"{enc.Desencriptar(row[5].ToString()!)}";
+                            string puesto = enc.Desencriptar(row[6].ToString()!);
+                            list.Add(new PersonaItem(rutEnc, FormatRut(rutDec), nombre.Trim(), puesto));
+                        }
+                        catch { }
+                    }
                 }
-                catch { }
+                Dispatcher.Invoke(() =>
+                {
+                    _allPersonas.Clear();
+                    _allPersonas.AddRange(list);
+                    MostrarLista(_allPersonas);
+                });
             }
-            MostrarLista(_allPersonas);
-        }
-        catch (Exception ex)
-        {
-            MessageBox.Show($"Error al cargar personas: {ex.Message}", "Error");
-        }
+            catch (Exception ex)
+            {
+                Dispatcher.Invoke(() =>
+                    MessageBox.Show($"Error al cargar personas: {ex.Message}", "Error"));
+            }
+        });
     }
 
     private void MostrarLista(IEnumerable<PersonaItem> items)

@@ -84,7 +84,8 @@
               <PasswordBox x:Name="txtPass" FontFamily="{StaticResource FontPoppins}"
                            FontSize="14" Padding="12,8" BorderThickness="1.5"
                            BorderBrush="{StaticResource LineBrush}"
-                           Background="{StaticResource SurfaceBrush}"/>
+                           Background="{StaticResource SurfaceBrush}"
+                           KeyDown="TxtPass_KeyDown"/>
             </StackPanel>
 
             <Button Content="Iniciar sesión" Style="{StaticResource BtnAccent}"

@@ -179,6 +179,14 @@ namespace proyectoNegocioRflex.Modelo
             return ejecutor.traerDatosDataTable(sql);
         }
 
+        public DataTable traerTodasPersonasAdmin()
+        {
+            EjecutoresSql ejecutor = new EjecutoresSql();
+            string sql = "select idpersona,rut,nombre,segundoNombre,apellidoPaterno,apellidoMaterno,puesto " +
+                         "from persona order by apellidoPaterno asc";
+            return ejecutor.traerDatosDataTable(sql);
+        }
+
         public bool actualizarEstadoRespaldadoPersonaLocal(string rut, DateTime updated_at)
         {
             EjecutoresSql ejecutor = new EjecutoresSql();

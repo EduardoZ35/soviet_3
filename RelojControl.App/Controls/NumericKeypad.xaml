@@ -7,7 +7,7 @@
       <Setter Property="Foreground"      Value="{StaticResource InkBrush}"/>
       <Setter Property="FontFamily"      Value="{StaticResource FontManrope}"/>
       <Setter Property="FontWeight"      Value="Bold"/>
-      <Setter Property="FontSize"        Value="26"/>
+      <Setter Property="FontSize"        Value="36"/>
       <Setter Property="BorderThickness" Value="1"/>
       <Setter Property="BorderBrush"     Value="{StaticResource LineBrush}"/>
       <Setter Property="Margin"          Value="4"/>

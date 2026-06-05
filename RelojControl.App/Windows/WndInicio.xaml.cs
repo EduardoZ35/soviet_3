@@ -156,6 +156,11 @@ public partial class WndInicio : Window
         Hide();
     }
 
+    private void TxtPass_KeyDown(object sender, KeyEventArgs e)
+    {
+        if (e.Key == Key.Return) BtnLogin_Click(sender, e);
+    }
+
     private void OnKeyDown(object sender, KeyEventArgs e)
     {
         if (e.Key == Key.E && (Keyboard.Modifiers & ModifierKeys.Control) != 0)
