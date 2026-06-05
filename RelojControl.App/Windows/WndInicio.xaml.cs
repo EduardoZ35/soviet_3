@@ -21,13 +21,7 @@ public partial class WndInicio : Window
     public WndInicio()
     {
         InitializeComponent();
-        ((System.Windows.Shapes.Path)FindName("pathHuella")).Data =
-            System.Windows.Media.Geometry.Parse(
-                "M 8,58 C 8,28 17,6 32,6 C 47,6 56,28 56,58 " +
-                "M 15,58 C 15,33 22,14 32,14 C 42,14 49,33 49,58 " +
-                "M 22,57 C 22,38 27,22 32,22 C 37,22 42,38 42,57 " +
-                "M 29,55 C 29,44 31,37 32,35 C 33,37 35,44 35,55");
-        _reloj.Tick += (_, _) => ActualizarReloj();
+_reloj.Tick += (_, _) => ActualizarReloj();
         _reloj.Start();
         ActualizarReloj();
         Loaded  += OnLoaded;
