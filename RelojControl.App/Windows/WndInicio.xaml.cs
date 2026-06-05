@@ -23,17 +23,18 @@ public partial class WndInicio : Window
         InitializeComponent();
         ((System.Windows.Shapes.Path)FindName("pathHuella")).Data =
             System.Windows.Media.Geometry.Parse(
-                "M14,26 C17,19 24,13 32,13 C40,13 47,19 50,26 " +
-                "M20,33 C22,27 27,23 32,23 C37,23 42,27 44,33 " +
-                "M26,40 C27,36 29,34 32,34 C35,34 37,36 38,40 " +
-                "M32,47 L32,49 " +
-                "M23,46 C22,43 22,40 23,37 " +
-                "M41,46 C42,43 42,40 41,37");
+                "M 25,48 A 7,7 0 0 0 39,48 " +
+                "M 18,48 A 14,14 0 0 0 46,48 " +
+                "M 11,48 A 21,21 0 0 0 53,48 " +
+                "M 32,54 L 32,55");
         _reloj.Tick += (_, _) => ActualizarReloj();
         _reloj.Start();
         ActualizarReloj();
         Loaded  += OnLoaded;
         KeyDown += OnKeyDown;
+        txtPass.PasswordChanged += (s, e) =>
+            lblPassPlaceholder.Visibility = txtPass.Password.Length == 0
+                ? Visibility.Visible : Visibility.Collapsed;
     }
 
     private void ActualizarReloj()

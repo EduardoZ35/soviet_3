@@ -84,9 +84,9 @@
       </Grid>
 
       <!-- FOOTER -->
-      <Image DockPanel.Dock="Bottom"
-             Source="pack://application:,,,/RelojControl;component/Assets/logo-rflex-white.png"
-             Height="34" HorizontalAlignment="Center" Margin="0,0,0,24"/>
+      <TextBlock DockPanel.Dock="Bottom" Text="rFlex.io"
+                 FontFamily="{StaticResource FontPoppins}" FontSize="13"
+                 Foreground="#80C7C6EE" HorizontalAlignment="Center" Margin="0,0,0,24"/>
 
       <!-- CARDS CENTER -->
       <Grid VerticalAlignment="Center" HorizontalAlignment="Center" Margin="40,32">
@@ -112,10 +112,33 @@
 
             <StackPanel Margin="0,0,0,16">
               <TextBlock Text="Usuario" Style="{StaticResource TextHint}" Margin="0,0,0,6"/>
-              <TextBox x:Name="txtUsuario" Style="{StaticResource InputBase}" Height="54" Margin="0,0,0,8"/>
+              <Grid Margin="0,0,0,8">
+                <TextBox x:Name="txtUsuario" Style="{StaticResource InputBase}" Height="54"/>
+                <TextBlock IsHitTestVisible="False" Text="Usuario"
+                           FontFamily="{StaticResource FontPoppins}" FontSize="14"
+                           Foreground="{StaticResource Ink3Brush}" Margin="14,0,0,0"
+                           VerticalAlignment="Center">
+                  <TextBlock.Style>
+                    <Style TargetType="TextBlock">
+                      <Setter Property="Visibility" Value="Collapsed"/>
+                      <Style.Triggers>
+                        <DataTrigger Binding="{Binding Text, ElementName=txtUsuario}" Value="">
+                          <Setter Property="Visibility" Value="Visible"/>
+                        </DataTrigger>
+                      </Style.Triggers>
+                    </Style>
+                  </TextBlock.Style>
+                </TextBlock>
+              </Grid>
               <TextBlock Text="Contraseña" Style="{StaticResource TextHint}" Margin="0,0,0,6"/>
-              <PasswordBox x:Name="txtPass" Style="{StaticResource PasswordInputBase}"
-                           KeyDown="TxtPass_KeyDown"/>
+              <Grid>
+                <PasswordBox x:Name="txtPass" Style="{StaticResource PasswordInputBase}"
+                             KeyDown="TxtPass_KeyDown"/>
+                <TextBlock x:Name="lblPassPlaceholder" IsHitTestVisible="False" Text="Contraseña"
+                           FontFamily="{StaticResource FontPoppins}" FontSize="14"
+                           Foreground="{StaticResource Ink3Brush}" Margin="14,0,0,0"
+                           VerticalAlignment="Center"/>
+              </Grid>
             </StackPanel>
 
             <Button Content="Iniciar sesión" Style="{StaticResource BtnAccent}"
@@ -131,15 +154,23 @@
                 CornerRadius="18" Padding="32"
                 Effect="{StaticResource ShadowCard}" Cursor="Hand"
                 MouseLeftButtonUp="CardMarca_Click">
-          <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center">
-            <Path x:Name="pathHuella"
-                  Stroke="{StaticResource AccentDeepBrush}" StrokeThickness="5"
-                  StrokeStartLineCap="Round" StrokeEndLineCap="Round"
-                  Width="64" Height="64" Stretch="Uniform"
-                  HorizontalAlignment="Center" Margin="0,0,0,16"/>
-            <TextBlock Text="Registrar marca"
-                       FontFamily="{StaticResource FontPoppins}" FontWeight="Bold" FontSize="26"
-                       Foreground="{StaticResource AccentDeepBrush}" HorizontalAlignment="Center"/>
+          <StackPanel>
+            <TextBlock Text="Realizar marcas" Margin="0,0,0,16"
+                       FontFamily="{StaticResource FontPoppins}" FontWeight="Bold" FontSize="17"
+                       Foreground="{StaticResource InkBrush}"/>
+            <Border CornerRadius="12" BorderBrush="{StaticResource LineBrush}" BorderThickness="1"
+                    Background="{StaticResource Surface2Brush}" Padding="32,28">
+              <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center">
+                <Path x:Name="pathHuella"
+                      Stroke="{StaticResource AccentDeepBrush}" StrokeThickness="5"
+                      StrokeStartLineCap="Round" StrokeEndLineCap="Round"
+                      Width="64" Height="64" Stretch="Uniform"
+                      HorizontalAlignment="Center" Margin="0,0,0,16"/>
+                <TextBlock Text="Registrar marca"
+                           FontFamily="{StaticResource FontPoppins}" FontWeight="Bold" FontSize="22"
+                           Foreground="{StaticResource AccentDeepBrush}" HorizontalAlignment="Center"/>
+              </StackPanel>
+            </Border>
           </StackPanel>
         </Border>
       </Grid>
