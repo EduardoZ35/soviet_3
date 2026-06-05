@@ -1,0 +1,62 @@
+<UserControl x:Class="RelojControl.Controls.NumericKeypad"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+  <UserControl.Resources>
+    <Style x:Key="KeyBtn" TargetType="Button">
+      <Setter Property="Background"      Value="{StaticResource SurfaceBrush}"/>
+      <Setter Property="Foreground"      Value="{StaticResource InkBrush}"/>
+      <Setter Property="FontFamily"      Value="{StaticResource FontManrope}"/>
+      <Setter Property="FontWeight"      Value="Bold"/>
+      <Setter Property="FontSize"        Value="26"/>
+      <Setter Property="BorderThickness" Value="1"/>
+      <Setter Property="BorderBrush"     Value="{StaticResource LineBrush}"/>
+      <Setter Property="Margin"          Value="4"/>
+      <Setter Property="Cursor"          Value="Hand"/>
+      <Setter Property="Template">
+        <Setter.Value>
+          <ControlTemplate TargetType="Button">
+            <Border x:Name="bd" Background="{TemplateBinding Background}"
+                    BorderBrush="{TemplateBinding BorderBrush}"
+                    BorderThickness="{TemplateBinding BorderThickness}"
+                    CornerRadius="{StaticResource RadiusKeypad}">
+              <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+            </Border>
+            <ControlTemplate.Triggers>
+              <Trigger Property="IsPressed" Value="True">
+                <Setter TargetName="bd" Property="Background" Value="{StaticResource AccentSoftBrush}"/>
+              </Trigger>
+              <Trigger Property="IsMouseOver" Value="True">
+                <Setter TargetName="bd" Property="Background" Value="{StaticResource Surface2Brush}"/>
+              </Trigger>
+            </ControlTemplate.Triggers>
+          </ControlTemplate>
+        </Setter.Value>
+      </Setter>
+    </Style>
+    <Style x:Key="KeyBtnDel" TargetType="Button" BasedOn="{StaticResource KeyBtn}">
+      <Setter Property="Foreground" Value="{StaticResource CoralBrush}"/>
+      <Setter Property="FontSize"   Value="20"/>
+    </Style>
+    <Style x:Key="KeyBtnGo" TargetType="Button" BasedOn="{StaticResource KeyBtn}">
+      <Setter Property="Background"      Value="{StaticResource AccentBrush}"/>
+      <Setter Property="Foreground"      Value="White"/>
+      <Setter Property="FontSize"        Value="15"/>
+      <Setter Property="Effect"          Value="{StaticResource ShadowKey}"/>
+      <Setter Property="BorderThickness" Value="0"/>
+    </Style>
+  </UserControl.Resources>
+  <UniformGrid Columns="3" Rows="4">
+    <Button Content="1"    Tag="1"   Click="Key_Click" Style="{StaticResource KeyBtn}"/>
+    <Button Content="2"    Tag="2"   Click="Key_Click" Style="{StaticResource KeyBtn}"/>
+    <Button Content="3"    Tag="3"   Click="Key_Click" Style="{StaticResource KeyBtn}"/>
+    <Button Content="4"    Tag="4"   Click="Key_Click" Style="{StaticResource KeyBtn}"/>
+    <Button Content="5"    Tag="5"   Click="Key_Click" Style="{StaticResource KeyBtn}"/>
+    <Button Content="6"    Tag="6"   Click="Key_Click" Style="{StaticResource KeyBtn}"/>
+    <Button Content="7"    Tag="7"   Click="Key_Click" Style="{StaticResource KeyBtn}"/>
+    <Button Content="8"    Tag="8"   Click="Key_Click" Style="{StaticResource KeyBtn}"/>
+    <Button Content="9"    Tag="9"   Click="Key_Click" Style="{StaticResource KeyBtn}"/>
+    <Button Content="⌫"    Tag="DEL" Click="Key_Click" Style="{StaticResource KeyBtnDel}"/>
+    <Button Content="0"    Tag="0"   Click="Key_Click" Style="{StaticResource KeyBtn}"/>
+    <Button Content="IR →" Tag="GO"  Click="Key_Click" Style="{StaticResource KeyBtnGo}"/>
+  </UniformGrid>
+</UserControl>
