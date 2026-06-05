@@ -11,6 +11,22 @@ using proyectoNegocioRflex.Utilidades;
 
 namespace RelojControl.Windows;
 
+public class TipoComidaItem
+{
+    public int    Id        { get; set; }
+    public string Nombre    { get; set; } = "";
+    public string Horario   { get; set; } = "";
+    public string Valor     { get; set; } = "";
+    public bool   Habilitado{ get; set; }
+}
+
+public class RelojItem
+{
+    public int    Id       { get; set; }
+    public string Nombre   { get; set; } = "";
+    public string Ubicacion{ get; set; } = "";
+}
+
 public partial class WndEnrolador : Window
 {
     private record PersonaItem(string RutEnc, string RutDisplay, string Nombre, string Puesto);
@@ -21,9 +37,11 @@ public partial class WndEnrolador : Window
     private EnrollmentControl?       _ec;
     private int                      _fingerSeleccionado = -1;
 
-    public int IdEmpresa { get; set; }
+    public int    IdEmpresa      { get; set; }
+    public int    IdSucursal     { get; set; }
+    public string CodigoEmpresa  { get; set; } = "";
 
-    public WndEnrolador()
+    public WndEnrolador(int idReloj = 0)
     {
         InitializeComponent();
         Loaded += OnLoaded;
@@ -223,6 +241,48 @@ public partial class WndEnrolador : Window
 
         if (idx == 1) CargarAsistencia();
         if (idx == 2) IniciarEnrollment();
+        if (idx == 3) CargarComidas();
+        if (idx == 4) CargarRelojes();
+    }
+
+    private void CargarComidas()
+    {
+        var items = new System.Collections.ObjectModel.ObservableCollection<TipoComidaItem>();
+        try
+        {
+            var dt = new SucursalTipoComida().traerSucursalTipoComidaLocalPorEstadoYSucursal(1, IdSucursal);
+            if (dt != null)
+                foreach (DataRow row in dt.Rows)
+                    items.Add(new TipoComidaItem
+                    {
+                        Id        = int.Parse(row[0].ToString()!),
+                        Nombre    = row[5].ToString()!,
+                        Horario   = $"{row[2]} — {row[3]}",
+                        Valor     = $"{row[6]} días",
+                        Habilitado= row[4].ToString() == "1",
+                    });
+        }
+        catch { }
+        listaTiposComida.ItemsSource = items;
+    }
+
+    private void CargarRelojes()
+    {
+        var items = new System.Collections.ObjectModel.ObservableCollection<RelojItem>();
+        try
+        {
+            var dt = new Reloj().traerRelojesEmpresa();
+            if (dt != null)
+                foreach (DataRow row in dt.Rows)
+                    items.Add(new RelojItem
+                    {
+                        Id       = int.Parse(row[0].ToString()!),
+                        Nombre   = row[3].ToString()!,
+                        Ubicacion= row[4].ToString()!,
+                    });
+        }
+        catch { }
+        listaRelojes.ItemsSource = items;
     }
 
     private void IniciarEnrollment()

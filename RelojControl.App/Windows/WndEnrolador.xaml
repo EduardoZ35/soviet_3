@@ -398,18 +398,81 @@
                 </Grid>
               </Grid>
 
-              <!-- Tab 3: Comidas (stub) -->
+              <!-- Tab 3: Comidas -->
               <Grid x:Name="tabComidas" Visibility="Collapsed">
-                <TextBlock Text="Tab Comidas — pendiente implementación"
-                           Style="{StaticResource TextHint}"
-                           HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                <Grid.RowDefinitions>
+                  <RowDefinition Height="Auto"/>
+                  <RowDefinition/>
+                </Grid.RowDefinitions>
+                <TextBlock Grid.Row="0" Text="TIPOS DE COMIDA HABILITADOS"
+                           Style="{StaticResource TextEyebrow}" Margin="0,0,0,16"/>
+                <ItemsControl Grid.Row="1" x:Name="listaTiposComida">
+                  <ItemsControl.ItemTemplate>
+                    <DataTemplate>
+                      <Border Background="{StaticResource SurfaceBrush}"
+                              BorderBrush="{StaticResource LineBrush}" BorderThickness="1"
+                              CornerRadius="{StaticResource RadiusInput}"
+                              Padding="16,12" Margin="0,0,0,8">
+                        <Grid>
+                          <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto"/>
+                            <ColumnDefinition/>
+                            <ColumnDefinition Width="Auto"/>
+                          </Grid.ColumnDefinitions>
+                          <CheckBox Grid.Column="0" IsChecked="{Binding Habilitado}"
+                                    IsEnabled="False" VerticalAlignment="Center" Margin="0,0,14,0"/>
+                          <StackPanel Grid.Column="1" VerticalAlignment="Center">
+                            <TextBlock Text="{Binding Nombre}" FontFamily="{StaticResource FontPoppins}"
+                                       FontWeight="SemiBold" FontSize="14"
+                                       Foreground="{StaticResource InkBrush}"/>
+                            <TextBlock Text="{Binding Horario}" Style="{StaticResource TextHint}"/>
+                          </StackPanel>
+                          <Border Grid.Column="2" CornerRadius="{StaticResource RadiusBadge}"
+                                  Padding="10,4" Background="{StaticResource AmberSoftBrush}">
+                            <TextBlock Text="{Binding Valor}" FontFamily="{StaticResource FontPoppins}"
+                                       FontWeight="SemiBold" FontSize="12"
+                                       Foreground="{StaticResource AmberBrush}"/>
+                          </Border>
+                        </Grid>
+                      </Border>
+                    </DataTemplate>
+                  </ItemsControl.ItemTemplate>
+                </ItemsControl>
               </Grid>
 
-              <!-- Tab 4: Relojes (stub) -->
+              <!-- Tab 4: Relojes -->
               <Grid x:Name="tabRelojes" Visibility="Collapsed">
-                <TextBlock Text="Tab Relojes — pendiente implementación"
-                           Style="{StaticResource TextHint}"
-                           HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                <Grid.RowDefinitions>
+                  <RowDefinition Height="Auto"/>
+                  <RowDefinition/>
+                </Grid.RowDefinitions>
+                <TextBlock Grid.Row="0" Text="RELOJES ASIGNADOS"
+                           Style="{StaticResource TextEyebrow}" Margin="0,0,0,16"/>
+                <ItemsControl Grid.Row="1" x:Name="listaRelojes">
+                  <ItemsControl.ItemTemplate>
+                    <DataTemplate>
+                      <Border Background="{StaticResource SurfaceBrush}"
+                              BorderBrush="{StaticResource LineBrush}" BorderThickness="1"
+                              CornerRadius="{StaticResource RadiusInput}"
+                              Padding="16,12" Margin="0,0,0,8">
+                        <Grid>
+                          <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto"/>
+                            <ColumnDefinition/>
+                          </Grid.ColumnDefinitions>
+                          <TextBlock Grid.Column="0" Text="{Binding Id}" Style="{StaticResource TextHint}"
+                                     FontSize="10" VerticalAlignment="Center" Margin="0,0,14,0" Width="32"/>
+                          <StackPanel Grid.Column="1" VerticalAlignment="Center">
+                            <TextBlock Text="{Binding Nombre}" FontFamily="{StaticResource FontPoppins}"
+                                       FontWeight="SemiBold" FontSize="14"
+                                       Foreground="{StaticResource InkBrush}"/>
+                            <TextBlock Text="{Binding Ubicacion}" Style="{StaticResource TextHint}"/>
+                          </StackPanel>
+                        </Grid>
+                      </Border>
+                    </DataTemplate>
+                  </ItemsControl.ItemTemplate>
+                </ItemsControl>
               </Grid>
 
             </Grid>
