@@ -1,0 +1,162 @@
+<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+
+  <!-- ═══ ACCENT ═══ -->
+  <Color x:Key="AccentColor">#616EB3</Color>
+  <Color x:Key="AccentDeepColor">#3F4690</Color>
+  <Color x:Key="AccentSoftColor">#ECEDFB</Color>
+  <SolidColorBrush x:Key="AccentBrush"     Color="{StaticResource AccentColor}"/>
+  <SolidColorBrush x:Key="AccentDeepBrush" Color="{StaticResource AccentDeepColor}"/>
+  <SolidColorBrush x:Key="AccentSoftBrush" Color="{StaticResource AccentSoftColor}"/>
+
+  <!-- ═══ SIGNAL ═══ -->
+  <SolidColorBrush x:Key="TealBrush"      Color="#34B3AB"/>
+  <SolidColorBrush x:Key="TealSoftBrush"  Color="#D6F3F1"/>
+  <SolidColorBrush x:Key="CoralBrush"     Color="#F76D6D"/>
+  <SolidColorBrush x:Key="CoralSoftBrush" Color="#FFE3E3"/>
+  <SolidColorBrush x:Key="AmberBrush"     Color="#E8910C"/>
+  <SolidColorBrush x:Key="AmberSoftBrush" Color="#FDECCD"/>
+  <SolidColorBrush x:Key="OkBrush"        Color="#16B364"/>
+  <SolidColorBrush x:Key="OkSoftBrush"    Color="#D1FAE5"/>
+
+  <!-- ═══ SURFACES ═══ -->
+  <SolidColorBrush x:Key="BgBrush"       Color="#F3F3FA"/>
+  <SolidColorBrush x:Key="SurfaceBrush"  Color="#FFFFFF"/>
+  <SolidColorBrush x:Key="Surface2Brush" Color="#F7F7FC"/>
+  <SolidColorBrush x:Key="InkBrush"      Color="#1B1B27"/>
+  <SolidColorBrush x:Key="Ink2Brush"     Color="#5A5A72"/>
+  <SolidColorBrush x:Key="Ink3Brush"     Color="#9A9AB0"/>
+  <SolidColorBrush x:Key="LineBrush"     Color="#E7E7F1"/>
+
+  <!-- ═══ RAIL GRADIENT ═══ -->
+  <LinearGradientBrush x:Key="RailGradientBrush" StartPoint="0.3,0" EndPoint="0.7,1">
+    <GradientStop Color="#5A63A8" Offset="0"/>
+    <GradientStop Color="#454B8F" Offset="0.55"/>
+    <GradientStop Color="#383C6F" Offset="1"/>
+  </LinearGradientBrush>
+
+  <!-- ═══ RAIL INK ═══ -->
+  <SolidColorBrush x:Key="RailInkBrush"  Color="#FFFFFF"/>
+  <SolidColorBrush x:Key="RailInk2Brush" Color="#C7C6EE"/>
+
+  <!-- ═══ CORNER RADII ═══ -->
+  <CornerRadius x:Key="RadiusCard"   TopLeft="18" TopRight="18" BottomLeft="18" BottomRight="18"/>
+  <CornerRadius x:Key="RadiusInput"  TopLeft="10" TopRight="10" BottomLeft="10" BottomRight="10"/>
+  <CornerRadius x:Key="RadiusButton" TopLeft="10" TopRight="10" BottomLeft="10" BottomRight="10"/>
+  <CornerRadius x:Key="RadiusKeypad" TopLeft="16" TopRight="16" BottomLeft="16" BottomRight="16"/>
+  <CornerRadius x:Key="RadiusBadge"  TopLeft="999" TopRight="999" BottomLeft="999" BottomRight="999"/>
+
+  <!-- ═══ SHADOWS ═══ -->
+  <DropShadowEffect x:Key="ShadowCard"
+    BlurRadius="28" Direction="270" ShadowDepth="8" Opacity="0.15" Color="#1E1E50"/>
+  <DropShadowEffect x:Key="ShadowKey"
+    BlurRadius="0"  Direction="270" ShadowDepth="3" Opacity="1"    Color="#3F4690"/>
+
+  <!-- ═══ FONT FAMILIES ═══ -->
+  <FontFamily x:Key="FontPoppins">pack://application:,,,/RelojControl;component/Fonts/#Poppins</FontFamily>
+  <FontFamily x:Key="FontManrope">pack://application:,,,/RelojControl;component/Fonts/#Manrope</FontFamily>
+
+  <!-- ═══ BASE STYLES ═══ -->
+  <Style x:Key="TextBody" TargetType="TextBlock">
+    <Setter Property="FontFamily" Value="{StaticResource FontPoppins}"/>
+    <Setter Property="FontSize"   Value="14"/>
+    <Setter Property="Foreground" Value="{StaticResource InkBrush}"/>
+  </Style>
+
+  <Style x:Key="TextSubtitle" TargetType="TextBlock" BasedOn="{StaticResource TextBody}">
+    <Setter Property="FontSize"   Value="13"/>
+    <Setter Property="Foreground" Value="{StaticResource Ink2Brush}"/>
+  </Style>
+
+  <Style x:Key="TextHint" TargetType="TextBlock" BasedOn="{StaticResource TextBody}">
+    <Setter Property="FontSize"   Value="12"/>
+    <Setter Property="Foreground" Value="{StaticResource Ink3Brush}"/>
+  </Style>
+
+  <Style x:Key="TextEyebrow" TargetType="TextBlock">
+    <Setter Property="FontFamily"       Value="{StaticResource FontPoppins}"/>
+    <Setter Property="FontSize"         Value="11"/>
+    <Setter Property="FontWeight"       Value="Bold"/>
+    <Setter Property="Foreground"       Value="{StaticResource Ink3Brush}"/>
+  </Style>
+
+  <!-- Button base -->
+  <Style x:Key="BtnAccent" TargetType="Button">
+    <Setter Property="Background"   Value="{StaticResource AccentBrush}"/>
+    <Setter Property="Foreground"   Value="White"/>
+    <Setter Property="FontFamily"   Value="{StaticResource FontPoppins}"/>
+    <Setter Property="FontWeight"   Value="SemiBold"/>
+    <Setter Property="FontSize"     Value="14"/>
+    <Setter Property="BorderThickness" Value="0"/>
+    <Setter Property="Padding"      Value="20,10"/>
+    <Setter Property="Cursor"       Value="Hand"/>
+    <Setter Property="Effect"       Value="{StaticResource ShadowKey}"/>
+    <Setter Property="Template">
+      <Setter.Value>
+        <ControlTemplate TargetType="Button">
+          <Border Background="{TemplateBinding Background}"
+                  CornerRadius="{StaticResource RadiusButton}"
+                  Padding="{TemplateBinding Padding}">
+            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+          </Border>
+        </ControlTemplate>
+      </Setter.Value>
+    </Setter>
+    <Style.Triggers>
+      <Trigger Property="IsPressed" Value="True">
+        <Setter Property="RenderTransform">
+          <Setter.Value><TranslateTransform Y="2"/></Setter.Value>
+        </Setter>
+        <Setter Property="Effect" Value="{x:Null}"/>
+      </Trigger>
+    </Style.Triggers>
+  </Style>
+
+  <Style x:Key="BtnSecondary" TargetType="Button" BasedOn="{StaticResource BtnAccent}">
+    <Setter Property="Background"     Value="{StaticResource Surface2Brush}"/>
+    <Setter Property="Foreground"     Value="{StaticResource Ink2Brush}"/>
+    <Setter Property="Effect"         Value="{x:Null}"/>
+    <Setter Property="Template">
+      <Setter.Value>
+        <ControlTemplate TargetType="Button">
+          <Border Background="{TemplateBinding Background}"
+                  BorderBrush="{StaticResource LineBrush}"
+                  BorderThickness="1"
+                  CornerRadius="{StaticResource RadiusButton}"
+                  Padding="{TemplateBinding Padding}">
+            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+          </Border>
+        </ControlTemplate>
+      </Setter.Value>
+    </Setter>
+  </Style>
+
+  <!-- Input base -->
+  <Style x:Key="InputBase" TargetType="TextBox">
+    <Setter Property="FontFamily"     Value="{StaticResource FontPoppins}"/>
+    <Setter Property="FontSize"       Value="14"/>
+    <Setter Property="Foreground"     Value="{StaticResource InkBrush}"/>
+    <Setter Property="Background"     Value="{StaticResource SurfaceBrush}"/>
+    <Setter Property="BorderBrush"    Value="{StaticResource LineBrush}"/>
+    <Setter Property="BorderThickness" Value="1.5"/>
+    <Setter Property="Padding"        Value="12,8"/>
+    <Setter Property="Template">
+      <Setter.Value>
+        <ControlTemplate TargetType="TextBox">
+          <Border Background="{TemplateBinding Background}"
+                  BorderBrush="{TemplateBinding BorderBrush}"
+                  BorderThickness="{TemplateBinding BorderThickness}"
+                  CornerRadius="{StaticResource RadiusInput}">
+            <ScrollViewer x:Name="PART_ContentHost" Margin="{TemplateBinding Padding}"/>
+          </Border>
+          <ControlTemplate.Triggers>
+            <Trigger Property="IsFocused" Value="True">
+              <Setter Property="BorderBrush" Value="{StaticResource AccentBrush}"/>
+            </Trigger>
+          </ControlTemplate.Triggers>
+        </ControlTemplate>
+      </Setter.Value>
+    </Setter>
+  </Style>
+
+</ResourceDictionary>
