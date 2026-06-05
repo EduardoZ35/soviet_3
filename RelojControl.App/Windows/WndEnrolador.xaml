@@ -1,7 +1,7 @@
 <Window x:Class="RelojControl.Windows.WndEnrolador"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        WindowStyle="None" ResizeMode="NoResize" WindowState="Maximized" Topmost="True"
+        WindowStyle="None" ResizeMode="NoResize" WindowState="Maximized"
         Background="{StaticResource BgBrush}"
         KeyDown="Window_KeyDown">
 
