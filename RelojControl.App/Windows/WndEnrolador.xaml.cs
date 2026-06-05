@@ -1,7 +1,6 @@
 using System;
 using System.Collections.Generic;
 using System.Data;
-using System.Threading.Tasks;
 using System.IO;
 using System.Windows;
 using System.Windows.Controls;
@@ -33,7 +32,7 @@ public partial class WndEnrolador : Window
     private record PersonaItem(string RutEnc, string RutDisplay, string Nombre, string Puesto);
     private record MarcaRow(string FechaHora, string TipoMarca, string Reloj, string Incidencia);
 
-    private readonly List<PersonaItem> _allPersonas = [];
+
     private string                   _rutSeleccionado    = "";
     private EnrollmentControl?       _ec;
     private int                      _fingerSeleccionado = -1;
@@ -48,119 +47,31 @@ public partial class WndEnrolador : Window
         Loaded += OnLoaded;
     }
 
-    private void OnLoaded(object sender, RoutedEventArgs e)
-    {
-        CargarPersonas();
-    }
+    private void OnLoaded(object sender, RoutedEventArgs e) { }
 
-    private void CargarPersonas()
+    private void BuscarPorRut()
     {
-        Task.Run(() =>
-        {
-            try
-            {
-                var enc  = new Encriptacion();
-                var dt   = new Persona().traerTodasPersonasAdmin();
-                var list = new List<PersonaItem>();
-                if (dt != null)
-                {
-                    foreach (DataRow row in dt.Rows)
-                    {
-                        try
-                        {
-                            string rutEnc = row[1].ToString()!;
-                            string rutDec = enc.Desencriptar(rutEnc);
-                            string nombre = $"{enc.Desencriptar(row[2].ToString()!)} " +
-                                            $"{enc.Desencriptar(row[4].ToString()!)} " +
-                                            $"{enc.Desencriptar(row[5].ToString()!)}";
-                            string puesto = enc.Desencriptar(row[6].ToString()!);
-                            list.Add(new PersonaItem(rutEnc, FormatRut(rutDec), nombre.Trim(), puesto));
-                        }
-                        catch { }
-                    }
-                }
-                Dispatcher.Invoke(() =>
-                {
-                    _allPersonas.Clear();
-                    _allPersonas.AddRange(list);
-                    MostrarLista(_allPersonas);
-                });
-            }
-            catch (Exception ex)
-            {
-                Dispatcher.Invoke(() =>
-                    MessageBox.Show($"Error al cargar personas: {ex.Message}", "Error"));
-            }
-        });
-    }
+        var rut = txtBusqueda.Text.Trim().Replace(".", "").ToUpper();
+        if (string.IsNullOrEmpty(rut)) return;
 
-    private void MostrarLista(IEnumerable<PersonaItem> items)
-    {
-        panelLista.Children.Clear();
-        foreach (var p in items)
+        var enc    = new Encriptacion();
+        var rutEnc = enc.Encriptar(rut);
+        var dt     = new Persona().traerDatosTrabajadorConConfig(rutEnc);
+
+        if (dt == null || dt.Rows.Count == 0)
         {
-            var card = BuildPersonaCard(p);
-            panelLista.Children.Add(card);
+            panelLista.Children.Clear();
+            panelLista.Children.Add(new TextBlock
+            {
+                Text       = $"RUT '{txtBusqueda.Text.Trim()}' no encontrado.",
+                FontFamily = (System.Windows.Media.FontFamily)FindResource("FontPoppins"),
+                FontSize   = 14,
+                Foreground = (System.Windows.Media.Brush)FindResource("CoralBrush"),
+                Margin     = new Thickness(0, 8, 0, 0),
+            });
+            return;
         }
-    }
 
-    private Border BuildPersonaCard(PersonaItem p)
-    {
-        var border = new Border
-        {
-            Background    = (System.Windows.Media.Brush)FindResource("SurfaceBrush"),
-            CornerRadius  = new CornerRadius(14),
-            Margin        = new Thickness(0, 0, 0, 8),
-            Padding       = new Thickness(20, 14, 20, 14),
-            Effect        = (System.Windows.Media.Effects.Effect)FindResource("ShadowCard"),
-            Cursor        = Cursors.Hand,
-        };
-
-        var grid = new Grid();
-        grid.ColumnDefinitions.Add(new ColumnDefinition { Width = new GridLength(1, GridUnitType.Star) });
-        grid.ColumnDefinitions.Add(new ColumnDefinition { Width = new GridLength(1, GridUnitType.Star) });
-        grid.ColumnDefinitions.Add(new ColumnDefinition { Width = GridLength.Auto });
-
-        var lblNombre = new TextBlock
-        {
-            Text        = p.Nombre,
-            FontFamily  = (System.Windows.Media.FontFamily)FindResource("FontPoppins"),
-            FontWeight  = FontWeights.SemiBold,
-            FontSize    = 14,
-            Foreground  = (System.Windows.Media.Brush)FindResource("InkBrush"),
-            VerticalAlignment = VerticalAlignment.Center,
-        };
-        Grid.SetColumn(lblNombre, 0);
-
-        var lblRut = new TextBlock
-        {
-            Text       = p.RutDisplay,
-            FontFamily = (System.Windows.Media.FontFamily)FindResource("FontManrope"),
-            FontSize   = 13,
-            Foreground = (System.Windows.Media.Brush)FindResource("Ink3Brush"),
-            VerticalAlignment = VerticalAlignment.Center,
-        };
-        Grid.SetColumn(lblRut, 1);
-
-        var btnVer = new Button
-        {
-            Content   = "Ver detalle →",
-            Tag       = p.RutEnc,
-            Style     = (Style)FindResource("BtnAccent"),
-        };
-        btnVer.Click += BtnVerDetalle_Click;
-        Grid.SetColumn(btnVer, 2);
-
-        grid.Children.Add(lblNombre);
-        grid.Children.Add(lblRut);
-        grid.Children.Add(btnVer);
-        border.Child = grid;
-        return border;
-    }
-
-    private void BtnVerDetalle_Click(object sender, RoutedEventArgs e)
-    {
-        var rutEnc = ((Button)sender).Tag?.ToString() ?? "";
         CargarDetalle(rutEnc);
     }
 
@@ -430,17 +341,11 @@ public partial class WndEnrolador : Window
     {
         lblHintBusqueda.Visibility = string.IsNullOrEmpty(txtBusqueda.Text)
             ? Visibility.Visible : Visibility.Collapsed;
-        FiltrarLista();
     }
 
-    private void FiltrarLista()
+    private void TxtBusqueda_KeyDown(object sender, KeyEventArgs e)
     {
-        var q = txtBusqueda.Text.Trim().ToLowerInvariant();
-        if (string.IsNullOrEmpty(q)) { MostrarLista(_allPersonas); return; }
-        var filtered = _allPersonas.FindAll(p =>
-            p.Nombre.ToLowerInvariant().Contains(q) ||
-            p.RutDisplay.ToLowerInvariant().Contains(q));
-        MostrarLista(filtered);
+        if (e.Key == Key.Return) BuscarPorRut();
     }
 
     private void BtnCerrar_Click(object sender, RoutedEventArgs e) => Close();

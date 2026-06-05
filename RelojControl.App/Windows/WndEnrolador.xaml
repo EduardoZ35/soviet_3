@@ -173,14 +173,16 @@
                     BorderBrush="{StaticResource LineBrush}" BorderThickness="1.5"
                     CornerRadius="8" Padding="12,6" Width="260">
               <Grid>
-                <TextBlock x:Name="lblHintBusqueda" Text="Buscar trabajador..."
+                <TextBlock x:Name="lblHintBusqueda" Text="Ingresa RUT y presiona Enter..."
                            Foreground="{StaticResource Ink3Brush}"
                            FontFamily="{StaticResource FontPoppins}" FontSize="13"
                            VerticalAlignment="Center" IsHitTestVisible="False"/>
                 <TextBox x:Name="txtBusqueda" Background="Transparent" BorderThickness="0"
                          FontFamily="{StaticResource FontPoppins}" FontSize="13"
                          Foreground="{StaticResource InkBrush}"
-                         TextChanged="TxtBusqueda_TextChanged" VerticalAlignment="Center"/>
+                         TextChanged="TxtBusqueda_TextChanged"
+                         KeyDown="TxtBusqueda_KeyDown"
+                         VerticalAlignment="Center"/>
               </Grid>
             </Border>
           </StackPanel>
