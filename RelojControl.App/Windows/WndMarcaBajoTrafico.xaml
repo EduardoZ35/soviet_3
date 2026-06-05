@@ -2,9 +2,7 @@
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:ctrl="clr-namespace:RelojControl.Controls"
-        Width="733" Height="1061"
-        WindowStyle="None" Topmost="True"
-        WindowStartupLocation="CenterScreen"
+        WindowStyle="None" ResizeMode="NoResize" WindowState="Maximized" Topmost="True"
         Background="{StaticResource BgBrush}"
         KeyDown="Window_KeyDown">
 
@@ -39,20 +37,16 @@
   </Window.Resources>
 
   <Grid>
-    <Grid.ColumnDefinitions>
-      <ColumnDefinition Width="280"/>
-      <ColumnDefinition/>
-    </Grid.ColumnDefinitions>
+    <Viewbox Stretch="Uniform">
+      <Grid Width="768" Height="1366">
+        <Grid.ColumnDefinitions>
+          <ColumnDefinition Width="280"/>
+          <ColumnDefinition/>
+        </Grid.ColumnDefinitions>
 
-    <!-- fpHost fuera de pantalla: Win32-visible para que DPFP SDK funcione -->
-    <WindowsFormsHost x:Name="fpHost" Grid.ColumnSpan="2"
-                      Width="300" Height="200"
-                      HorizontalAlignment="Left" VerticalAlignment="Top"
-                      Margin="-400,-300,0,0"/>
+        <ctrl:RailControl x:Name="rail" Grid.Column="0"/>
 
-    <ctrl:RailControl x:Name="rail" Grid.Column="0"/>
-
-    <Grid Grid.Column="1" Background="{StaticResource BgBrush}">
+        <Grid Grid.Column="1" Background="{StaticResource BgBrush}">
 
       <ctrl:NotifOverlay x:Name="notif" Panel.ZIndex="100"/>
 
@@ -245,6 +239,12 @@
         </StackPanel>
       </Grid>
 
-    </Grid>
+        </Grid>
+      </Grid>
+    </Viewbox>
+    <!-- fpHost fuera del Viewbox: Win32-visible para que DPFP SDK funcione -->
+    <WindowsFormsHost x:Name="fpHost" Width="300" Height="200"
+                      HorizontalAlignment="Left" VerticalAlignment="Top"
+                      Margin="-400,-300,0,0"/>
   </Grid>
 </Window>
