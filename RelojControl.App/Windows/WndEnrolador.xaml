@@ -95,6 +95,17 @@
       <Setter Property="FontWeight"  Value="SemiBold"/>
     </Style>
 
+    <Style x:Key="FingerBtnEnrolled" TargetType="Button" BasedOn="{StaticResource FingerBtn}">
+      <Setter Property="Background"  Value="{StaticResource OkSoftBrush}"/>
+      <Setter Property="BorderBrush" Value="{StaticResource OkBrush}"/>
+      <Setter Property="Foreground"  Value="{StaticResource OkBrush}"/>
+    </Style>
+
+    <Style x:Key="FingerBtnEnrolledActive" TargetType="Button" BasedOn="{StaticResource FingerBtnEnrolled}">
+      <Setter Property="FontWeight"  Value="SemiBold"/>
+      <Setter Property="BorderThickness" Value="2"/>
+    </Style>
+
     <Style x:Key="FormLabel" TargetType="TextBlock">
       <Setter Property="FontFamily"  Value="{StaticResource FontPoppins}"/>
       <Setter Property="FontSize"    Value="11"/>
@@ -354,10 +365,19 @@
                   <RowDefinition Height="Auto"/>
                 </Grid.RowDefinitions>
 
-                <TextBlock Grid.Row="0" Text="Registro de Huellas Digitales"
-                           FontFamily="{StaticResource FontPoppins}" FontWeight="SemiBold"
-                           FontSize="16" Foreground="{StaticResource InkBrush}"
-                           Margin="0,0,0,20"/>
+                <Grid Grid.Row="0" Margin="0,0,0,20">
+                  <Grid.ColumnDefinitions>
+                    <ColumnDefinition/>
+                    <ColumnDefinition Width="Auto"/>
+                  </Grid.ColumnDefinitions>
+                  <TextBlock Grid.Column="0" Text="Registro de Huellas Digitales"
+                             FontFamily="{StaticResource FontPoppins}" FontWeight="SemiBold"
+                             FontSize="16" Foreground="{StaticResource InkBrush}"
+                             VerticalAlignment="Center"/>
+                  <TextBlock x:Name="lblHuellaCount" Grid.Column="1"
+                             FontFamily="{StaticResource FontPoppins}" FontSize="13"
+                             Foreground="{StaticResource Ink3Brush}" VerticalAlignment="Center"/>
+                </Grid>
 
                 <Grid Grid.Row="1">
                   <Grid.ColumnDefinitions>
@@ -382,18 +402,32 @@
                     <Button x:Name="btnDedo10" Content="Meñique I" Tag="10" Height="34"                   Style="{StaticResource FingerBtn}" Click="BtnDedo_Click"/>
                   </StackPanel>
 
-                  <!-- Panel derecho: EnrollmentControl + estado -->
+                  <!-- Panel derecho: estado + instrucciones (ecHost overlay via code-behind) -->
                   <Border Grid.Column="2" Background="{StaticResource SurfaceBrush}"
-                          CornerRadius="12" Effect="{StaticResource ShadowCard}">
-                    <StackPanel>
+                          CornerRadius="12" Effect="{StaticResource ShadowCard}"
+                          Width="340">
+                    <StackPanel Margin="20,16,20,16">
+                      <TextBlock Text="LECTOR DE HUELLA"
+                                 Style="{StaticResource TextEyebrow}" Margin="0,0,0,8"/>
+                      <!-- Placeholder visual donde aparece el lector -->
+                      <Border x:Name="ecPlaceholder" Height="200" CornerRadius="8"
+                              Background="{StaticResource BgBrush}"
+                              BorderBrush="{StaticResource LineBrush}" BorderThickness="1"
+                              Margin="0,0,0,12">
+                        <TextBlock Text="Coloca el dedo sobre el lector"
+                                   FontFamily="{StaticResource FontPoppins}" FontSize="13"
+                                   Foreground="{StaticResource Ink3Brush}"
+                                   HorizontalAlignment="Center" VerticalAlignment="Center"
+                                   TextAlignment="Center"/>
+                      </Border>
                       <TextBlock x:Name="lblEnrollStatus"
                                  FontFamily="{StaticResource FontPoppins}" FontSize="13"
                                  Foreground="{StaticResource Ink3Brush}"
-                                 TextWrapping="Wrap" Margin="16,12,16,4"
-                                 Text="Selecciona un dedo para comenzar el enrolamiento."/>
-                      <Button x:Name="btnReiniciarEnroll" Content="Reiniciar"
+                                 TextWrapping="Wrap" Margin="0,0,0,12"
+                                 Text="← Selecciona un dedo para comenzar."/>
+                      <Button x:Name="btnReiniciarEnroll" Content="Reiniciar enrolamiento"
                               Style="{StaticResource BtnSecondary}"
-                              Margin="16,8,16,16" HorizontalAlignment="Left"
+                              HorizontalAlignment="Stretch"
                               Click="BtnReiniciarEnroll_Click"/>
                     </StackPanel>
                   </Border>

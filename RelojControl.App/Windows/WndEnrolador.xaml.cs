@@ -36,6 +36,7 @@ public partial class WndEnrolador : Window
     private string                   _rutSeleccionado    = "";
     private EnrollmentControl?       _ec;
     private int                      _fingerSeleccionado = -1;
+    private readonly HashSet<int>    _enrolledDedos      = [];
 
     public int    IdEmpresa      { get; set; }
     public int    IdSucursal     { get; set; }
@@ -207,20 +208,40 @@ public partial class WndEnrolador : Window
         listaRelojes.ItemsSource = items;
     }
 
-    private void IniciarEnrollment()
+    private void CargarHuellasEnroladas()
     {
+        _enrolledDedos.Clear();
         try
         {
-            _fingerSeleccionado = -1;
-            UpdateFingerButtons(-1);
-            lblEnrollStatus.Text = "Selecciona un dedo para comenzar el enrolamiento.";
+            var dt = new ImagenHuella().traerHuellaPorRutPersona(_rutSeleccionado);
+            if (dt != null)
+                foreach (DataRow row in dt.Rows)
+                    if (int.TryParse(row[1].ToString(), out int nd))
+                        _enrolledDedos.Add(nd);
+        }
+        catch { }
+        UpdateFingerButtons(_fingerSeleccionado);
+        lblHuellaCount.Text = $"{_enrolledDedos.Count}/10 huellas enroladas";
+    }
 
+    private void IniciarEnrollment()
+    {
+        CargarHuellasEnroladas();
+        _fingerSeleccionado  = -1;
+        lblEnrollStatus.Text = "← Selecciona un dedo para comenzar.";
+
+        try
+        {
             _ec = new EnrollmentControl();
             _ec.EnrolledFingerMask   = 0;
             _ec.MaxEnrollFingerCount = 1;
             _ec.OnEnroll        += new EnrollmentControl._OnEnroll(OnEnrollComplete);
             _ec.OnSampleQuality += new EnrollmentControl._OnSampleQuality(OnSampleQuality);
             ecHost.Child = _ec;
+            // Mostrar lector en esquina inferior derecha (fuera del Viewbox, sobre el contenido)
+            ecHost.HorizontalAlignment = System.Windows.HorizontalAlignment.Right;
+            ecHost.VerticalAlignment   = System.Windows.VerticalAlignment.Bottom;
+            ecHost.Margin              = new Thickness(0, 0, 20, 20);
         }
         catch (Exception ex)
         {
@@ -233,8 +254,12 @@ public partial class WndEnrolador : Window
         if (_ec != null)
         {
             ecHost.Child = null;
-            _ec = null;
+            _ec          = null;
         }
+        // Volver a off-screen
+        ecHost.HorizontalAlignment = System.Windows.HorizontalAlignment.Left;
+        ecHost.VerticalAlignment   = System.Windows.VerticalAlignment.Top;
+        ecHost.Margin              = new Thickness(-1000, -1000, 0, 0);
     }
 
     private void OnEnrollComplete(object Control, int Finger, DPFP.Template Template,
@@ -291,11 +316,13 @@ public partial class WndEnrolador : Window
                 DateTime.Now,
                 DateTime.Now);
         }
+        if (ok) _enrolledDedos.Add(numeroDedo);
         lblEnrollStatus.Text = ok
-            ? $"Dedo {numeroDedo + 1} enrolado correctamente."
+            ? $"✓ Dedo {numeroDedo + 1} enrolado. Selecciona otro dedo o cierra."
             : "Error al guardar la huella en la base de datos.";
+        _fingerSeleccionado      = -1;
+        lblHuellaCount.Text      = $"{_enrolledDedos.Count}/10 huellas enroladas";
         UpdateFingerButtons(-1);
-        _fingerSeleccionado = -1;
     }
 
     private void BtnDedo_Click(object sender, RoutedEventArgs e)
@@ -318,8 +345,12 @@ public partial class WndEnrolador : Window
         for (int i = 1; i <= 10; i++)
         {
             var btn = (Button?)FindName($"btnDedo{i}");
-            if (btn != null)
-                btn.Style = (Style)FindResource(i == activeFinger ? "FingerBtnActive" : "FingerBtn");
+            if (btn == null) continue;
+            bool enrolled = _enrolledDedos.Contains(i - 1);
+            string style = (i == activeFinger)
+                ? (enrolled ? "FingerBtnEnrolledActive" : "FingerBtnActive")
+                : (enrolled ? "FingerBtnEnrolled"       : "FingerBtn");
+            btn.Style = (Style)FindResource(style);
         }
     }
 
