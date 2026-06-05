@@ -1,0 +1,52 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <OutputType>WinExe</OutputType>
+    <TargetFramework>net8.0-windows</TargetFramework>
+    <Nullable>enable</Nullable>
+    <UseWPF>true</UseWPF>
+    <UseWindowsForms>true</UseWindowsForms>
+    <RootNamespace>RelojControl</RootNamespace>
+    <AssemblyName>RelojControl</AssemblyName>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="MySql.Data" Version="8.3.0" />
+    <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
+    <PackageReference Include="Google.Protobuf" Version="3.25.3" />
+    <PackageReference Include="QRCoder" Version="1.6.0" />
+    <PackageReference Include="System.Drawing.Common" Version="8.0.0" />
+    <PackageReference Include="System.Management" Version="8.0.0" />
+    <PackageReference Include="System.ServiceProcess.ServiceController" Version="8.0.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\soviet_v2\proyectoReloj-master\proyectoNegocioRflex\proyectoNegocioRflex.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Reference Include="DPFPShrNET">
+      <HintPath>lib\DPFPShrNET.dll</HintPath>
+      <Private>true</Private>
+    </Reference>
+    <Reference Include="DPFPGuiNET">
+      <HintPath>lib\DPFPGuiNET.dll</HintPath>
+      <Private>true</Private>
+    </Reference>
+    <Reference Include="DPFPVerNET">
+      <HintPath>lib\DPFPVerNET.dll</HintPath>
+      <Private>true</Private>
+    </Reference>
+    <Reference Include="AxInterop.DPFPCtlXLib">
+      <HintPath>lib\AxInterop.DPFPCtlXLib.dll</HintPath>
+      <Private>true</Private>
+    </Reference>
+    <Reference Include="Interop.DPFPCtlXLib">
+      <HintPath>lib\Interop.DPFPCtlXLib.dll</HintPath>
+      <Private>true</Private>
+    </Reference>
+  </ItemGroup>
+
+  <ItemGroup>
+    <Resource Include="Fonts\*.ttf" />
+  </ItemGroup>
+</Project>
