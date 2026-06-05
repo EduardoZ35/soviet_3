@@ -47,7 +47,6 @@ public partial class WndMarcaBajoTrafico : Window
     {
         rail.Empresa   = NombreEmpresa;
         rail.Ubicacion = $"{NombreSucursal} · {UbicacionReloj}";
-        IniciarCaptura();
         UpdatePanel();
     }
 
@@ -103,11 +102,17 @@ public partial class WndMarcaBajoTrafico : Window
     {
         Dispatcher.Invoke(() =>
         {
+            // Destroy VC before panelHuella collapses (HWND destruction order)
+            if (_vm.Step != MarcaStep.VerificandoHuella) DetenerCaptura();
+
             panelRut.Visibility     = _vm.Step == MarcaStep.IngresoRut        ? Visibility.Visible : Visibility.Collapsed;
             panelHuella.Visibility  = _vm.Step == MarcaStep.VerificandoHuella ? Visibility.Visible : Visibility.Collapsed;
             panelSentido.Visibility = _vm.Step == MarcaStep.SeleccionSentido  ? Visibility.Visible : Visibility.Collapsed;
             panelExito.Visibility   = _vm.Step == MarcaStep.Exito             ? Visibility.Visible : Visibility.Collapsed;
             panelError.Visibility   = _vm.Step == MarcaStep.Error             ? Visibility.Visible : Visibility.Collapsed;
+
+            // Create VC after panelHuella is visible so HWND exists before Active=true
+            if (_vm.Step == MarcaStep.VerificandoHuella) IniciarCaptura();
 
             if (_vm.Step == MarcaStep.Error)
             {
@@ -164,22 +169,31 @@ public partial class WndMarcaBajoTrafico : Window
 
     private void IniciarCaptura()
     {
+        if (_vc != null) return;
         try
         {
-            _vc           = new VerificationControl { Active = true };
+            _vc = new VerificationControl();
             _vc.OnComplete += new VerificationControl._OnComplete(OnFingerprintComplete);
-            fpHost.Child  = _vc;
+            fpHost.Child = _vc;    // HWND created first
+            _vc.Active   = true;   // activate after HWND exists
         }
         catch { }
+    }
+
+    private void DetenerCaptura()
+    {
+        if (_vc == null) return;
+        try { _vc.Active = false; } catch { }
+        fpHost.Child = null;
+        _vc = null;
     }
 
     private void OnFingerprintComplete(object Control, DPFP.FeatureSet featureSet,
                                        ref DPFP.Gui.EventHandlerStatus status)
     {
-        Dispatcher.Invoke(() =>
+        Dispatcher.BeginInvoke(() =>
         {
             if (_vm.Step != MarcaStep.VerificandoHuella) return;
-            fpRing.SetState(FingerprintState.Scanning);
             VerificarHuella(featureSet);
         });
     }
@@ -214,12 +228,36 @@ public partial class WndMarcaBajoTrafico : Window
     private void Window_KeyDown(object sender, KeyEventArgs e)
     {
         if (e.Key == Key.Escape && (Keyboard.Modifiers & ModifierKeys.Control) != 0)
-            Close();
+        { Close(); return; }
+
+        if (_vm.Step != MarcaStep.IngresoRut) return;
+
+        string? key = e.Key switch
+        {
+            Key.D0 or Key.NumPad0 => "0",
+            Key.D1 or Key.NumPad1 => "1",
+            Key.D2 or Key.NumPad2 => "2",
+            Key.D3 or Key.NumPad3 => "3",
+            Key.D4 or Key.NumPad4 => "4",
+            Key.D5 or Key.NumPad5 => "5",
+            Key.D6 or Key.NumPad6 => "6",
+            Key.D7 or Key.NumPad7 => "7",
+            Key.D8 or Key.NumPad8 => "8",
+            Key.D9 or Key.NumPad9 => "9",
+            Key.K                 => "K",
+            Key.Back or Key.Delete => "DEL",
+            Key.Return or Key.Enter => "GO",
+            _ => null
+        };
+
+        if (key == null) return;
+        e.Handled = true;
+        Keypad_KeyPressed(null, key);
     }
 
     protected override void OnClosed(EventArgs e)
     {
-        if (_vc != null) _vc.Active = false;
+        DetenerCaptura();
         base.OnClosed(e);
     }
 
