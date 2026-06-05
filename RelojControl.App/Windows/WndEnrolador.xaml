@@ -61,6 +61,41 @@
       <Setter Property="FontWeight"   Value="SemiBold"/>
     </Style>
 
+    <Style x:Key="FingerBtn" TargetType="Button">
+      <Setter Property="Background"      Value="{StaticResource BgBrush}"/>
+      <Setter Property="BorderThickness" Value="1.5"/>
+      <Setter Property="BorderBrush"     Value="{StaticResource LineBrush}"/>
+      <Setter Property="Foreground"      Value="{StaticResource InkBrush}"/>
+      <Setter Property="FontFamily"      Value="{StaticResource FontPoppins}"/>
+      <Setter Property="FontSize"        Value="12"/>
+      <Setter Property="Cursor"          Value="Hand"/>
+      <Setter Property="Template">
+        <Setter.Value>
+          <ControlTemplate TargetType="Button">
+            <Border Background="{TemplateBinding Background}"
+                    BorderBrush="{TemplateBinding BorderBrush}"
+                    BorderThickness="{TemplateBinding BorderThickness}"
+                    CornerRadius="8">
+              <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+            </Border>
+          </ControlTemplate>
+        </Setter.Value>
+      </Setter>
+      <Style.Triggers>
+        <Trigger Property="IsMouseOver" Value="True">
+          <Setter Property="Background"  Value="{StaticResource AccentSoftBrush}"/>
+          <Setter Property="BorderBrush" Value="{StaticResource AccentBrush}"/>
+        </Trigger>
+      </Style.Triggers>
+    </Style>
+
+    <Style x:Key="FingerBtnActive" TargetType="Button" BasedOn="{StaticResource FingerBtn}">
+      <Setter Property="Background"  Value="{StaticResource AccentSoftBrush}"/>
+      <Setter Property="BorderBrush" Value="{StaticResource AccentBrush}"/>
+      <Setter Property="Foreground"  Value="{StaticResource AccentBrush}"/>
+      <Setter Property="FontWeight"  Value="SemiBold"/>
+    </Style>
+
     <Style x:Key="FormLabel" TargetType="TextBlock">
       <Setter Property="FontFamily"  Value="{StaticResource FontPoppins}"/>
       <Setter Property="FontSize"    Value="11"/>
@@ -309,11 +344,58 @@
                 </DataGrid>
               </Grid>
 
-              <!-- Tab 2: Huellas (stub) -->
+              <!-- Tab 2: Huellas -->
               <Grid x:Name="tabHuellas" Visibility="Collapsed">
-                <TextBlock Text="Tab Huellas — pendiente implementación"
-                           Style="{StaticResource TextHint}"
-                           HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                <Grid.RowDefinitions>
+                  <RowDefinition Height="Auto"/>
+                  <RowDefinition Height="Auto"/>
+                </Grid.RowDefinitions>
+
+                <TextBlock Grid.Row="0" Text="Registro de Huellas Digitales"
+                           FontFamily="{StaticResource FontPoppins}" FontWeight="SemiBold"
+                           FontSize="16" Foreground="{StaticResource InkBrush}"
+                           Margin="0,0,0,20"/>
+
+                <Grid Grid.Row="1">
+                  <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="200"/>
+                    <ColumnDefinition Width="24"/>
+                    <ColumnDefinition Width="Auto"/>
+                  </Grid.ColumnDefinitions>
+
+                  <!-- Selector de dedo -->
+                  <StackPanel Grid.Column="0">
+                    <TextBlock Style="{StaticResource FormLabel}" Text="MANO DERECHA" Margin="0,0,0,6"/>
+                    <Button x:Name="btnDedo1"  Content="Pulgar D"  Tag="1"  Height="34" Margin="0,0,0,4"  Style="{StaticResource FingerBtn}" Click="BtnDedo_Click"/>
+                    <Button x:Name="btnDedo2"  Content="Índice D"  Tag="2"  Height="34" Margin="0,0,0,4"  Style="{StaticResource FingerBtn}" Click="BtnDedo_Click"/>
+                    <Button x:Name="btnDedo3"  Content="Medio D"   Tag="3"  Height="34" Margin="0,0,0,4"  Style="{StaticResource FingerBtn}" Click="BtnDedo_Click"/>
+                    <Button x:Name="btnDedo4"  Content="Anular D"  Tag="4"  Height="34" Margin="0,0,0,4"  Style="{StaticResource FingerBtn}" Click="BtnDedo_Click"/>
+                    <Button x:Name="btnDedo5"  Content="Meñique D" Tag="5"  Height="34" Margin="0,0,0,16" Style="{StaticResource FingerBtn}" Click="BtnDedo_Click"/>
+                    <TextBlock Style="{StaticResource FormLabel}" Text="MANO IZQUIERDA" Margin="0,0,0,6"/>
+                    <Button x:Name="btnDedo6"  Content="Pulgar I"  Tag="6"  Height="34" Margin="0,0,0,4"  Style="{StaticResource FingerBtn}" Click="BtnDedo_Click"/>
+                    <Button x:Name="btnDedo7"  Content="Índice I"  Tag="7"  Height="34" Margin="0,0,0,4"  Style="{StaticResource FingerBtn}" Click="BtnDedo_Click"/>
+                    <Button x:Name="btnDedo8"  Content="Medio I"   Tag="8"  Height="34" Margin="0,0,0,4"  Style="{StaticResource FingerBtn}" Click="BtnDedo_Click"/>
+                    <Button x:Name="btnDedo9"  Content="Anular I"  Tag="9"  Height="34" Margin="0,0,0,4"  Style="{StaticResource FingerBtn}" Click="BtnDedo_Click"/>
+                    <Button x:Name="btnDedo10" Content="Meñique I" Tag="10" Height="34"                   Style="{StaticResource FingerBtn}" Click="BtnDedo_Click"/>
+                  </StackPanel>
+
+                  <!-- Panel derecho: EnrollmentControl + estado -->
+                  <Border Grid.Column="2" Background="{StaticResource SurfaceBrush}"
+                          CornerRadius="12" Effect="{StaticResource ShadowCard}">
+                    <StackPanel>
+                      <WindowsFormsHost x:Name="ecHost" Width="495" Height="314"/>
+                      <TextBlock x:Name="lblEnrollStatus"
+                                 FontFamily="{StaticResource FontPoppins}" FontSize="13"
+                                 Foreground="{StaticResource Ink3Brush}"
+                                 TextWrapping="Wrap" Margin="16,12,16,4"
+                                 Text="Selecciona un dedo para comenzar el enrolamiento."/>
+                      <Button x:Name="btnReiniciarEnroll" Content="Reiniciar"
+                              Style="{StaticResource BtnSecondary}"
+                              Margin="16,8,16,16" HorizontalAlignment="Left"
+                              Click="BtnReiniciarEnroll_Click"/>
+                    </StackPanel>
+                  </Border>
+                </Grid>
               </Grid>
 
               <!-- Tab 3: Comidas (stub) -->

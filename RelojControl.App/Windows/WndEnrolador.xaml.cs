@@ -1,9 +1,11 @@
 using System;
 using System.Collections.Generic;
 using System.Data;
+using System.IO;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
+using DPFP.Gui.Enrollment;
 using proyectoNegocioRflex.Modelo;
 using proyectoNegocioRflex.Utilidades;
 
@@ -15,7 +17,11 @@ public partial class WndEnrolador : Window
     private record MarcaRow(string FechaHora, string TipoMarca, string Reloj, string Incidencia);
 
     private readonly List<PersonaItem> _allPersonas = [];
-    private string _rutSeleccionado = "";
+    private string                   _rutSeleccionado    = "";
+    private EnrollmentControl?       _ec;
+    private int                      _fingerSeleccionado = -1;
+
+    public int IdEmpresa { get; set; }
 
     public WndEnrolador()
     {
@@ -200,6 +206,9 @@ public partial class WndEnrolador : Window
 
     private void SwitchTab(int idx)
     {
+        if (tabHuellas.Visibility == Visibility.Visible && idx != 2)
+            PararEnrollment();
+
         tabDatos.Visibility      = idx == 0 ? Visibility.Visible : Visibility.Collapsed;
         tabAsistencia.Visibility = idx == 1 ? Visibility.Visible : Visibility.Collapsed;
         tabHuellas.Visibility    = idx == 2 ? Visibility.Visible : Visibility.Collapsed;
@@ -213,6 +222,123 @@ public partial class WndEnrolador : Window
         btnTab4.Style = (Style)FindResource(idx == 4 ? "TabBtnActive" : "TabBtn");
 
         if (idx == 1) CargarAsistencia();
+        if (idx == 2) IniciarEnrollment();
+    }
+
+    private void IniciarEnrollment()
+    {
+        try
+        {
+            _fingerSeleccionado = -1;
+            UpdateFingerButtons(-1);
+            lblEnrollStatus.Text = "Selecciona un dedo para comenzar el enrolamiento.";
+
+            _ec = new EnrollmentControl();
+            _ec.EnrolledFingerMask   = 0;
+            _ec.MaxEnrollFingerCount = 1;
+            _ec.OnEnroll        += new EnrollmentControl._OnEnroll(OnEnrollComplete);
+            _ec.OnSampleQuality += new EnrollmentControl._OnSampleQuality(OnSampleQuality);
+            ecHost.Child = _ec;
+        }
+        catch (Exception ex)
+        {
+            lblEnrollStatus.Text = $"Error al iniciar lector: {ex.Message}";
+        }
+    }
+
+    private void PararEnrollment()
+    {
+        if (_ec != null)
+        {
+            ecHost.Child = null;
+            _ec = null;
+        }
+    }
+
+    private void OnEnrollComplete(object Control, int Finger, DPFP.Template Template,
+                                  ref DPFP.Gui.EventHandlerStatus Status)
+    {
+        Dispatcher.Invoke(() =>
+        {
+            try
+            {
+                int numeroDedo = Finger - 1;
+                using var ms = new MemoryStream();
+                Template.Serialize(ms);
+                GuardarHuella(numeroDedo, ms.ToArray());
+            }
+            catch (Exception ex)
+            {
+                lblEnrollStatus.Text = $"Error al guardar huella: {ex.Message}";
+            }
+        });
+    }
+
+    private void OnSampleQuality(object Control, string ReaderSerialNumber, int Finger,
+                                 DPFP.Capture.CaptureFeedback CaptureFeedback)
+    {
+        Dispatcher.Invoke(() =>
+        {
+            lblEnrollStatus.Text = CaptureFeedback == DPFP.Capture.CaptureFeedback.Good
+                ? $"Muestra capturada. Sigue escaneando el dedo {_fingerSeleccionado}."
+                : $"Calidad insuficiente ({CaptureFeedback}). Vuelve a colocar el dedo.";
+        });
+    }
+
+    private void GuardarHuella(int numeroDedo, byte[] bytes)
+    {
+        var ih       = new ImagenHuella();
+        var existing = ih.traerHuellaPorRutYNumeroDedo(_rutSeleccionado, numeroDedo);
+        bool ok;
+        if (existing != null && existing.Rows.Count > 0)
+        {
+            int id = int.Parse(existing.Rows[0][0].ToString()!);
+            ok = ih.editarHuella(bytes, _rutSeleccionado, 0, id);
+        }
+        else
+        {
+            ok = ih.guardarHuella(
+                IdEmpresa,
+                _rutSeleccionado,
+                numeroDedo,
+                bytes,
+                _rutSeleccionado,
+                _rutSeleccionado,
+                0,
+                Environment.MachineName,
+                DateTime.Now,
+                DateTime.Now);
+        }
+        lblEnrollStatus.Text = ok
+            ? $"Dedo {numeroDedo + 1} enrolado correctamente."
+            : "Error al guardar la huella en la base de datos.";
+        UpdateFingerButtons(-1);
+        _fingerSeleccionado = -1;
+    }
+
+    private void BtnDedo_Click(object sender, RoutedEventArgs e)
+    {
+        if (string.IsNullOrEmpty(_rutSeleccionado) || _ec == null) return;
+        int finger = int.Parse(((Button)sender).Tag?.ToString() ?? "1");
+        _fingerSeleccionado = finger;
+        UpdateFingerButtons(finger);
+        lblEnrollStatus.Text = $"Dedo {finger} seleccionado — escanea 4 veces para enrolar.";
+    }
+
+    private void BtnReiniciarEnroll_Click(object sender, RoutedEventArgs e)
+    {
+        PararEnrollment();
+        IniciarEnrollment();
+    }
+
+    private void UpdateFingerButtons(int activeFinger)
+    {
+        for (int i = 1; i <= 10; i++)
+        {
+            var btn = (Button?)FindName($"btnDedo{i}");
+            if (btn != null)
+                btn.Style = (Style)FindResource(i == activeFinger ? "FingerBtnActive" : "FingerBtn");
+        }
     }
 
     private void BtnTab_Click(object sender, RoutedEventArgs e)
@@ -247,6 +373,12 @@ public partial class WndEnrolador : Window
     }
 
     private void BtnCerrar_Click(object sender, RoutedEventArgs e) => Close();
+
+    protected override void OnClosed(EventArgs e)
+    {
+        PararEnrollment();
+        base.OnClosed(e);
+    }
 
     private void Window_KeyDown(object sender, KeyEventArgs e)
     {
