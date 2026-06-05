@@ -83,7 +83,7 @@ public partial class WndMarcaBajoTrafico : Window
         lblAvatar.Text      = GetInitials(nombre);
         lblUltimaMarca.Text = ultimaMarca;
 
-        _vm.SetTrabajador(nombre, ultimaMarca);
+        _vm.SetWorkerInfo(nombre, ultimaMarca);
     }
 
     private string ObtenerUltimaMarca()
@@ -190,7 +190,7 @@ public partial class WndMarcaBajoTrafico : Window
         {
             var huellas = new ImagenHuella().traerHuellaPorRutPersona(_rutEncriptado);
             if (huellas == null || huellas.Rows.Count == 0)
-            { _vm.SetTrabajador(_vm.NombreTrabajador, _vm.UltimaMarca); return; }
+            { _vm.SetError("Sin huellas registradas. Contacte al administrador."); return; }
 
             var verificador = new Verification();
             foreach (DataRow row in huellas.Rows)

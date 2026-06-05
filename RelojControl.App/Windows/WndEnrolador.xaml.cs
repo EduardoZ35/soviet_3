@@ -57,7 +57,7 @@ public partial class WndEnrolador : Window
         try
         {
             var enc = new Encriptacion();
-            var dt  = new Persona().traerDatosPersonasDesdeLocal();
+            var dt  = new Persona().traerTodasPersonas();
             if (dt == null) return;
 
             _allPersonas.Clear();
@@ -65,12 +65,12 @@ public partial class WndEnrolador : Window
             {
                 try
                 {
-                    string rutEnc    = row[1].ToString()!;
-                    string rutDec    = enc.Desencriptar(rutEnc);
-                    string nombre    = $"{enc.Desencriptar(row[2].ToString()!)} " +
-                                       $"{enc.Desencriptar(row[4].ToString()!)} " +
-                                       $"{enc.Desencriptar(row[5].ToString()!)}";
-                    string puesto    = enc.Desencriptar(row[7].ToString()!);
+                    string rutEnc = row[1].ToString()!;
+                    string rutDec = enc.Desencriptar(rutEnc);
+                    string nombre = $"{enc.Desencriptar(row[2].ToString()!)} " +
+                                    $"{enc.Desencriptar(row[4].ToString()!)} " +
+                                    $"{enc.Desencriptar(row[5].ToString()!)}";
+                    string puesto = enc.Desencriptar(row[6].ToString()!);
                     _allPersonas.Add(new PersonaItem(rutEnc, FormatRut(rutDec), nombre.Trim(), puesto));
                 }
                 catch { }

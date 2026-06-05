@@ -59,6 +59,13 @@ public class MarcaBajoTraficoViewModel : ViewModelBase
         }
     }
 
+    public void SetWorkerInfo(string nombre, string ultimaMarca)
+    {
+        NombreTrabajador = nombre;
+        UltimaMarca      = ultimaMarca;
+        // Step stays at VerificandoHuella — fingerprint must verify before proceeding
+    }
+
     public void SetTrabajador(string nombre, string ultimaMarca)
     {
         NombreTrabajador = nombre;
