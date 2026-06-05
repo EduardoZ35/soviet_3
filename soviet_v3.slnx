@@ -1,4 +1,0 @@
-<Solution>
-  <Project Path="RelojControl.App/RelojControl.App.csproj" />
-  <Project Path="RelojControl.Tests/RelojControl.Tests.csproj" />
-</Solution>
