@@ -35,6 +35,11 @@
     <GradientStop Color="#454B8F" Offset="0.55"/>
     <GradientStop Color="#383C6F" Offset="1"/>
   </LinearGradientBrush>
+  <LinearGradientBrush x:Key="RailBrush" StartPoint="0,0" EndPoint="0.4,1">
+    <GradientStop Color="#5A63A8" Offset="0"/>
+    <GradientStop Color="#454B8F" Offset="0.55"/>
+    <GradientStop Color="#383C6F" Offset="1"/>
+  </LinearGradientBrush>
 
   <!-- ═══ RAIL INK ═══ -->
   <SolidColorBrush x:Key="RailInkBrush"  Color="#FFFFFF"/>
