@@ -72,7 +72,7 @@
                  Height="30" Margin="16,26,16,22" HorizontalAlignment="Left"/>
           <StackPanel DockPanel.Dock="Top" Margin="10,0">
             <Button x:Name="BtnEnrolamiento" Click="BtnEnrolamiento_Click"
-                    Background="#33FFFFFF" BorderThickness="0"
+                    Background="#33FFFFFF" BorderThickness="0" FocusVisualStyle="{x:Null}"
                     Height="72" Margin="0,0,0,10" Cursor="Hand">
               <Button.Template>
                 <ControlTemplate TargetType="Button">
@@ -96,7 +96,8 @@
       </Border>
 
       <!-- Main content -->
-      <ContentControl x:Name="mainContent" Background="{StaticResource BgBrush}">
+      <ContentControl x:Name="mainContent" Background="{StaticResource BgBrush}"
+                      HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch">
         <ContentControl.Content>
           <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center">
             <Border Width="64" Height="64" CornerRadius="20" HorizontalAlignment="Center"
