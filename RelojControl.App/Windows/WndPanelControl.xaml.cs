@@ -12,6 +12,7 @@ public partial class WndPanelControl : Window
     {
         InitializeComponent();
         _idReloj = idReloj;
+        Loaded += (_, __) => BtnEnrolamiento_Click(this, new RoutedEventArgs());
     }
 
     private void BtnCerrar_Click(object sender, RoutedEventArgs e)
