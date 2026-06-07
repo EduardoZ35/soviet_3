@@ -95,6 +95,7 @@ public partial class UcEnrolador : UserControl
                             $"{enc.Desencriptar(row[3].ToString()!)} " +
                             $"{enc.Desencriptar(row[4].ToString()!)}";
             string rutDec = enc.Desencriptar(rutEnc);
+            Dispatcher.Invoke(() => txtBusqueda.Text = FormatRut(rutDec));
 
             lblNombreDetalle.Text    = nombre.Trim();
             lblRutDetalle.Text       = FormatRut(rutDec);
@@ -107,7 +108,9 @@ public partial class UcEnrolador : UserControl
             lblDatCorreo.Text  = enc.Desencriptar(row[5].ToString()!);
             lblDatPuesto.Text  = enc.Desencriptar(row[18].ToString()!);
             lblDatCentro.Text  = enc.Desencriptar(row[17].ToString()!);
-            lblDatActivo.Text  = row[10].ToString()!;
+            lblDatActivo.Text  = DateTime.TryParse(row[10].ToString(), out var dtActivo)
+                ? dtActivo.ToString("dd/MM/yyyy")
+                : row[10].ToString()!;
 
             chkHabilitada.IsChecked = row[11].ToString() == "1";
             chkEnrolar.IsChecked    = row[12].ToString() == "1";

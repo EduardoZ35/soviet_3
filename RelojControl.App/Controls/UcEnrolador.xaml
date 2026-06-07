@@ -117,6 +117,39 @@
       <Setter Property="Foreground"  Value="{StaticResource InkBrush}"/>
       <Setter Property="Margin"      Value="0,0,0,16"/>
     </Style>
+
+    <Style x:Key="AccentCheckBox" TargetType="CheckBox">
+      <Setter Property="FontFamily"  Value="{StaticResource FontPoppins}"/>
+      <Setter Property="FontSize"    Value="13"/>
+      <Setter Property="Foreground"  Value="{StaticResource InkBrush}"/>
+      <Setter Property="Margin"      Value="0,0,0,8"/>
+      <Setter Property="Template">
+        <Setter.Value>
+          <ControlTemplate TargetType="CheckBox">
+            <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+              <Border x:Name="box" Width="20" Height="20" CornerRadius="6"
+                      BorderBrush="{StaticResource LineBrush}" BorderThickness="1.5"
+                      Background="{StaticResource SurfaceBrush}" Margin="0,0,10,0">
+                <Path x:Name="chk" Visibility="Collapsed"
+                      Stroke="White" StrokeThickness="2.2"
+                      StrokeStartLineCap="Round" StrokeEndLineCap="Round"
+                      StrokeLineJoin="Round"
+                      HorizontalAlignment="Center" VerticalAlignment="Center"
+                      Data="M 3,9 L 8,14 L 17,5"/>
+              </Border>
+              <ContentPresenter VerticalAlignment="Center"/>
+            </StackPanel>
+            <ControlTemplate.Triggers>
+              <Trigger Property="IsChecked" Value="True">
+                <Setter TargetName="box" Property="Background"  Value="{StaticResource AccentBrush}"/>
+                <Setter TargetName="box" Property="BorderBrush" Value="{StaticResource AccentBrush}"/>
+                <Setter TargetName="chk" Property="Visibility"  Value="Visible"/>
+              </Trigger>
+            </ControlTemplate.Triggers>
+          </ControlTemplate>
+        </Setter.Value>
+      </Setter>
+    </Style>
   </UserControl.Resources>
 
   <Grid Width="1366" Height="768">
@@ -241,8 +274,10 @@
 
           <!-- Worker card -->
           <Border Grid.Row="0" Background="{StaticResource SurfaceBrush}"
-                  BorderBrush="{StaticResource LineBrush}" BorderThickness="0,0,0,1"
-                  Padding="32,16">
+                  BorderBrush="{StaticResource LineBrush}" BorderThickness="1"
+                  CornerRadius="14" Padding="20,16"
+                  Effect="{StaticResource ShadowCard}"
+                  Margin="32,16,32,0">
             <Grid>
               <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
                 <Border Width="48" Height="48" CornerRadius="10" Margin="0,0,14,0">
@@ -323,17 +358,11 @@
                 <StackPanel Grid.Column="2">
                   <TextBlock Style="{StaticResource FormLabel}" Text="PERMISOS"/>
                   <CheckBox x:Name="chkHabilitada" Content="Habilitada"
-                            IsEnabled="False" Margin="0,0,0,8"
-                            FontFamily="{StaticResource FontPoppins}" FontSize="13"
-                            Foreground="{StaticResource InkBrush}"/>
+                            Style="{StaticResource AccentCheckBox}" IsEnabled="False"/>
                   <CheckBox x:Name="chkEnrolar" Content="Puede enrolar"
-                            IsEnabled="False" Margin="0,0,0,8"
-                            FontFamily="{StaticResource FontPoppins}" FontSize="13"
-                            Foreground="{StaticResource InkBrush}"/>
+                            Style="{StaticResource AccentCheckBox}" IsEnabled="False"/>
                   <CheckBox x:Name="chkAsistencia" Content="Registra asistencia"
-                            IsEnabled="False"
-                            FontFamily="{StaticResource FontPoppins}" FontSize="13"
-                            Foreground="{StaticResource InkBrush}"/>
+                            Style="{StaticResource AccentCheckBox}" IsEnabled="False"/>
                 </StackPanel>
               </Grid>
 
