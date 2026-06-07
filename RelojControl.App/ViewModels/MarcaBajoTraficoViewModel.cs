@@ -20,10 +20,10 @@ public partial class MarcaBajoTraficoViewModel : ObservableObject
     {
         get
         {
-            if (_rutBuffer.Length == 0) return "";
-            if (_rutBuffer.Length <= 1) return _rutBuffer;
-            var num       = _rutBuffer[..^1];
-            var dv        = _rutBuffer[^1];
+            if (RutBuffer.Length == 0) return "";
+            if (RutBuffer.Length <= 1) return RutBuffer;
+            var num       = RutBuffer[..^1];
+            var dv        = RutBuffer[^1];
             var formatted = long.TryParse(num, out var n)
                 ? n.ToString("N0", System.Globalization.CultureInfo.GetCultureInfo("es-CL"))
                 : num;
@@ -36,13 +36,13 @@ public partial class MarcaBajoTraficoViewModel : ObservableObject
         switch (key)
         {
             case "DEL":
-                if (_rutBuffer.Length > 0) RutBuffer = _rutBuffer[..^1];
+                if (RutBuffer.Length > 0) RutBuffer = RutBuffer[..^1];
                 break;
             case "GO":
-                if (_rutBuffer.Length >= 2) Step = MarcaStep.VerificandoHuella;
+                if (RutBuffer.Length >= 2) Step = MarcaStep.VerificandoHuella;
                 break;
             default:
-                if (_rutBuffer.Length < 9) RutBuffer += key;
+                if (RutBuffer.Length < 9) RutBuffer += key;
                 break;
         }
     }
