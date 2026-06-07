@@ -1,5 +1,6 @@
 <ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes">
 
   <!-- ═══ ACCENT ═══ -->
   <Color x:Key="AccentColor">#616EB3</Color>
@@ -97,7 +98,11 @@
           <Border Background="{TemplateBinding Background}"
                   CornerRadius="{StaticResource RadiusButton}"
                   Padding="{TemplateBinding Padding}">
-            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+            <materialDesign:Ripple Feedback="White" Opacity="0.3"
+                                   HorizontalContentAlignment="Center"
+                                   VerticalContentAlignment="Center">
+              <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+            </materialDesign:Ripple>
           </Border>
         </ControlTemplate>
       </Setter.Value>
@@ -124,7 +129,11 @@
                   BorderThickness="1"
                   CornerRadius="{StaticResource RadiusButton}"
                   Padding="{TemplateBinding Padding}">
-            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+            <materialDesign:Ripple Feedback="{StaticResource AccentBrush}" Opacity="0.12"
+                                   HorizontalContentAlignment="Center"
+                                   VerticalContentAlignment="Center">
+              <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+            </materialDesign:Ripple>
           </Border>
         </ControlTemplate>
       </Setter.Value>
