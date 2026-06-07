@@ -9,32 +9,50 @@ using System.Windows.Input;
 using DPFP.Gui.Enrollment;
 using proyectoNegocioRflex.Modelo;
 using proyectoNegocioRflex.Utilidades;
-using RelojControl.Windows;
 
 namespace RelojControl.Controls;
 
+public class TipoComidaItem
+{
+    public int    Id        { get; set; }
+    public string Nombre    { get; set; } = "";
+    public string Horario   { get; set; } = "";
+    public string Valor     { get; set; } = "";
+    public bool   Habilitado{ get; set; }
+}
+
+public class RelojItem
+{
+    public int    Id       { get; set; }
+    public string Nombre   { get; set; } = "";
+    public string Ubicacion{ get; set; } = "";
+}
+
 public partial class UcEnrolador : UserControl
 {
+    private record PersonaItem(string RutEnc, string RutDisplay, string Nombre, string Puesto);
     private record MarcaRow(string FechaHora, string TipoMarca, string Reloj, string Incidencia);
 
-    private string                _rutSeleccionado    = "";
-    private EnrollmentControl?    _ec;
-    private int                   _fingerSeleccionado = -1;
-    private readonly HashSet<int> _enrolledDedos      = [];
+    private string                   _rutSeleccionado    = "";
+    private EnrollmentControl?       _ec;
+    private int                      _fingerSeleccionado = -1;
+    private readonly HashSet<int>    _enrolledDedos      = [];
 
-    public int              IdReloj       { get; set; }
-    public int              IdEmpresa     { get; set; }
-    public int              IdSucursal    { get; set; }
-    public string           CodigoEmpresa { get; set; } = "";
-    public WindowsFormsHost? EcHost       { get; set; }
+    public event System.EventHandler? SolicitaCerrar;
+    private WindowsFormsHost? _externalEcHost;
+    public void SetEnrollmentHost(WindowsFormsHost host) => _externalEcHost = host;
 
-    public event System.EventHandler? CloseRequested;
+    public int    IdEmpresa      { get; set; }
+    public int    IdSucursal     { get; set; }
+    public string CodigoEmpresa  { get; set; } = "";
 
     public UcEnrolador()
     {
         InitializeComponent();
-        Unloaded += (_, _) => PararEnrollment();
+        Loaded += OnLoaded;
     }
+
+    private void OnLoaded(object sender, RoutedEventArgs e) { }
 
     private void BuscarPorRut()
     {
@@ -77,11 +95,11 @@ public partial class UcEnrolador : UserControl
                             $"{enc.Desencriptar(row[4].ToString()!)}";
             string rutDec = enc.Desencriptar(rutEnc);
 
-            lblNombreDetalle.Text = nombre.Trim();
-            lblRutDetalle.Text    = FormatRut(rutDec);
-            lblAvatar.Text        = GetInitials(nombre.Trim());
-            lblWorkerPill.Text    = nombre.Trim();
-            pillWorker.Visibility = Visibility.Visible;
+            lblNombreDetalle.Text    = nombre.Trim();
+            lblRutDetalle.Text       = FormatRut(rutDec);
+            lblAvatar.Text           = GetInitials(nombre.Trim());
+            lblWorkerPill.Text       = nombre.Trim();
+            pillWorker.Visibility    = Visibility.Visible;
 
             lblDatNombre.Text  = nombre.Trim();
             lblDatRut.Text     = FormatRut(rutDec);
@@ -114,12 +132,15 @@ public partial class UcEnrolador : UserControl
 
             var rows = new List<MarcaRow>();
             if (dt != null)
+            {
                 foreach (DataRow row in dt.Rows)
                 {
-                    string fecha = DateTime.TryParse(row[6].ToString(), out var d)
-                        ? d.ToString("dd/MM/yyyy HH:mm") : row[6].ToString()!;
-                    rows.Add(new MarcaRow(fecha, row[12].ToString()!, row[13].ToString()!, row[15].ToString()!));
+                    string fecha       = DateTime.TryParse(row[6].ToString(), out var d)
+                                         ? d.ToString("dd/MM/yyyy HH:mm") : row[6].ToString()!;
+                    string incidencia  = row[15].ToString()!;
+                    rows.Add(new MarcaRow(fecha, row[12].ToString()!, row[13].ToString()!, incidencia));
                 }
+            }
             dgMarcas.ItemsSource = rows;
         }
         catch (Exception ex)
@@ -182,9 +203,9 @@ public partial class UcEnrolador : UserControl
                 foreach (DataRow row in dt.Rows)
                     items.Add(new RelojItem
                     {
-                        Id        = int.Parse(row[0].ToString()!),
-                        Nombre    = row[3].ToString()!,
-                        Ubicacion = row[4].ToString()!,
+                        Id       = int.Parse(row[0].ToString()!),
+                        Nombre   = row[3].ToString()!,
+                        Ubicacion= row[4].ToString()!,
                     });
         }
         catch { }
@@ -209,22 +230,23 @@ public partial class UcEnrolador : UserControl
 
     private void IniciarEnrollment()
     {
-        if (EcHost == null) return;
         CargarHuellasEnroladas();
         _fingerSeleccionado  = -1;
         lblEnrollStatus.Text = "← Selecciona un dedo para comenzar.";
 
         try
         {
+            if (_externalEcHost == null) return;
             _ec = new EnrollmentControl();
             _ec.EnrolledFingerMask   = 0;
             _ec.MaxEnrollFingerCount = 1;
             _ec.OnEnroll        += new EnrollmentControl._OnEnroll(OnEnrollComplete);
             _ec.OnSampleQuality += new EnrollmentControl._OnSampleQuality(OnSampleQuality);
-            EcHost.Child = _ec;
-            EcHost.HorizontalAlignment = HorizontalAlignment.Right;
-            EcHost.VerticalAlignment   = VerticalAlignment.Bottom;
-            EcHost.Margin              = new Thickness(0, 0, 20, 20);
+            _externalEcHost.Child = _ec;
+            // Mostrar lector en esquina inferior derecha (fuera del Viewbox, sobre el contenido)
+            _externalEcHost.HorizontalAlignment = System.Windows.HorizontalAlignment.Right;
+            _externalEcHost.VerticalAlignment   = System.Windows.VerticalAlignment.Bottom;
+            _externalEcHost.Margin              = new Thickness(0, 0, 20, 20);
         }
         catch (Exception ex)
         {
@@ -234,16 +256,17 @@ public partial class UcEnrolador : UserControl
 
     private void PararEnrollment()
     {
-        if (_ec != null && EcHost != null)
+        if (_ec != null && _externalEcHost != null)
         {
-            EcHost.Child = null;
-            _ec          = null;
+            _externalEcHost.Child = null;
+            _ec                   = null;
         }
-        if (EcHost != null)
+        // Volver a off-screen
+        if (_externalEcHost != null)
         {
-            EcHost.HorizontalAlignment = HorizontalAlignment.Left;
-            EcHost.VerticalAlignment   = VerticalAlignment.Top;
-            EcHost.Margin              = new Thickness(-1000, -1000, 0, 0);
+            _externalEcHost.HorizontalAlignment = System.Windows.HorizontalAlignment.Left;
+            _externalEcHost.VerticalAlignment   = System.Windows.VerticalAlignment.Top;
+            _externalEcHost.Margin              = new Thickness(-1000, -1000, 0, 0);
         }
     }
 
@@ -302,11 +325,11 @@ public partial class UcEnrolador : UserControl
                 DateTime.Now);
         }
         if (ok) _enrolledDedos.Add(numeroDedo);
-        lblEnrollStatus.Text     = ok
+        lblEnrollStatus.Text = ok
             ? $"✓ Dedo {numeroDedo + 1} enrolado. Selecciona otro dedo o cierra."
             : "Error al guardar la huella en la base de datos.";
-        _fingerSeleccionado  = -1;
-        lblHuellaCount.Text  = $"{_enrolledDedos.Count}/10 huellas enroladas";
+        _fingerSeleccionado      = -1;
+        lblHuellaCount.Text      = $"{_enrolledDedos.Count}/10 huellas enroladas";
         UpdateFingerButtons(-1);
     }
 
@@ -314,7 +337,7 @@ public partial class UcEnrolador : UserControl
     {
         if (string.IsNullOrEmpty(_rutSeleccionado) || _ec == null) return;
         int finger = int.Parse(((Button)sender).Tag?.ToString() ?? "1");
-        _fingerSeleccionado  = finger;
+        _fingerSeleccionado = finger;
         UpdateFingerButtons(finger);
         lblEnrollStatus.Text = $"Dedo {finger} seleccionado — escanea 4 veces para enrolar.";
     }
@@ -347,11 +370,10 @@ public partial class UcEnrolador : UserControl
 
     private void BtnVolver_Click(object sender, RoutedEventArgs e)
     {
-        PararEnrollment();
-        _rutSeleccionado          = "";
-        pillWorker.Visibility     = Visibility.Collapsed;
-        gridDetalle.Visibility    = Visibility.Collapsed;
-        scrollPersonas.Visibility = Visibility.Visible;
+        _rutSeleccionado           = "";
+        pillWorker.Visibility      = Visibility.Collapsed;
+        gridDetalle.Visibility     = Visibility.Collapsed;
+        scrollPersonas.Visibility  = Visibility.Visible;
     }
 
     private void TxtBusqueda_TextChanged(object sender, TextChangedEventArgs e)
@@ -365,11 +387,8 @@ public partial class UcEnrolador : UserControl
         if (e.Key == Key.Return) BuscarPorRut();
     }
 
-    private void BtnCerrar_Click(object sender, RoutedEventArgs e)
-    {
-        PararEnrollment();
-        CloseRequested?.Invoke(this, EventArgs.Empty);
-    }
+    private void BtnCerrar_Click(object sender, RoutedEventArgs e) =>
+        SolicitaCerrar?.Invoke(this, EventArgs.Empty);
 
     private static string FormatRut(string raw)
     {
@@ -390,8 +409,6 @@ public partial class UcEnrolador : UserControl
     private static string GetInitials(string nombre)
     {
         var parts = nombre.Split(' ', StringSplitOptions.RemoveEmptyEntries);
-        return parts.Length >= 2
-            ? $"{parts[0][0]}{parts[1][0]}"
-            : nombre[..Math.Min(2, nombre.Length)];
+        return parts.Length >= 2 ? $"{parts[0][0]}{parts[1][0]}" : nombre[..Math.Min(2, nombre.Length)];
     }
 }
