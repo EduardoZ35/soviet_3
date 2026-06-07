@@ -210,12 +210,15 @@
             <Border Width="96" Height="96" CornerRadius="24"
                     Background="{StaticResource AccentSoftBrush}"
                     HorizontalAlignment="Center" Margin="0,0,0,18">
-              <Path HorizontalAlignment="Center" VerticalAlignment="Center"
-                    Width="44" Height="44" Stretch="Uniform"
-                    Stroke="{StaticResource AccentBrush}" StrokeThickness="2.2"
-                    StrokeStartLineCap="Round" StrokeEndLineCap="Round"
-                    Fill="Transparent"
-                    Data="M10,10 A6,6,0,1,1,10,9.99 M14,14 L20,20"/>
+              <Viewbox Width="44" Height="44">
+                <Canvas Width="24" Height="24">
+                  <Ellipse Canvas.Left="3" Canvas.Top="3" Width="16" Height="16"
+                           Stroke="{StaticResource AccentBrush}" StrokeThickness="2" Fill="Transparent"/>
+                  <Path Stroke="{StaticResource AccentBrush}" StrokeThickness="2"
+                        StrokeStartLineCap="Round" StrokeEndLineCap="Round"
+                        Data="M 16.65,16.65 L 21,21"/>
+                </Canvas>
+              </Viewbox>
             </Border>
             <TextBlock Text="Busca un funcionario para comenzar"
                        FontFamily="{StaticResource FontPoppins}" FontWeight="Bold"
