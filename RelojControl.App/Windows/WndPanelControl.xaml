@@ -9,37 +9,84 @@
       <Grid Width="1366" Height="768">
         <DockPanel>
       <!-- Header -->
-      <Border DockPanel.Dock="Top" Background="{StaticResource AccentBrush}" Padding="28,16">
+      <Border DockPanel.Dock="Top" Background="{StaticResource SurfaceBrush}"
+              BorderBrush="{StaticResource LineBrush}" BorderThickness="0,0,0,1" Padding="28,0" Height="74">
         <Grid>
-          <TextBlock Text="Panel de Control · rFlex"
-                     FontFamily="{StaticResource FontPoppins}" FontWeight="Bold" FontSize="18"
-                     Foreground="White" VerticalAlignment="Center"/>
-          <Button Content="Cerrar" HorizontalAlignment="Right"
-                  Background="Transparent" Foreground="White" BorderBrush="Transparent"
-                  FontFamily="{StaticResource FontPoppins}" FontSize="13" Padding="16,8"
-                  Cursor="Hand" Click="BtnCerrar_Click"/>
+          <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+            <TextBlock Text="Panel de Control · rFlex"
+                       FontFamily="{StaticResource FontPoppins}" FontWeight="Bold" FontSize="18"
+                       Foreground="{StaticResource InkBrush}" VerticalAlignment="Center"/>
+          </StackPanel>
+          <Button Content="Salir" HorizontalAlignment="Right" VerticalAlignment="Center"
+                  Click="BtnCerrar_Click"
+                  Background="{StaticResource Surface2Brush}"
+                  BorderBrush="{StaticResource LineBrush}" BorderThickness="1"
+                  Foreground="{StaticResource Ink2Brush}"
+                  FontFamily="{StaticResource FontPoppins}" FontWeight="SemiBold" FontSize="14"
+                  Padding="18,10" Cursor="Hand">
+            <Button.Template>
+              <ControlTemplate TargetType="Button">
+                <Border Background="{TemplateBinding Background}"
+                        BorderBrush="{TemplateBinding BorderBrush}"
+                        BorderThickness="{TemplateBinding BorderThickness}"
+                        CornerRadius="11" Padding="{TemplateBinding Padding}">
+                  <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                </Border>
+              </ControlTemplate>
+            </Button.Template>
+          </Button>
         </Grid>
       </Border>
 
       <!-- Sidebar -->
-      <Border DockPanel.Dock="Left" Width="200" Background="{StaticResource Surface2Brush}"
-              BorderBrush="{StaticResource LineBrush}" BorderThickness="0,0,1,0">
-        <StackPanel Margin="0,12,0,0">
-          <Button Content="Enrolamiento" Click="BtnEnrolamiento_Click"
-                  Padding="20,14" HorizontalAlignment="Stretch"
-                  HorizontalContentAlignment="Left" BorderThickness="0"
-                  Background="Transparent"
-                  FontFamily="{StaticResource FontPoppins}" FontSize="13"
-                  Foreground="{StaticResource InkBrush}" Cursor="Hand"/>
-        </StackPanel>
+      <Border DockPanel.Dock="Left" Width="156">
+        <Border.Background>
+          <LinearGradientBrush StartPoint="0,0" EndPoint="0.4,1">
+            <GradientStop Color="#FF5A63A8" Offset="0"/>
+            <GradientStop Color="#FF454B8F" Offset="0.55"/>
+            <GradientStop Color="#FF383C6F" Offset="1"/>
+          </LinearGradientBrush>
+        </Border.Background>
+        <DockPanel Margin="14,26,14,26">
+          <Image DockPanel.Dock="Top"
+                 Source="pack://application:,,,/RelojControl;component/Assets/logo-rflex-white.png"
+                 Height="28" HorizontalAlignment="Left" Stretch="Uniform" Margin="0,0,0,22"/>
+          <Button x:Name="btnNavEnrolar" DockPanel.Dock="Top"
+                  Click="BtnEnrolamiento_Click"
+                  Cursor="Hand" Padding="8,14" HorizontalContentAlignment="Center">
+            <Button.Template>
+              <ControlTemplate TargetType="Button">
+                <Border x:Name="bg" CornerRadius="15" Padding="{TemplateBinding Padding}">
+                  <Border.Background>
+                    <SolidColorBrush Color="#FFFFFFFF" Opacity="0.14"/>
+                  </Border.Background>
+                  <ContentPresenter HorizontalAlignment="Center"/>
+                </Border>
+              </ControlTemplate>
+            </Button.Template>
+            <StackPanel HorizontalAlignment="Center">
+              <Path HorizontalAlignment="Center" Width="24" Height="24" Stretch="Uniform"
+                    Stroke="White" StrokeThickness="1.8" StrokeStartLineCap="Round"
+                    StrokeEndLineCap="Round" Fill="Transparent"
+                    Data="M12 12C14.2 12 16 10.2 16 8C16 5.8 14.2 4 12 4C9.8 4 8 5.8 8 8C8 10.2 9.8 12 12 12Z M5 20C5 16.4 8.1 14.4 12 14.4C15.9 14.4 19 16.4 19 20"/>
+              <TextBlock Text="Enrolar" Foreground="White"
+                         FontFamily="{StaticResource FontPoppins}" FontSize="13" FontWeight="SemiBold"
+                         HorizontalAlignment="Center" Margin="0,8,0,0"/>
+            </StackPanel>
+          </Button>
+          <Grid/>
+        </DockPanel>
       </Border>
 
       <!-- Main content -->
-      <Grid Background="{StaticResource BgBrush}">
-        <TextBlock Text="Selecciona una opción del menú lateral"
-                   Style="{StaticResource TextSubtitle}"
-                   HorizontalAlignment="Center" VerticalAlignment="Center"/>
-      </Grid>
+      <ContentControl x:Name="mainContent" Background="{StaticResource BgBrush}">
+        <ContentControl.Content>
+          <TextBlock Text="Selecciona una opción del menú lateral"
+                     FontFamily="{StaticResource FontPoppins}" FontSize="15"
+                     Foreground="{StaticResource Ink3Brush}"
+                     HorizontalAlignment="Center" VerticalAlignment="Center"/>
+        </ContentControl.Content>
+      </ContentControl>
         </DockPanel>
       </Grid>
     </Viewbox>
