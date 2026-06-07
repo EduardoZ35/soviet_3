@@ -63,7 +63,10 @@ _reloj.Tick += (_, _) => ActualizarReloj();
             // Mostrar login admin si el reloj lo requiere (tipo 1=solo enrolador,
             // tipo 2=enrolador+asistencia) o si está configurado explícitamente
             if (_soloEnrolar >= 1 || _mostrarLoginInicio)
+            {
                 cardLogin.Visibility = Visibility.Visible;
+                FadeIn(cardLogin);
+            }
             if (_soloEnrolar == 1) return; // solo enrolador: no ir a marca
             if (_iniciarDesdeMarca && _permitidoUso) AbrirMarca();
         }
@@ -101,7 +104,15 @@ _reloj.Tick += (_, _) => ActualizarReloj();
         ComprobarEmpresa();
         ComprobarSucursal();
         _permitidoUso = ComprobarTipoMarca() && ComprobarTipoRechazo() && ComprobarTipoInhabilitacion();
-        cardMarca.Visibility = _permitidoUso ? Visibility.Visible : Visibility.Collapsed;
+        if (_permitidoUso)
+        {
+            cardMarca.Visibility = Visibility.Visible;
+            FadeIn(cardMarca);
+        }
+        else
+        {
+            cardMarca.Visibility = Visibility.Collapsed;
+        }
     }
 
     private void ComprobarEmpresa()
@@ -180,4 +191,20 @@ _reloj.Tick += (_, _) => ActualizarReloj();
         => MessageBox.Show(msg, titulo);
 
     public void OnChildClosed() => Show();
+
+    private static void FadeIn(FrameworkElement el)
+    {
+        el.Opacity = 0;
+        var t = new System.Windows.Media.TranslateTransform(0, 16);
+        el.RenderTransform = t;
+
+        var dur  = new Duration(TimeSpan.FromMilliseconds(250));
+        var ease = new System.Windows.Media.Animation.CubicEase
+            { EasingMode = System.Windows.Media.Animation.EasingMode.EaseOut };
+
+        el.BeginAnimation(OpacityProperty,
+            new System.Windows.Media.Animation.DoubleAnimation(0, 1, dur) { EasingFunction = ease });
+        t.BeginAnimation(System.Windows.Media.TranslateTransform.YProperty,
+            new System.Windows.Media.Animation.DoubleAnimation(16, 0, dur) { EasingFunction = ease });
+    }
 }
