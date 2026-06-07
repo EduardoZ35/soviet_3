@@ -1,4 +1,4 @@
-﻿using MySql.Data.MySqlClient;
+﻿using MySqlConnector;
 using proyectoNegocioRflex.Utilidades;
 using System;
 using System.Collections.Generic;
