@@ -1,70 +1,64 @@
-using RelojControl.Infrastructure;
+using CommunityToolkit.Mvvm.ComponentModel;
 
 namespace RelojControl.ViewModels;
 
 public enum EnrollStep { Idle, Scanning, Complete, Error }
 
-public class EnroladorViewModel : ViewModelBase
+public partial class EnroladorViewModel : ObservableObject
 {
-    private string     _searchQuery          = "";
-    private int        _activeTab;
-    private EnrollStep _enrollStep           = EnrollStep.Idle;
-    private int        _samplesCollected;
-    private int        _fingerIndex          = 1;
-    private bool       _isEnrolling;
-    private string     _mensajeEnrolamiento  = "";
-    private string     _selectedRut          = "";
-    private string     _nombreTrabajador     = "";
+    [ObservableProperty] private string     _searchQuery         = "";
+    [ObservableProperty] private int        _activeTab;
+    [ObservableProperty] private EnrollStep _enrollStep          = EnrollStep.Idle;
+    [ObservableProperty] private int        _samplesCollected;
+    [ObservableProperty] private int        _fingerIndex         = 1;
+    [ObservableProperty] private bool       _isEnrolling;
+    [ObservableProperty] private string     _mensajeEnrolamiento = "";
 
-    public string     SearchQuery         { get => _searchQuery;         set => Set(ref _searchQuery, value); }
-    public int        ActiveTab           { get => _activeTab;           set => Set(ref _activeTab, value); }
-    public EnrollStep EnrollStep          { get => _enrollStep;          set => Set(ref _enrollStep, value); }
-    public int        SamplesCollected    { get => _samplesCollected;    set => Set(ref _samplesCollected, value); }
-    public int        FingerIndex         { get => _fingerIndex;         set => Set(ref _fingerIndex, value); }
-    public bool       IsEnrolling         { get => _isEnrolling;         set => Set(ref _isEnrolling, value); }
-    public string     MensajeEnrolamiento { get => _mensajeEnrolamiento; set => Set(ref _mensajeEnrolamiento, value); }
-    public string     SelectedRut         { get => _selectedRut;         set => Set(ref _selectedRut, value); }
-    public string     NombreTrabajador    { get => _nombreTrabajador;    set => Set(ref _nombreTrabajador, value); }
+    [ObservableProperty]
+    [NotifyPropertyChangedFor(nameof(IsWorkerSelected))]
+    private string _selectedRut = "";
 
-    public bool IsWorkerSelected => !string.IsNullOrEmpty(_selectedRut);
+    [ObservableProperty]
+    [NotifyPropertyChangedFor(nameof(IsWorkerSelected))]
+    private string _nombreTrabajador = "";
+
+    public bool IsWorkerSelected => !string.IsNullOrEmpty(SelectedRut);
 
     public void SelectWorker(string rut, string nombre)
     {
-        SelectedRut       = rut;
-        NombreTrabajador  = nombre;
-        ActiveTab         = 0;
-        OnPropertyChanged(nameof(IsWorkerSelected));
+        SelectedRut      = rut;
+        NombreTrabajador = nombre;
+        ActiveTab        = 0;
     }
 
     public void ClearWorker()
     {
-        SelectedRut       = "";
-        NombreTrabajador  = "";
+        SelectedRut      = "";
+        NombreTrabajador = "";
         ResetEnrollment();
-        OnPropertyChanged(nameof(IsWorkerSelected));
     }
 
     public void StartEnrollment(int fingerIndex)
     {
-        FingerIndex          = fingerIndex;
-        SamplesCollected     = 0;
-        EnrollStep           = EnrollStep.Scanning;
-        IsEnrolling          = true;
-        MensajeEnrolamiento  = $"Escanea el dedo {fingerIndex} — muestra 1 de 4";
+        FingerIndex         = fingerIndex;
+        SamplesCollected    = 0;
+        EnrollStep          = EnrollStep.Scanning;
+        IsEnrolling         = true;
+        MensajeEnrolamiento = $"Escanea el dedo {fingerIndex} — muestra 1 de 4";
     }
 
     public bool AddSample()
     {
-        if (_enrollStep != EnrollStep.Scanning) return false;
+        if (EnrollStep != EnrollStep.Scanning) return false;
         SamplesCollected++;
-        if (_samplesCollected >= 4)
+        if (SamplesCollected >= 4)
         {
             EnrollStep          = EnrollStep.Complete;
             IsEnrolling         = false;
             MensajeEnrolamiento = "Huella registrada exitosamente.";
             return true;
         }
-        MensajeEnrolamiento = $"Escanea el dedo {_fingerIndex} — muestra {_samplesCollected + 1} de 4";
+        MensajeEnrolamiento = $"Escanea el dedo {FingerIndex} — muestra {SamplesCollected + 1} de 4";
         return false;
     }
 
