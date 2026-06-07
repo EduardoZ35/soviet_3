@@ -58,6 +58,7 @@ public partial class UcEnrolador : UserControl
     {
         var rut = txtBusqueda.Text.Trim().Replace(".", "").ToUpper();
         if (string.IsNullOrEmpty(rut)) return;
+        emptyState.Visibility = Visibility.Collapsed;
 
         var enc    = new Encriptacion();
         var rutEnc = enc.Encriptar(rut);
