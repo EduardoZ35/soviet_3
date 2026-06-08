@@ -360,9 +360,9 @@
           <!-- Stepper -->
           <Border Grid.Row="1" Background="{StaticResource Surface2Brush}"
                   BorderBrush="{StaticResource LineBrush}" BorderThickness="0,0,0,1"
-                  Padding="32,14" ClipToBounds="False">
+                  Padding="32,20" MinHeight="68" ClipToBounds="False">
             <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center"
-                        Margin="0,0,8,0">
+                        Margin="0,4,0,4">
 
                 <Button x:Name="btnTab0" Tag="0" Click="BtnTab_Click"
                         Background="Transparent" BorderThickness="0" Cursor="Hand" FocusVisualStyle="{x:Null}">
