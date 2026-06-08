@@ -12,6 +12,12 @@ using proyectoNegocioRflex.Utilidades;
 
 namespace RelojControl.Controls;
 
+public class EmpresaItem
+{
+    public int    Id     { get; set; }
+    public string Nombre { get; set; } = "";
+}
+
 public class TipoComidaItem
 {
     public int    Id        { get; set; }
@@ -53,7 +59,21 @@ public partial class UcEnrolador : UserControl
         Loaded += OnLoaded;
     }
 
-    private void OnLoaded(object sender, RoutedEventArgs e) { }
+    private void OnLoaded(object sender, RoutedEventArgs e) => CargarEmpresas();
+
+    private void CargarEmpresas()
+    {
+        try
+        {
+            var dt = new proyectoNegocioRflex.Modelo.Empresa().traerDatosEmpresa();
+            if (dt == null) return;
+            var items = new System.Collections.ObjectModel.ObservableCollection<EmpresaItem>();
+            foreach (DataRow r in dt.Rows)
+                items.Add(new EmpresaItem { Id = int.Parse(r[0].ToString()!), Nombre = r[2].ToString()! });
+            cmbDatEmpresa.ItemsSource = items;
+        }
+        catch { }
+    }
 
     private void BuscarPorRut()
     {
@@ -116,9 +136,8 @@ public partial class UcEnrolador : UserControl
             txtDatApPat.Text     = enc.Desencriptar(row[3].ToString()!);
             txtDatApMat.Text     = enc.Desencriptar(row[4].ToString()!);
             txtDatCorreo.Text    = enc.Desencriptar(row[5].ToString()!);
-            cmbDatEmpresa.Items.Clear();
-            cmbDatEmpresa.Items.Add(CodigoEmpresa);
-            cmbDatEmpresa.SelectedIndex = 0;
+            if (int.TryParse(row[23].ToString(), out int idEmp))
+                cmbDatEmpresa.SelectedValue = idEmp;
 
             chkHabilitada.IsChecked = row[11].ToString() == "1";
             chkEnrolar.IsChecked    = row[12].ToString() == "1";
@@ -393,7 +412,6 @@ public partial class UcEnrolador : UserControl
 
     private void UpdateFooter(int idx)
     {
-        btnVolver.Content       = idx == 0 ? "← Lista" : "← Volver";
         btnSiguiente.Visibility = idx == 4 ? Visibility.Collapsed : Visibility.Visible;
     }
 

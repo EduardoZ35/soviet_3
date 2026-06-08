@@ -459,8 +459,7 @@
           </Border>
 
           <!-- Tab content -->
-          <ScrollViewer Grid.Row="2" VerticalScrollBarVisibility="Auto"
-                        Padding="32,24">
+          <StackPanel Grid.Row="2" Margin="32,20,32,20">
             <Grid>
 
               <!-- Tab 0: Datos generales -->
@@ -503,7 +502,8 @@
                             Height="42" BorderBrush="{StaticResource LineBrush}"
                             BorderThickness="1.5" Padding="12,0"
                             Background="{StaticResource SurfaceBrush}"
-                            IsEnabled="False"/>
+                            DisplayMemberPath="Nombre"
+                            SelectedValuePath="Id"/>
                 </StackPanel>
               </Grid>
 
@@ -715,14 +715,14 @@
               </Grid>
 
             </Grid>
-          </ScrollViewer>
+          </StackPanel>
 
           <!-- Footer navigation -->
           <Border Grid.Row="3" Background="{StaticResource SurfaceBrush}"
                   BorderBrush="{StaticResource LineBrush}" BorderThickness="0,1,0,0"
                   Padding="32,14">
             <Grid>
-              <Button x:Name="btnVolver" Content="← Volver"
+              <Button x:Name="btnVolver" Visibility="Collapsed"
                       Style="{StaticResource BtnSecondary}"
                       HorizontalAlignment="Left" Height="42" Padding="20,0"
                       Click="BtnVolver_Click"/>
