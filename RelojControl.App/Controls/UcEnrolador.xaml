@@ -180,7 +180,7 @@
     </Style>
   </UserControl.Resources>
 
-  <Grid Width="1366" Height="768">
+  <Grid>
     <Grid.ColumnDefinitions>
       <ColumnDefinition Width="88"/>
       <ColumnDefinition/>

@@ -47,9 +47,9 @@ public partial class WndPanelControl : Window
             ecHost.Margin              = new System.Windows.Thickness(-1000, -1000, 0, 0);
             mainContent.Content        = BuildPlaceholder();
         };
-        var vb = new Viewbox { Stretch = System.Windows.Media.Stretch.Uniform };
-        vb.Child = uc;
-        mainContent.Content = vb;
+        uc.HorizontalAlignment = System.Windows.HorizontalAlignment.Stretch;
+        uc.VerticalAlignment   = System.Windows.VerticalAlignment.Stretch;
+        mainContent.Content = uc;
     }
 
     private object BuildPlaceholder()
