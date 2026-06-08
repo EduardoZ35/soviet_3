@@ -112,14 +112,14 @@
     </Style>
 
     <Style x:Key="FormInput" TargetType="TextBox">
-      <Setter Property="FontFamily"              Value="{StaticResource FontPoppins}"/>
-      <Setter Property="FontSize"                Value="14"/>
-      <Setter Property="Foreground"              Value="{StaticResource InkBrush}"/>
-      <Setter Property="Background"              Value="{StaticResource SurfaceBrush}"/>
-      <Setter Property="BorderBrush"             Value="{StaticResource LineBrush}"/>
-      <Setter Property="BorderThickness"         Value="1.5"/>
-      <Setter Property="Padding"                 Value="12,10"/>
-      <Setter Property="Height"                  Value="42"/>
+      <Setter Property="FontFamily"               Value="{StaticResource FontPoppins}"/>
+      <Setter Property="FontSize"                 Value="14"/>
+      <Setter Property="Foreground"               Value="{StaticResource InkBrush}"/>
+      <Setter Property="Background"               Value="{StaticResource SurfaceBrush}"/>
+      <Setter Property="BorderBrush"              Value="{StaticResource LineBrush}"/>
+      <Setter Property="BorderThickness"          Value="1.5"/>
+      <Setter Property="Height"                   Value="42"/>
+      <Setter Property="Padding"                  Value="12,0"/>
       <Setter Property="VerticalContentAlignment" Value="Center"/>
       <Setter Property="Template">
         <Setter.Value>
@@ -127,12 +127,12 @@
             <Border Background="{TemplateBinding Background}"
                     BorderBrush="{TemplateBinding BorderBrush}"
                     BorderThickness="{TemplateBinding BorderThickness}"
-                    CornerRadius="10" Padding="{TemplateBinding Padding}">
+                    CornerRadius="10">
               <ScrollViewer x:Name="PART_ContentHost"
+                            Margin="{TemplateBinding Padding}"
                             VerticalAlignment="Center"
                             VerticalScrollBarVisibility="Hidden"
-                            HorizontalScrollBarVisibility="Hidden"
-                            Margin="0"/>
+                            HorizontalScrollBarVisibility="Hidden"/>
             </Border>
           </ControlTemplate>
         </Setter.Value>

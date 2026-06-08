@@ -98,12 +98,13 @@ public partial class UcEnrolador : UserControl
             string rutDec = enc.Desencriptar(rutEnc);
             Dispatcher.Invoke(() => txtBusqueda2.Text = FormatRut(rutDec));
 
-            string cargo  = enc.Desencriptar(row[18].ToString()!);
-            string centro = enc.Desencriptar(row[17].ToString()!);
+            var puesto  = enc.Desencriptar(row[18].ToString()!).Trim();
+            var centro  = enc.Desencriptar(row[17].ToString()!).Trim();
+            var cargo   = string.Join(" · ", Array.FindAll(new[] { puesto, centro }, s => s.Length > 0));
 
-            lblNombreDetalle.Text = nombre.Trim();
-            lblCargoDetalle.Text  = $"{cargo} · {centro}".Trim(' ', '·', ' ');
-            System.Diagnostics.Debug.WriteLine($"Cargo: '{cargo}' Centro: '{centro}' → lblCargoDetalle='{lblCargoDetalle.Text}' (row.ItemArray.Length={row.ItemArray.Length})");
+            lblNombreDetalle.Text       = nombre.Trim();
+            lblCargoDetalle.Text        = cargo;
+            lblCargoDetalle.Visibility  = cargo.Length > 0 ? Visibility.Visible : Visibility.Collapsed;
             lblRutDetalle.Text       = FormatRut(rutDec);
             lblAvatar.Text           = GetInitials(nombre.Trim());
             lblEstado.Text        = "Guardado";
