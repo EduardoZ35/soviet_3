@@ -204,7 +204,7 @@ public partial class UcEnrolador : UserControl
             circles[i].BorderThickness = active ? new Thickness(0) : new Thickness(1.5);
             if (circles[i].Child is TextBlock numTb)
                 numTb.Foreground = (System.Windows.Media.Brush)FindResource(active ? "SurfaceBrush" : "Ink3Brush");
-            labels[i].Visibility = active ? Visibility.Visible : Visibility.Collapsed;
+            labels[i].Visibility = Visibility.Visible;
             labels[i].Foreground = (System.Windows.Media.Brush)FindResource(active ? "AccentBrush" : "Ink3Brush");
         }
 
