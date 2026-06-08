@@ -360,7 +360,7 @@
           <!-- Stepper -->
           <Border Grid.Row="1" Background="{StaticResource Surface2Brush}"
                   BorderBrush="{StaticResource LineBrush}" BorderThickness="0,0,0,1"
-                  Padding="32,12,32,12">
+                  Padding="32,14" ClipToBounds="False">
             <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center"
                         Margin="0,0,8,0">
 
