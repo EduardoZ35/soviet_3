@@ -501,28 +501,20 @@
               <!-- Tab 0: Datos generales -->
               <Grid x:Name="tabDatos">
                 <Grid.ColumnDefinitions>
-                  <ColumnDefinition Width="320"/>
+                  <ColumnDefinition/>
                   <ColumnDefinition Width="32"/>
                   <ColumnDefinition/>
                 </Grid.ColumnDefinitions>
 
                 <!-- Columna izquierda -->
                 <StackPanel Grid.Column="0">
-                  <StackPanel Margin="0,0,0,16">
+                  <StackPanel Margin="0,0,0,14">
                     <TextBlock Text="Nombre" Style="{StaticResource FormLabel}"/>
                     <TextBox x:Name="txtDatNombre" Style="{StaticResource FormInput}"/>
                   </StackPanel>
-                  <StackPanel Margin="0,0,0,16">
-                    <TextBlock Text="Segundo nombre" Style="{StaticResource FormLabel}"/>
-                    <TextBox x:Name="txtDatSegNombre" Style="{StaticResource FormInput}"/>
-                  </StackPanel>
-                  <StackPanel Margin="0,0,0,16">
+                  <StackPanel Margin="0,0,0,14">
                     <TextBlock Text="Apellido paterno" Style="{StaticResource FormLabel}"/>
                     <TextBox x:Name="txtDatApPat" Style="{StaticResource FormInput}"/>
-                  </StackPanel>
-                  <StackPanel Margin="0,0,0,16">
-                    <TextBlock Text="Apellido materno" Style="{StaticResource FormLabel}"/>
-                    <TextBox x:Name="txtDatApMat" Style="{StaticResource FormInput}"/>
                   </StackPanel>
                   <StackPanel>
                     <TextBlock Text="Correo electrónico" Style="{StaticResource FormLabel}"/>
@@ -532,14 +524,22 @@
 
                 <!-- Columna derecha -->
                 <StackPanel Grid.Column="2">
-                  <TextBlock Text="Empresa" Style="{StaticResource FormLabel}"/>
-                  <ComboBox x:Name="cmbDatEmpresa"
-                            FontFamily="{StaticResource FontPoppins}" FontSize="14"
-                            Height="42" BorderBrush="{StaticResource LineBrush}"
-                            BorderThickness="1.5" Padding="12,0"
-                            Background="{StaticResource SurfaceBrush}"
-                            DisplayMemberPath="Nombre"
-                            SelectedValuePath="Id"/>
+                  <StackPanel Margin="0,0,0,14">
+                    <TextBlock Text="Segundo nombre" Style="{StaticResource FormLabel}"/>
+                    <TextBox x:Name="txtDatSegNombre" Style="{StaticResource FormInput}"/>
+                  </StackPanel>
+                  <StackPanel Margin="0,0,0,14">
+                    <TextBlock Text="Apellido materno" Style="{StaticResource FormLabel}"/>
+                    <TextBox x:Name="txtDatApMat" Style="{StaticResource FormInput}"/>
+                  </StackPanel>
+                  <StackPanel>
+                    <TextBlock Text="Empresa" Style="{StaticResource FormLabel}"/>
+                    <ComboBox x:Name="cmbDatEmpresa"
+                              FontFamily="{StaticResource FontPoppins}" FontSize="14"
+                              Height="38" BorderBrush="{StaticResource LineBrush}"
+                              BorderThickness="1.5" Padding="12,0"
+                              Background="{StaticResource SurfaceBrush}"/>
+                  </StackPanel>
                 </StackPanel>
               </Grid>
 
