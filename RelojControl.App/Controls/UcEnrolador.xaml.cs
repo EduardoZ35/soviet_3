@@ -200,7 +200,7 @@ public partial class UcEnrolador : UserControl
         {
             bool active = i == idx;
             circles[i].Background      = active ? (System.Windows.Media.Brush)FindResource("AccentBrush") : System.Windows.Media.Brushes.Transparent;
-            circles[i].BorderBrush     = (System.Windows.Media.Brush)FindResource(active ? "AccentBrush" : "LineBrush");
+            circles[i].BorderBrush     = (System.Windows.Media.Brush)FindResource(active ? "AccentBrush" : "Ink3Brush");
             circles[i].BorderThickness = active ? new Thickness(0) : new Thickness(1.5);
             if (circles[i].Child is TextBlock numTb)
                 numTb.Foreground = (System.Windows.Media.Brush)FindResource(active ? "SurfaceBrush" : "Ink3Brush");

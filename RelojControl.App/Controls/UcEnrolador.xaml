@@ -358,7 +358,7 @@
           </Border>
 
           <!-- Stepper -->
-          <Border Grid.Row="1" Background="{StaticResource SurfaceBrush}"
+          <Border Grid.Row="1" Background="{StaticResource Surface2Brush}"
                   BorderBrush="{StaticResource LineBrush}" BorderThickness="0,0,0,1"
                   Padding="32,12,32,12">
             <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center"
@@ -387,7 +387,7 @@
                   <StackPanel Orientation="Horizontal">
                     <Border x:Name="stepCircle1" Width="28" Height="28" CornerRadius="14" Margin="0,0,8,0"
                             Background="Transparent"
-                            BorderBrush="{StaticResource LineBrush}" BorderThickness="1.5">
+                            BorderBrush="{StaticResource Ink3Brush}" BorderThickness="1.5">
                       <TextBlock Text="2" Foreground="{StaticResource Ink3Brush}" FontFamily="{StaticResource FontManrope}"
                                  FontWeight="Bold" FontSize="13"
                                  HorizontalAlignment="Center" VerticalAlignment="Center"/>
@@ -406,7 +406,7 @@
                   <StackPanel Orientation="Horizontal">
                     <Border x:Name="stepCircle2" Width="28" Height="28" CornerRadius="14" Margin="0,0,8,0"
                             Background="Transparent"
-                            BorderBrush="{StaticResource LineBrush}" BorderThickness="1.5">
+                            BorderBrush="{StaticResource Ink3Brush}" BorderThickness="1.5">
                       <TextBlock Text="3" Foreground="{StaticResource Ink3Brush}" FontFamily="{StaticResource FontManrope}"
                                  FontWeight="Bold" FontSize="13"
                                  HorizontalAlignment="Center" VerticalAlignment="Center"/>
@@ -425,7 +425,7 @@
                   <StackPanel Orientation="Horizontal">
                     <Border x:Name="stepCircle3" Width="28" Height="28" CornerRadius="14" Margin="0,0,8,0"
                             Background="Transparent"
-                            BorderBrush="{StaticResource LineBrush}" BorderThickness="1.5">
+                            BorderBrush="{StaticResource Ink3Brush}" BorderThickness="1.5">
                       <TextBlock Text="4" Foreground="{StaticResource Ink3Brush}" FontFamily="{StaticResource FontManrope}"
                                  FontWeight="Bold" FontSize="13"
                                  HorizontalAlignment="Center" VerticalAlignment="Center"/>
@@ -444,7 +444,7 @@
                   <StackPanel Orientation="Horizontal">
                     <Border x:Name="stepCircle4" Width="28" Height="28" CornerRadius="14" Margin="0,0,8,0"
                             Background="Transparent"
-                            BorderBrush="{StaticResource LineBrush}" BorderThickness="1.5">
+                            BorderBrush="{StaticResource Ink3Brush}" BorderThickness="1.5">
                       <TextBlock Text="5" Foreground="{StaticResource Ink3Brush}" FontFamily="{StaticResource FontManrope}"
                                  FontWeight="Bold" FontSize="13"
                                  HorizontalAlignment="Center" VerticalAlignment="Center"/>
