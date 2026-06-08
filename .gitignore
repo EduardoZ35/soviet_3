@@ -7,3 +7,11 @@ soviet_v2/
 Front Soviet/
 **/AssemblyInfo.cs
 publish/
+graphify-out/
+.graphify_uncached.txt
+.playwright-mcp/
+console-*.txt
+page-*.png
+page-*.yml
+fingerprint-*.png
+search-icon.png
