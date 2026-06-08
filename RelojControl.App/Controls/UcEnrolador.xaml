@@ -292,16 +292,10 @@
         </Border>
 
         <!-- Worker detail (Collapsed until person selected) -->
-        <Grid x:Name="gridDetalle" Grid.Row="1" Visibility="Collapsed">
-          <Grid.RowDefinitions>
-            <RowDefinition Height="Auto"/>
-            <RowDefinition Height="Auto"/>
-            <RowDefinition/>
-            <RowDefinition Height="Auto"/>
-          </Grid.RowDefinitions>
+        <DockPanel x:Name="gridDetalle" Grid.Row="1" Visibility="Collapsed" LastChildFill="True">
 
           <!-- Worker card -->
-          <Border Grid.Row="0" Background="{StaticResource SurfaceBrush}"
+          <Border DockPanel.Dock="Top" Background="{StaticResource SurfaceBrush}"
                   BorderBrush="{StaticResource LineBrush}" BorderThickness="1"
                   CornerRadius="14" Padding="20,16"
                   Effect="{StaticResource ShadowCard}"
@@ -358,7 +352,7 @@
           </Border>
 
           <!-- Stepper -->
-          <Border Grid.Row="1" Background="{StaticResource Surface2Brush}"
+          <Border DockPanel.Dock="Top" Background="{StaticResource Surface2Brush}"
                   BorderBrush="{StaticResource LineBrush}" BorderThickness="0,0,0,1"
                   Padding="32,20" MinHeight="68" ClipToBounds="False">
             <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center"
@@ -459,9 +453,47 @@
               </StackPanel>
           </Border>
 
+          <!-- Footer navigation -->
+          <Border DockPanel.Dock="Bottom" Background="{StaticResource SurfaceBrush}"
+                  BorderBrush="{StaticResource LineBrush}" BorderThickness="0,1,0,0"
+                  Padding="32,14">
+            <Grid>
+              <Button x:Name="btnVolver" Visibility="Collapsed"
+                      Style="{StaticResource BtnSecondary}"
+                      HorizontalAlignment="Left" Height="42" Padding="20,0"
+                      Click="BtnVolver_Click"/>
+              <Button x:Name="btnSiguiente" Height="50" Padding="32,0"
+                      Background="{StaticResource AccentBrush}" Foreground="White"
+                      BorderThickness="0" FontFamily="{StaticResource FontPoppins}"
+                      FontWeight="Bold" FontSize="16" Cursor="Hand"
+                      HorizontalAlignment="Right"
+                      Click="BtnSiguiente_Click">
+                <Button.Template>
+                  <ControlTemplate TargetType="Button">
+                    <Border Background="{TemplateBinding Background}" CornerRadius="14"
+                            Padding="{TemplateBinding Padding}">
+                      <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+                        <TextBlock x:Name="txtSiguiente" Text="Siguiente"
+                                   FontFamily="{StaticResource FontPoppins}"
+                                   FontWeight="Bold" FontSize="16" Foreground="White"
+                                   VerticalAlignment="Center"/>
+                        <Path x:Name="iconSiguiente"
+                              Data="M5 12h13M13 6l6 6-6 6"
+                              Stroke="White" StrokeThickness="2.2"
+                              StrokeStartLineCap="Round" StrokeEndLineCap="Round"
+                              StrokeLineJoin="Round"
+                              Width="20" Height="20" Stretch="Uniform"
+                              Margin="10,0,0,0" VerticalAlignment="Center"/>
+                      </StackPanel>
+                    </Border>
+                  </ControlTemplate>
+                </Button.Template>
+              </Button>
+            </Grid>
+          </Border>
+
           <!-- Tab content -->
-          <ScrollViewer Grid.Row="2"
-                        VerticalScrollBarVisibility="Auto"
+          <ScrollViewer VerticalScrollBarVisibility="Auto"
                         HorizontalScrollBarVisibility="Disabled"
                         Padding="32,16,32,16">
             <Grid>
@@ -721,46 +753,7 @@
             </Grid>
           </ScrollViewer>
 
-          <!-- Footer navigation -->
-          <Border Grid.Row="3" Background="{StaticResource SurfaceBrush}"
-                  BorderBrush="{StaticResource LineBrush}" BorderThickness="0,1,0,0"
-                  Padding="32,14">
-            <Grid>
-              <Button x:Name="btnVolver" Visibility="Collapsed"
-                      Style="{StaticResource BtnSecondary}"
-                      HorizontalAlignment="Left" Height="42" Padding="20,0"
-                      Click="BtnVolver_Click"/>
-              <Button x:Name="btnSiguiente" Height="50" Padding="32,0"
-                      Background="{StaticResource AccentBrush}" Foreground="White"
-                      BorderThickness="0" FontFamily="{StaticResource FontPoppins}"
-                      FontWeight="Bold" FontSize="16" Cursor="Hand"
-                      HorizontalAlignment="Right"
-                      Click="BtnSiguiente_Click">
-                <Button.Template>
-                  <ControlTemplate TargetType="Button">
-                    <Border Background="{TemplateBinding Background}" CornerRadius="14"
-                            Padding="{TemplateBinding Padding}">
-                      <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
-                        <TextBlock x:Name="txtSiguiente" Text="Siguiente"
-                                   FontFamily="{StaticResource FontPoppins}"
-                                   FontWeight="Bold" FontSize="16" Foreground="White"
-                                   VerticalAlignment="Center"/>
-                        <Path x:Name="iconSiguiente"
-                              Data="M5 12h13M13 6l6 6-6 6"
-                              Stroke="White" StrokeThickness="2.2"
-                              StrokeStartLineCap="Round" StrokeEndLineCap="Round"
-                              StrokeLineJoin="Round"
-                              Width="20" Height="20" Stretch="Uniform"
-                              Margin="10,0,0,0" VerticalAlignment="Center"/>
-                      </StackPanel>
-                    </Border>
-                  </ControlTemplate>
-                </Button.Template>
-              </Button>
-            </Grid>
-          </Border>
-
-        </Grid>
+        </DockPanel>
 
       </Grid>
     </Grid>
