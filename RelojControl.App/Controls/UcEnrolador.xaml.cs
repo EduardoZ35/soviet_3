@@ -199,7 +199,7 @@ public partial class UcEnrolador : UserControl
         for (int i = 0; i < 5; i++)
         {
             bool active = i == idx;
-            circles[i].Background      = (System.Windows.Media.Brush)FindResource(active ? "AccentBrush" : "SurfaceBrush");
+            circles[i].Background      = active ? (System.Windows.Media.Brush)FindResource("AccentBrush") : System.Windows.Media.Brushes.Transparent;
             circles[i].BorderBrush     = (System.Windows.Media.Brush)FindResource(active ? "AccentBrush" : "LineBrush");
             circles[i].BorderThickness = active ? new Thickness(0) : new Thickness(1.5);
             if (circles[i].Child is TextBlock numTb)
@@ -412,7 +412,12 @@ public partial class UcEnrolador : UserControl
 
     private void UpdateFooter(int idx)
     {
-        btnSiguiente.Visibility = idx == 4 ? Visibility.Collapsed : Visibility.Visible;
+        var tb   = (System.Windows.Controls.TextBlock?)btnSiguiente.Template.FindName("txtSiguiente",  btnSiguiente);
+        var icon = (System.Windows.Shapes.Path?)       btnSiguiente.Template.FindName("iconSiguiente", btnSiguiente);
+        bool last = idx == 4;
+        if (tb   != null) tb.Text   = last ? "Finalizar" : "Siguiente";
+        if (icon != null) icon.Data = System.Windows.Media.Geometry.Parse(
+            last ? "M 3,9 L 8,14 L 17,5" : "M5 12h13M13 6l6 6-6 6");
     }
 
     private void BtnVolver_Click(object sender, RoutedEventArgs e)

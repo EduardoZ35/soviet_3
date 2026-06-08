@@ -70,7 +70,7 @@
         <DockPanel LastChildFill="True">
           <Image DockPanel.Dock="Top"
                  Source="pack://application:,,,/RelojControl;component/Assets/logo-rflex-white.png"
-                 Height="36" Margin="18,28,18,0" HorizontalAlignment="Left" VerticalAlignment="Top"
+                 Height="36" Margin="18,28,18,24" HorizontalAlignment="Left" VerticalAlignment="Top"
                  Stretch="Uniform" StretchDirection="Both"
                  RenderOptions.BitmapScalingMode="HighQuality"/>
           <StackPanel DockPanel.Dock="Top" Margin="10,0">

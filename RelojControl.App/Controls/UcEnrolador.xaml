@@ -360,8 +360,9 @@
           <!-- Stepper -->
           <Border Grid.Row="1" Background="{StaticResource SurfaceBrush}"
                   BorderBrush="{StaticResource LineBrush}" BorderThickness="0,0,0,1"
-                  Padding="0,12">
-            <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center">
+                  Padding="32,12,32,12">
+            <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center"
+                        Margin="0,0,8,0">
 
                 <Button x:Name="btnTab0" Tag="0" Click="BtnTab_Click"
                         Background="Transparent" BorderThickness="0" Cursor="Hand" FocusVisualStyle="{x:Null}">
@@ -385,7 +386,7 @@
                         Background="Transparent" BorderThickness="0" Cursor="Hand" FocusVisualStyle="{x:Null}">
                   <StackPanel Orientation="Horizontal">
                     <Border x:Name="stepCircle1" Width="28" Height="28" CornerRadius="14" Margin="0,0,8,0"
-                            Background="{StaticResource SurfaceBrush}"
+                            Background="Transparent"
                             BorderBrush="{StaticResource LineBrush}" BorderThickness="1.5">
                       <TextBlock Text="2" Foreground="{StaticResource Ink3Brush}" FontFamily="{StaticResource FontManrope}"
                                  FontWeight="Bold" FontSize="13"
@@ -404,7 +405,7 @@
                         Background="Transparent" BorderThickness="0" Cursor="Hand" FocusVisualStyle="{x:Null}">
                   <StackPanel Orientation="Horizontal">
                     <Border x:Name="stepCircle2" Width="28" Height="28" CornerRadius="14" Margin="0,0,8,0"
-                            Background="{StaticResource SurfaceBrush}"
+                            Background="Transparent"
                             BorderBrush="{StaticResource LineBrush}" BorderThickness="1.5">
                       <TextBlock Text="3" Foreground="{StaticResource Ink3Brush}" FontFamily="{StaticResource FontManrope}"
                                  FontWeight="Bold" FontSize="13"
@@ -423,7 +424,7 @@
                         Background="Transparent" BorderThickness="0" Cursor="Hand" FocusVisualStyle="{x:Null}">
                   <StackPanel Orientation="Horizontal">
                     <Border x:Name="stepCircle3" Width="28" Height="28" CornerRadius="14" Margin="0,0,8,0"
-                            Background="{StaticResource SurfaceBrush}"
+                            Background="Transparent"
                             BorderBrush="{StaticResource LineBrush}" BorderThickness="1.5">
                       <TextBlock Text="4" Foreground="{StaticResource Ink3Brush}" FontFamily="{StaticResource FontManrope}"
                                  FontWeight="Bold" FontSize="13"
@@ -442,7 +443,7 @@
                         Background="Transparent" BorderThickness="0" Cursor="Hand" FocusVisualStyle="{x:Null}">
                   <StackPanel Orientation="Horizontal">
                     <Border x:Name="stepCircle4" Width="28" Height="28" CornerRadius="14" Margin="0,0,8,0"
-                            Background="{StaticResource SurfaceBrush}"
+                            Background="Transparent"
                             BorderBrush="{StaticResource LineBrush}" BorderThickness="1.5">
                       <TextBlock Text="5" Foreground="{StaticResource Ink3Brush}" FontFamily="{StaticResource FontManrope}"
                                  FontWeight="Bold" FontSize="13"
@@ -729,10 +730,33 @@
                       Style="{StaticResource BtnSecondary}"
                       HorizontalAlignment="Left" Height="42" Padding="20,0"
                       Click="BtnVolver_Click"/>
-              <Button x:Name="btnSiguiente" Content="Siguiente →"
-                      Style="{StaticResource BtnAccent}"
-                      HorizontalAlignment="Right" Height="42" Padding="20,0"
-                      Click="BtnSiguiente_Click"/>
+              <Button x:Name="btnSiguiente" Height="50" Padding="32,0"
+                      Background="{StaticResource AccentBrush}" Foreground="White"
+                      BorderThickness="0" FontFamily="{StaticResource FontPoppins}"
+                      FontWeight="Bold" FontSize="16" Cursor="Hand"
+                      HorizontalAlignment="Right"
+                      Click="BtnSiguiente_Click">
+                <Button.Template>
+                  <ControlTemplate TargetType="Button">
+                    <Border Background="{TemplateBinding Background}" CornerRadius="14"
+                            Padding="{TemplateBinding Padding}">
+                      <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+                        <TextBlock x:Name="txtSiguiente" Text="Siguiente"
+                                   FontFamily="{StaticResource FontPoppins}"
+                                   FontWeight="Bold" FontSize="16" Foreground="White"
+                                   VerticalAlignment="Center"/>
+                        <Path x:Name="iconSiguiente"
+                              Data="M5 12h13M13 6l6 6-6 6"
+                              Stroke="White" StrokeThickness="2.2"
+                              StrokeStartLineCap="Round" StrokeEndLineCap="Round"
+                              StrokeLineJoin="Round"
+                              Width="20" Height="20" Stretch="Uniform"
+                              Margin="10,0,0,0" VerticalAlignment="Center"/>
+                      </StackPanel>
+                    </Border>
+                  </ControlTemplate>
+                </Button.Template>
+              </Button>
             </Grid>
           </Border>
 
