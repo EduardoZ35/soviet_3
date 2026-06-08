@@ -6,13 +6,26 @@ namespace RelojControl.Windows;
 public partial class WndPanelControl : Window
 {
     private readonly int _idReloj;
-    public string CodigoEmpresa { get; set; } = "";
+    public string CodigoEmpresa  { get; set; } = "";
+    public string OperadorNombre { get; set; } = "Administrador";
 
     public WndPanelControl(int idRol = 0, int idReloj = 0)
     {
         InitializeComponent();
         _idReloj = idReloj;
-        Loaded += (_, __) => BtnEnrolamiento_Click(this, new RoutedEventArgs());
+        Loaded += (_, __) =>
+        {
+            lblChipIniciales.Text = GetInitials(OperadorNombre);
+            BtnEnrolamiento_Click(this, new RoutedEventArgs());
+        };
+    }
+
+    private static string GetInitials(string nombre)
+    {
+        var parts = nombre.Split(' ', System.StringSplitOptions.RemoveEmptyEntries);
+        return parts.Length >= 2
+            ? $"{parts[0][0]}{parts[1][0]}"
+            : nombre[..System.Math.Min(2, nombre.Length)];
     }
 
     private void BtnCerrar_Click(object sender, RoutedEventArgs e)

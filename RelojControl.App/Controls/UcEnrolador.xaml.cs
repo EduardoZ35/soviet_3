@@ -34,6 +34,7 @@ public partial class UcEnrolador : UserControl
     private record MarcaRow(string FechaHora, string TipoMarca, string Reloj, string Incidencia);
 
     private string                   _rutSeleccionado    = "";
+    private int                      _tabActual          = 0;
     private EnrollmentControl?       _ec;
     private int                      _fingerSeleccionado = -1;
     private readonly HashSet<int>    _enrolledDedos      = [];
@@ -56,7 +57,7 @@ public partial class UcEnrolador : UserControl
 
     private void BuscarPorRut()
     {
-        var rut = txtBusqueda.Text.Trim().Replace(".", "").ToUpper();
+        var rut = txtBusqueda2.Text.Trim().Replace(".", "").ToUpper();
         if (string.IsNullOrEmpty(rut)) return;
         emptyState.Visibility = Visibility.Collapsed;
 
@@ -69,7 +70,7 @@ public partial class UcEnrolador : UserControl
             panelLista.Children.Clear();
             panelLista.Children.Add(new TextBlock
             {
-                Text       = $"RUT '{txtBusqueda.Text.Trim()}' no encontrado.",
+                Text       = $"RUT '{txtBusqueda2.Text.Trim()}' no encontrado.",
                 FontFamily = (System.Windows.Media.FontFamily)FindResource("FontPoppins"),
                 FontSize   = 14,
                 Foreground = (System.Windows.Media.Brush)FindResource("CoralBrush"),
@@ -95,22 +96,28 @@ public partial class UcEnrolador : UserControl
                             $"{enc.Desencriptar(row[3].ToString()!)} " +
                             $"{enc.Desencriptar(row[4].ToString()!)}";
             string rutDec = enc.Desencriptar(rutEnc);
-            Dispatcher.Invoke(() => txtBusqueda.Text = FormatRut(rutDec));
+            Dispatcher.Invoke(() => txtBusqueda2.Text = FormatRut(rutDec));
 
-            lblNombreDetalle.Text    = nombre.Trim();
+            string cargo  = enc.Desencriptar(row[18].ToString()!);
+            string centro = enc.Desencriptar(row[17].ToString()!);
+
+            lblNombreDetalle.Text = nombre.Trim();
+            lblCargoDetalle.Text  = $"{cargo} · {centro}".Trim(' ', '·', ' ');
+            System.Diagnostics.Debug.WriteLine($"Cargo: '{cargo}' Centro: '{centro}' → lblCargoDetalle='{lblCargoDetalle.Text}' (row.ItemArray.Length={row.ItemArray.Length})");
             lblRutDetalle.Text       = FormatRut(rutDec);
             lblAvatar.Text           = GetInitials(nombre.Trim());
-            lblWorkerPill.Text       = nombre.Trim();
-            pillWorker.Visibility    = Visibility.Visible;
+            lblEstado.Text        = "Guardado";
+            pillEstado.Background = (System.Windows.Media.Brush)FindResource("OkSoftBrush");
+            lblEstado.Foreground  = (System.Windows.Media.Brush)FindResource("OkBrush");
 
-            lblDatNombre.Text  = nombre.Trim();
-            lblDatRut.Text     = FormatRut(rutDec);
-            lblDatCorreo.Text  = enc.Desencriptar(row[5].ToString()!);
-            lblDatPuesto.Text  = enc.Desencriptar(row[18].ToString()!);
-            lblDatCentro.Text  = enc.Desencriptar(row[17].ToString()!);
-            lblDatActivo.Text  = DateTime.TryParse(row[10].ToString(), out var dtActivo)
-                ? dtActivo.ToString("dd/MM/yyyy")
-                : row[10].ToString()!;
+            txtDatNombre.Text    = enc.Desencriptar(row[1].ToString()!);
+            txtDatSegNombre.Text = enc.Desencriptar(row[2].ToString()!);
+            txtDatApPat.Text     = enc.Desencriptar(row[3].ToString()!);
+            txtDatApMat.Text     = enc.Desencriptar(row[4].ToString()!);
+            txtDatCorreo.Text    = enc.Desencriptar(row[5].ToString()!);
+            cmbDatEmpresa.Items.Clear();
+            cmbDatEmpresa.Items.Add(CodigoEmpresa);
+            cmbDatEmpresa.SelectedIndex = 0;
 
             chkHabilitada.IsChecked = row[11].ToString() == "1";
             chkEnrolar.IsChecked    = row[12].ToString() == "1";
@@ -164,11 +171,22 @@ public partial class UcEnrolador : UserControl
         tabComidas.Visibility    = idx == 3 ? Visibility.Visible : Visibility.Collapsed;
         tabRelojes.Visibility    = idx == 4 ? Visibility.Visible : Visibility.Collapsed;
 
-        btnTab0.Style = (Style)FindResource(idx == 0 ? "TabBtnActive" : "TabBtn");
-        btnTab1.Style = (Style)FindResource(idx == 1 ? "TabBtnActive" : "TabBtn");
-        btnTab2.Style = (Style)FindResource(idx == 2 ? "TabBtnActive" : "TabBtn");
-        btnTab3.Style = (Style)FindResource(idx == 3 ? "TabBtnActive" : "TabBtn");
-        btnTab4.Style = (Style)FindResource(idx == 4 ? "TabBtnActive" : "TabBtn");
+        _tabActual = idx;
+        UpdateFooter(idx);
+
+        var circles = new Border[]    { stepCircle0, stepCircle1, stepCircle2, stepCircle3, stepCircle4 };
+        var labels  = new TextBlock[] { stepLabel0,  stepLabel1,  stepLabel2,  stepLabel3,  stepLabel4  };
+        for (int i = 0; i < 5; i++)
+        {
+            bool active = i == idx;
+            circles[i].Background      = (System.Windows.Media.Brush)FindResource(active ? "AccentBrush" : "SurfaceBrush");
+            circles[i].BorderBrush     = (System.Windows.Media.Brush)FindResource(active ? "AccentBrush" : "LineBrush");
+            circles[i].BorderThickness = active ? new Thickness(0) : new Thickness(1.5);
+            if (circles[i].Child is TextBlock numTb)
+                numTb.Foreground = (System.Windows.Media.Brush)FindResource(active ? "SurfaceBrush" : "Ink3Brush");
+            labels[i].Visibility = active ? Visibility.Visible : Visibility.Collapsed;
+            labels[i].Foreground = (System.Windows.Media.Brush)FindResource(active ? "AccentBrush" : "Ink3Brush");
+        }
 
         if (idx == 1) CargarAsistencia();
         if (idx == 2) IniciarEnrollment();
@@ -372,23 +390,48 @@ public partial class UcEnrolador : UserControl
             SwitchTab(idx);
     }
 
-    private void BtnVolver_Click(object sender, RoutedEventArgs e)
+    private void UpdateFooter(int idx)
     {
-        _rutSeleccionado           = "";
-        pillWorker.Visibility      = Visibility.Collapsed;
-        gridDetalle.Visibility     = Visibility.Collapsed;
-        scrollPersonas.Visibility  = Visibility.Visible;
+        btnVolver.Content       = idx == 0 ? "← Lista" : "← Volver";
+        btnSiguiente.Visibility = idx == 4 ? Visibility.Collapsed : Visibility.Visible;
     }
 
-    private void TxtBusqueda_TextChanged(object sender, TextChangedEventArgs e)
+    private void BtnVolver_Click(object sender, RoutedEventArgs e)
     {
-        lblHintBusqueda.Visibility = string.IsNullOrEmpty(txtBusqueda.Text)
+        if (_tabActual > 0)
+        {
+            SwitchTab(_tabActual - 1);
+            return;
+        }
+        _rutSeleccionado          = "";
+        gridDetalle.Visibility    = Visibility.Collapsed;
+        scrollPersonas.Visibility = Visibility.Collapsed;
+        emptyState.Visibility     = Visibility.Visible;
+    }
+
+    private void BtnSiguiente_Click(object sender, RoutedEventArgs e)
+    {
+        if (_tabActual < 4) SwitchTab(_tabActual + 1);
+    }
+
+    private void TxtBusqueda_TextChanged2(object sender, TextChangedEventArgs e)
+    {
+        lblHintBusqueda2.Visibility = string.IsNullOrEmpty(txtBusqueda2.Text)
             ? Visibility.Visible : Visibility.Collapsed;
     }
 
-    private void TxtBusqueda_KeyDown(object sender, KeyEventArgs e)
+    private void TxtBusqueda_KeyDown2(object sender, KeyEventArgs e)
     {
         if (e.Key == Key.Return) BuscarPorRut();
+    }
+
+    private void BtnBuscar_Click(object sender, RoutedEventArgs e) => BuscarPorRut();
+
+    private void BtnLimpiar_Click(object sender, RoutedEventArgs e)
+    {
+        txtBusqueda2.Text          = "";
+        lblHintBusqueda2.Visibility = Visibility.Visible;
+        panelLista.Children.Clear();
     }
 
     private void BtnCerrar_Click(object sender, RoutedEventArgs e) =>

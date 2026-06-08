@@ -105,10 +105,38 @@
 
     <Style x:Key="FormLabel" TargetType="TextBlock">
       <Setter Property="FontFamily"  Value="{StaticResource FontPoppins}"/>
-      <Setter Property="FontSize"    Value="11"/>
+      <Setter Property="FontSize"    Value="12"/>
       <Setter Property="FontWeight"  Value="SemiBold"/>
-      <Setter Property="Foreground"  Value="{StaticResource Ink3Brush}"/>
-      <Setter Property="Margin"      Value="0,0,0,4"/>
+      <Setter Property="Foreground"  Value="{StaticResource Ink2Brush}"/>
+      <Setter Property="Margin"      Value="0,0,0,6"/>
+    </Style>
+
+    <Style x:Key="FormInput" TargetType="TextBox">
+      <Setter Property="FontFamily"              Value="{StaticResource FontPoppins}"/>
+      <Setter Property="FontSize"                Value="14"/>
+      <Setter Property="Foreground"              Value="{StaticResource InkBrush}"/>
+      <Setter Property="Background"              Value="{StaticResource SurfaceBrush}"/>
+      <Setter Property="BorderBrush"             Value="{StaticResource LineBrush}"/>
+      <Setter Property="BorderThickness"         Value="1.5"/>
+      <Setter Property="Padding"                 Value="12,10"/>
+      <Setter Property="Height"                  Value="42"/>
+      <Setter Property="VerticalContentAlignment" Value="Center"/>
+      <Setter Property="Template">
+        <Setter.Value>
+          <ControlTemplate TargetType="TextBox">
+            <Border Background="{TemplateBinding Background}"
+                    BorderBrush="{TemplateBinding BorderBrush}"
+                    BorderThickness="{TemplateBinding BorderThickness}"
+                    CornerRadius="10" Padding="{TemplateBinding Padding}">
+              <ScrollViewer x:Name="PART_ContentHost"
+                            VerticalAlignment="Center"
+                            VerticalScrollBarVisibility="Hidden"
+                            HorizontalScrollBarVisibility="Hidden"
+                            Margin="0"/>
+            </Border>
+          </ControlTemplate>
+        </Setter.Value>
+      </Setter>
     </Style>
 
     <Style x:Key="FormValue" TargetType="TextBlock">
@@ -160,85 +188,84 @@
 
     <!-- Sidebar -->
     <Border Grid.Column="0" Background="{StaticResource SurfaceBrush}"
-            Effect="{StaticResource ShadowCard}">
-      <Grid>
-        <StackPanel VerticalAlignment="Top" HorizontalAlignment="Center" Margin="0,20,0,0">
-          <!-- Brand circle -->
-          <Border Width="44" Height="44" CornerRadius="12" Margin="0,0,0,16">
-            <Border.Background>
-              <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
-                <GradientStop Color="#616EB3" Offset="0"/>
-                <GradientStop Color="#383C6F" Offset="1"/>
-              </LinearGradientBrush>
-            </Border.Background>
-            <TextBlock Text="R" FontFamily="{StaticResource FontPoppins}" FontWeight="Bold"
-                       FontSize="20" Foreground="White"
-                       HorizontalAlignment="Center" VerticalAlignment="Center"/>
-          </Border>
-        </StackPanel>
-
-      </Grid>
-    </Border>
+            Effect="{StaticResource ShadowCard}"/>
 
     <!-- Main area -->
     <Grid Grid.Column="1">
-      <Grid.RowDefinitions>
-        <RowDefinition Height="72"/>
-        <RowDefinition/>
-      </Grid.RowDefinitions>
-
-      <!-- Header -->
-      <Border Grid.Row="0" Background="{StaticResource SurfaceBrush}"
-              BorderBrush="{StaticResource LineBrush}" BorderThickness="0,0,0,1">
-        <Grid Margin="32,0">
-          <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
-            <TextBlock Text="Enrolador" FontFamily="{StaticResource FontPoppins}"
-                       FontWeight="Bold" FontSize="20" Foreground="{StaticResource InkBrush}"
-                       VerticalAlignment="Center"/>
-            <Border x:Name="pillWorker" Background="{StaticResource AccentSoftBrush}"
-                    CornerRadius="999" Padding="12,4" Margin="16,0,0,0"
-                    VerticalAlignment="Center" Visibility="Collapsed">
-              <TextBlock x:Name="lblWorkerPill" FontFamily="{StaticResource FontPoppins}"
-                         FontSize="12" FontWeight="SemiBold"
-                         Foreground="{StaticResource AccentBrush}"/>
-            </Border>
-          </StackPanel>
-
-          <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" VerticalAlignment="Center">
-            <Border Background="{StaticResource BgBrush}"
-                    BorderBrush="{StaticResource LineBrush}" BorderThickness="1.5"
-                    CornerRadius="8" Padding="12,6" Width="260">
-              <Grid>
-                <TextBlock x:Name="lblHintBusqueda" Text="Ingresa RUT y presiona Enter..."
-                           Foreground="{StaticResource Ink3Brush}"
-                           FontFamily="{StaticResource FontPoppins}" FontSize="13"
-                           VerticalAlignment="Center" IsHitTestVisible="False"/>
-                <TextBox x:Name="txtBusqueda" Background="Transparent" BorderThickness="0"
-                         FontFamily="{StaticResource FontPoppins}" FontSize="13"
-                         Foreground="{StaticResource InkBrush}"
-                         TextChanged="TxtBusqueda_TextChanged"
-                         KeyDown="TxtBusqueda_KeyDown"
-                         VerticalAlignment="Center"/>
-              </Grid>
-            </Border>
-            <Button Style="{StaticResource SideBtn}" Content="✕" Margin="10,0,0,0"
-                    Click="BtnCerrar_Click" FocusVisualStyle="{x:Null}"
-                    ToolTip="Cerrar panel"/>
-          </StackPanel>
-        </Grid>
-      </Border>
 
       <!-- Content area -->
-      <Grid Grid.Row="1">
+      <Grid>
+        <Grid.RowDefinitions>
+          <RowDefinition Height="Auto"/>
+          <RowDefinition/>
+        </Grid.RowDefinitions>
+
+        <!-- Search card -->
+        <Border x:Name="searchCard" Grid.Row="0" Background="{StaticResource SurfaceBrush}"
+                BorderBrush="{StaticResource LineBrush}" BorderThickness="1"
+                CornerRadius="14" Padding="20,16" Margin="32,24,32,0"
+                Effect="{StaticResource ShadowCard}">
+          <Grid>
+            <Grid.ColumnDefinitions>
+              <ColumnDefinition Width="Auto"/>
+              <ColumnDefinition Width="Auto"/>
+              <ColumnDefinition Width="Auto"/>
+            </Grid.ColumnDefinitions>
+            <StackPanel Grid.Column="0" Margin="0,0,12,0" VerticalAlignment="Center">
+              <TextBlock Text="Ingrese RUT del funcionario" FontFamily="{StaticResource FontPoppins}"
+                         FontSize="11" FontWeight="SemiBold" Foreground="{StaticResource Ink3Brush}" Margin="0,0,0,5"/>
+              <Border BorderBrush="{StaticResource LineBrush}" BorderThickness="1.5"
+                      CornerRadius="10" Background="{StaticResource BgBrush}" Padding="12,0" Width="260">
+                <Grid>
+                  <TextBlock x:Name="lblHintBusqueda2" Text="12.345.678-9"
+                             Foreground="{StaticResource Ink3Brush}"
+                             FontFamily="{StaticResource FontPoppins}" FontSize="13"
+                             VerticalAlignment="Center" IsHitTestVisible="False"/>
+                  <TextBox x:Name="txtBusqueda2" Background="Transparent" BorderThickness="0"
+                           Height="42" FontFamily="{StaticResource FontPoppins}" FontSize="13"
+                           Foreground="{StaticResource InkBrush}" VerticalAlignment="Center"
+                           TextChanged="TxtBusqueda_TextChanged2"
+                           KeyDown="TxtBusqueda_KeyDown2"/>
+                </Grid>
+              </Border>
+            </StackPanel>
+            <Button Grid.Column="1" Content="🔍 Buscar" Height="42" Padding="18,0"
+                    Background="{StaticResource AccentBrush}" Foreground="White"
+                    FontFamily="{StaticResource FontPoppins}" FontWeight="SemiBold" FontSize="13"
+                    Cursor="Hand" Click="BtnBuscar_Click" VerticalAlignment="Bottom" Margin="0,0,10,0">
+              <Button.Template>
+                <ControlTemplate TargetType="Button">
+                  <Border Background="{TemplateBinding Background}" CornerRadius="10" Padding="{TemplateBinding Padding}">
+                    <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                  </Border>
+                </ControlTemplate>
+              </Button.Template>
+            </Button>
+            <Button Grid.Column="2" Content="✏ Limpiar" Height="42" Padding="16,0"
+                    Background="{StaticResource SurfaceBrush}" Foreground="{StaticResource Ink2Brush}"
+                    BorderBrush="{StaticResource LineBrush}" BorderThickness="1"
+                    FontFamily="{StaticResource FontPoppins}" FontSize="13"
+                    Cursor="Hand" Click="BtnLimpiar_Click" VerticalAlignment="Bottom">
+              <Button.Template>
+                <ControlTemplate TargetType="Button">
+                  <Border Background="{TemplateBinding Background}" BorderBrush="{TemplateBinding BorderBrush}"
+                          BorderThickness="{TemplateBinding BorderThickness}" CornerRadius="10" Padding="{TemplateBinding Padding}">
+                    <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                  </Border>
+                </ControlTemplate>
+              </Button.Template>
+            </Button>
+          </Grid>
+        </Border>
 
         <!-- Person list -->
-        <ScrollViewer x:Name="scrollPersonas" VerticalScrollBarVisibility="Auto"
+        <ScrollViewer x:Name="scrollPersonas" Grid.Row="1" VerticalScrollBarVisibility="Auto"
                       Padding="32,20">
           <StackPanel x:Name="panelLista"/>
         </ScrollViewer>
 
         <!-- Empty state (visible until first search) -->
-        <Border x:Name="emptyState" Background="{StaticResource BgBrush}">
+        <Border x:Name="emptyState" Grid.Row="1" Background="{StaticResource BgBrush}">
           <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center">
             <Border Width="96" Height="96" CornerRadius="24"
                     Background="{StaticResource AccentSoftBrush}"
@@ -265,11 +292,12 @@
         </Border>
 
         <!-- Worker detail (Collapsed until person selected) -->
-        <Grid x:Name="gridDetalle" Visibility="Collapsed">
+        <Grid x:Name="gridDetalle" Grid.Row="1" Visibility="Collapsed">
           <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="Auto"/>
             <RowDefinition/>
+            <RowDefinition Height="Auto"/>
           </Grid.RowDefinitions>
 
           <!-- Worker card -->
@@ -279,49 +307,155 @@
                   Effect="{StaticResource ShadowCard}"
                   Margin="32,16,32,0">
             <Grid>
-              <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
-                <Border Width="48" Height="48" CornerRadius="10" Margin="0,0,14,0">
-                  <Border.Background>
-                    <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
-                      <GradientStop Color="#616EB3" Offset="0"/>
-                      <GradientStop Color="#3F4690" Offset="1"/>
-                    </LinearGradientBrush>
-                  </Border.Background>
-                  <TextBlock x:Name="lblAvatar" FontFamily="{StaticResource FontPoppins}"
-                             FontWeight="Bold" FontSize="16" Foreground="White"
-                             HorizontalAlignment="Center" VerticalAlignment="Center"/>
-                </Border>
-                <StackPanel VerticalAlignment="Center">
-                  <TextBlock x:Name="lblNombreDetalle"
-                             FontFamily="{StaticResource FontPoppins}"
-                             FontWeight="Bold" FontSize="18"
-                             Foreground="{StaticResource InkBrush}"/>
-                  <TextBlock x:Name="lblRutDetalle" Style="{StaticResource TextSubtitle}"
-                             Margin="0,3,0,0"/>
-                </StackPanel>
+              <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition/>
+                <ColumnDefinition Width="Auto"/>
+              </Grid.ColumnDefinitions>
+
+              <!-- Col 0: avatar -->
+              <Border Grid.Column="0" Width="52" Height="52" CornerRadius="12" Margin="0,0,16,0">
+                <Border.Background>
+                  <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
+                    <GradientStop Color="#616EB3" Offset="0"/>
+                    <GradientStop Color="#3F4690" Offset="1"/>
+                  </LinearGradientBrush>
+                </Border.Background>
+                <TextBlock x:Name="lblAvatar" FontFamily="{StaticResource FontPoppins}"
+                           FontWeight="Bold" FontSize="17" Foreground="White"
+                           HorizontalAlignment="Center" VerticalAlignment="Center"/>
+              </Border>
+
+              <!-- Col 1: nombre + cargo -->
+              <StackPanel Grid.Column="1" VerticalAlignment="Center">
+                <TextBlock x:Name="lblNombreDetalle"
+                           FontFamily="{StaticResource FontPoppins}"
+                           FontWeight="Bold" FontSize="17"
+                           Foreground="{StaticResource InkBrush}"/>
+                <TextBlock x:Name="lblCargoDetalle"
+                           FontFamily="{StaticResource FontPoppins}"
+                           FontSize="13" Foreground="{StaticResource Ink2Brush}"
+                           Margin="0,4,0,0"/>
               </StackPanel>
 
-              <Button Content="← Lista" Style="{StaticResource BtnSecondary}"
-                      HorizontalAlignment="Right" VerticalAlignment="Center"
-                      Click="BtnVolver_Click"/>
+              <!-- Col 2: RUT + estado pill -->
+              <StackPanel Grid.Column="2" VerticalAlignment="Center" HorizontalAlignment="Right">
+                <TextBlock x:Name="lblRutDetalle"
+                           FontFamily="{StaticResource FontPoppins}"
+                           FontSize="13" FontWeight="SemiBold"
+                           Foreground="{StaticResource Ink2Brush}"
+                           HorizontalAlignment="Right"/>
+                <Border x:Name="pillEstado" CornerRadius="999" Padding="10,4"
+                        Background="{StaticResource OkSoftBrush}" Margin="0,5,0,0"
+                        HorizontalAlignment="Right">
+                  <TextBlock x:Name="lblEstado" Text="Activo"
+                             FontFamily="{StaticResource FontPoppins}"
+                             FontSize="11" FontWeight="SemiBold"
+                             Foreground="{StaticResource OkBrush}"/>
+                </Border>
+              </StackPanel>
             </Grid>
           </Border>
 
-          <!-- Tab bar -->
+          <!-- Stepper -->
           <Border Grid.Row="1" Background="{StaticResource SurfaceBrush}"
-                  BorderBrush="{StaticResource LineBrush}" BorderThickness="0,0,0,1">
-            <StackPanel Orientation="Horizontal" Margin="16,0,0,0">
-              <Button x:Name="btnTab0" Content="Datos generales"
-                      Style="{StaticResource TabBtnActive}" Tag="0" Click="BtnTab_Click"/>
-              <Button x:Name="btnTab1" Content="Asistencia"
-                      Style="{StaticResource TabBtn}" Tag="1" Click="BtnTab_Click"/>
-              <Button x:Name="btnTab2" Content="Huellas"
-                      Style="{StaticResource TabBtn}" Tag="2" Click="BtnTab_Click"/>
-              <Button x:Name="btnTab3" Content="Comidas"
-                      Style="{StaticResource TabBtn}" Tag="3" Click="BtnTab_Click"/>
-              <Button x:Name="btnTab4" Content="Relojes"
-                      Style="{StaticResource TabBtn}" Tag="4" Click="BtnTab_Click"/>
-            </StackPanel>
+                  BorderBrush="{StaticResource LineBrush}" BorderThickness="0,0,0,1"
+                  Padding="0,12">
+            <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center">
+
+                <Button x:Name="btnTab0" Tag="0" Click="BtnTab_Click"
+                        Background="Transparent" BorderThickness="0" Cursor="Hand" FocusVisualStyle="{x:Null}">
+                  <StackPanel Orientation="Horizontal">
+                    <Border x:Name="stepCircle0" Width="28" Height="28" CornerRadius="14" Margin="0,0,8,0"
+                            Background="{StaticResource AccentBrush}" BorderThickness="0">
+                      <TextBlock Text="1" Foreground="White" FontFamily="{StaticResource FontManrope}"
+                                 FontWeight="Bold" FontSize="13"
+                                 HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                    </Border>
+                    <TextBlock x:Name="stepLabel0" Text="Datos generales"
+                               FontFamily="{StaticResource FontPoppins}" FontSize="13" FontWeight="SemiBold"
+                               Foreground="{StaticResource AccentBrush}" VerticalAlignment="Center"
+                               Visibility="Visible"/>
+                  </StackPanel>
+                </Button>
+
+                <Rectangle Width="24" Height="2" Fill="{StaticResource LineBrush}" VerticalAlignment="Center" Margin="4,0"/>
+
+                <Button x:Name="btnTab1" Tag="1" Click="BtnTab_Click"
+                        Background="Transparent" BorderThickness="0" Cursor="Hand" FocusVisualStyle="{x:Null}">
+                  <StackPanel Orientation="Horizontal">
+                    <Border x:Name="stepCircle1" Width="28" Height="28" CornerRadius="14" Margin="0,0,8,0"
+                            Background="{StaticResource SurfaceBrush}"
+                            BorderBrush="{StaticResource LineBrush}" BorderThickness="1.5">
+                      <TextBlock Text="2" Foreground="{StaticResource Ink3Brush}" FontFamily="{StaticResource FontManrope}"
+                                 FontWeight="Bold" FontSize="13"
+                                 HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                    </Border>
+                    <TextBlock x:Name="stepLabel1" Text="Asistencia"
+                               FontFamily="{StaticResource FontPoppins}" FontSize="13" FontWeight="SemiBold"
+                               Foreground="{StaticResource Ink3Brush}" VerticalAlignment="Center"
+                               Visibility="Collapsed"/>
+                  </StackPanel>
+                </Button>
+
+                <Rectangle Width="24" Height="2" Fill="{StaticResource LineBrush}" VerticalAlignment="Center" Margin="4,0"/>
+
+                <Button x:Name="btnTab2" Tag="2" Click="BtnTab_Click"
+                        Background="Transparent" BorderThickness="0" Cursor="Hand" FocusVisualStyle="{x:Null}">
+                  <StackPanel Orientation="Horizontal">
+                    <Border x:Name="stepCircle2" Width="28" Height="28" CornerRadius="14" Margin="0,0,8,0"
+                            Background="{StaticResource SurfaceBrush}"
+                            BorderBrush="{StaticResource LineBrush}" BorderThickness="1.5">
+                      <TextBlock Text="3" Foreground="{StaticResource Ink3Brush}" FontFamily="{StaticResource FontManrope}"
+                                 FontWeight="Bold" FontSize="13"
+                                 HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                    </Border>
+                    <TextBlock x:Name="stepLabel2" Text="Huellas"
+                               FontFamily="{StaticResource FontPoppins}" FontSize="13" FontWeight="SemiBold"
+                               Foreground="{StaticResource Ink3Brush}" VerticalAlignment="Center"
+                               Visibility="Collapsed"/>
+                  </StackPanel>
+                </Button>
+
+                <Rectangle Width="24" Height="2" Fill="{StaticResource LineBrush}" VerticalAlignment="Center" Margin="4,0"/>
+
+                <Button x:Name="btnTab3" Tag="3" Click="BtnTab_Click"
+                        Background="Transparent" BorderThickness="0" Cursor="Hand" FocusVisualStyle="{x:Null}">
+                  <StackPanel Orientation="Horizontal">
+                    <Border x:Name="stepCircle3" Width="28" Height="28" CornerRadius="14" Margin="0,0,8,0"
+                            Background="{StaticResource SurfaceBrush}"
+                            BorderBrush="{StaticResource LineBrush}" BorderThickness="1.5">
+                      <TextBlock Text="4" Foreground="{StaticResource Ink3Brush}" FontFamily="{StaticResource FontManrope}"
+                                 FontWeight="Bold" FontSize="13"
+                                 HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                    </Border>
+                    <TextBlock x:Name="stepLabel3" Text="Comidas"
+                               FontFamily="{StaticResource FontPoppins}" FontSize="13" FontWeight="SemiBold"
+                               Foreground="{StaticResource Ink3Brush}" VerticalAlignment="Center"
+                               Visibility="Collapsed"/>
+                  </StackPanel>
+                </Button>
+
+                <Rectangle Width="24" Height="2" Fill="{StaticResource LineBrush}" VerticalAlignment="Center" Margin="4,0"/>
+
+                <Button x:Name="btnTab4" Tag="4" Click="BtnTab_Click"
+                        Background="Transparent" BorderThickness="0" Cursor="Hand" FocusVisualStyle="{x:Null}">
+                  <StackPanel Orientation="Horizontal">
+                    <Border x:Name="stepCircle4" Width="28" Height="28" CornerRadius="14" Margin="0,0,8,0"
+                            Background="{StaticResource SurfaceBrush}"
+                            BorderBrush="{StaticResource LineBrush}" BorderThickness="1.5">
+                      <TextBlock Text="5" Foreground="{StaticResource Ink3Brush}" FontFamily="{StaticResource FontManrope}"
+                                 FontWeight="Bold" FontSize="13"
+                                 HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                    </Border>
+                    <TextBlock x:Name="stepLabel4" Text="Relojes"
+                               FontFamily="{StaticResource FontPoppins}" FontSize="13" FontWeight="SemiBold"
+                               Foreground="{StaticResource Ink3Brush}" VerticalAlignment="Center"
+                               Visibility="Collapsed"/>
+                  </StackPanel>
+                </Button>
+
+              </StackPanel>
           </Border>
 
           <!-- Tab content -->
@@ -332,37 +466,44 @@
               <!-- Tab 0: Datos generales -->
               <Grid x:Name="tabDatos">
                 <Grid.ColumnDefinitions>
-                  <ColumnDefinition Width="2*"/>
-                  <ColumnDefinition Width="2*"/>
-                  <ColumnDefinition Width="*"/>
+                  <ColumnDefinition Width="320"/>
+                  <ColumnDefinition Width="32"/>
+                  <ColumnDefinition/>
                 </Grid.ColumnDefinitions>
 
-                <StackPanel Grid.Column="0" Margin="0,0,24,0">
-                  <TextBlock Style="{StaticResource FormLabel}" Text="NOMBRE COMPLETO"/>
-                  <TextBlock x:Name="lblDatNombre" Style="{StaticResource FormValue}"/>
-                  <TextBlock Style="{StaticResource FormLabel}" Text="RUT"/>
-                  <TextBlock x:Name="lblDatRut" Style="{StaticResource FormValue}"/>
-                  <TextBlock Style="{StaticResource FormLabel}" Text="CORREO ELECTRÓNICO"/>
-                  <TextBlock x:Name="lblDatCorreo" Style="{StaticResource FormValue}"/>
+                <!-- Columna izquierda -->
+                <StackPanel Grid.Column="0">
+                  <StackPanel Margin="0,0,0,16">
+                    <TextBlock Text="Nombre" Style="{StaticResource FormLabel}"/>
+                    <TextBox x:Name="txtDatNombre" Style="{StaticResource FormInput}"/>
+                  </StackPanel>
+                  <StackPanel Margin="0,0,0,16">
+                    <TextBlock Text="Segundo nombre" Style="{StaticResource FormLabel}"/>
+                    <TextBox x:Name="txtDatSegNombre" Style="{StaticResource FormInput}"/>
+                  </StackPanel>
+                  <StackPanel Margin="0,0,0,16">
+                    <TextBlock Text="Apellido paterno" Style="{StaticResource FormLabel}"/>
+                    <TextBox x:Name="txtDatApPat" Style="{StaticResource FormInput}"/>
+                  </StackPanel>
+                  <StackPanel Margin="0,0,0,16">
+                    <TextBlock Text="Apellido materno" Style="{StaticResource FormLabel}"/>
+                    <TextBox x:Name="txtDatApMat" Style="{StaticResource FormInput}"/>
+                  </StackPanel>
+                  <StackPanel>
+                    <TextBlock Text="Correo electrónico" Style="{StaticResource FormLabel}"/>
+                    <TextBox x:Name="txtDatCorreo" Style="{StaticResource FormInput}"/>
+                  </StackPanel>
                 </StackPanel>
 
-                <StackPanel Grid.Column="1" Margin="0,0,24,0">
-                  <TextBlock Style="{StaticResource FormLabel}" Text="PUESTO"/>
-                  <TextBlock x:Name="lblDatPuesto" Style="{StaticResource FormValue}"/>
-                  <TextBlock Style="{StaticResource FormLabel}" Text="CENTRO DE COSTO"/>
-                  <TextBlock x:Name="lblDatCentro" Style="{StaticResource FormValue}"/>
-                  <TextBlock Style="{StaticResource FormLabel}" Text="ACTIVO DESDE"/>
-                  <TextBlock x:Name="lblDatActivo" Style="{StaticResource FormValue}"/>
-                </StackPanel>
-
+                <!-- Columna derecha -->
                 <StackPanel Grid.Column="2">
-                  <TextBlock Style="{StaticResource FormLabel}" Text="PERMISOS"/>
-                  <CheckBox x:Name="chkHabilitada" Content="Habilitada"
-                            Style="{StaticResource AccentCheckBox}" IsEnabled="False"/>
-                  <CheckBox x:Name="chkEnrolar" Content="Puede enrolar"
-                            Style="{StaticResource AccentCheckBox}" IsEnabled="False"/>
-                  <CheckBox x:Name="chkAsistencia" Content="Registra asistencia"
-                            Style="{StaticResource AccentCheckBox}" IsEnabled="False"/>
+                  <TextBlock Text="Empresa" Style="{StaticResource FormLabel}"/>
+                  <ComboBox x:Name="cmbDatEmpresa"
+                            FontFamily="{StaticResource FontPoppins}" FontSize="14"
+                            Height="42" BorderBrush="{StaticResource LineBrush}"
+                            BorderThickness="1.5" Padding="12,0"
+                            Background="{StaticResource SurfaceBrush}"
+                            IsEnabled="False"/>
                 </StackPanel>
               </Grid>
 
@@ -370,15 +511,26 @@
               <Grid x:Name="tabAsistencia" Visibility="Collapsed">
                 <Grid.RowDefinitions>
                   <RowDefinition Height="Auto"/>
+                  <RowDefinition Height="Auto"/>
                   <RowDefinition/>
                 </Grid.RowDefinitions>
 
-                <StackPanel Grid.Row="0" Orientation="Horizontal" Margin="0,0,0,16">
+                <StackPanel Grid.Row="0" Margin="0,0,0,20">
+                  <TextBlock Text="PERMISOS" Style="{StaticResource TextEyebrow}" Margin="0,0,0,10"/>
+                  <CheckBox x:Name="chkHabilitada"  Content="Habilitada"
+                            Style="{StaticResource AccentCheckBox}" IsEnabled="False"/>
+                  <CheckBox x:Name="chkEnrolar"     Content="Puede enrolar"
+                            Style="{StaticResource AccentCheckBox}" IsEnabled="False"/>
+                  <CheckBox x:Name="chkAsistencia"  Content="Registra asistencia"
+                            Style="{StaticResource AccentCheckBox}" IsEnabled="False"/>
+                </StackPanel>
+
+                <StackPanel Grid.Row="1" Orientation="Horizontal" Margin="0,0,0,16">
                   <TextBlock Text="Últimos 30 días" Style="{StaticResource TextSubtitle}"
                              VerticalAlignment="Center" Margin="0,0,16,0"/>
                 </StackPanel>
 
-                <DataGrid x:Name="dgMarcas" Grid.Row="1"
+                <DataGrid x:Name="dgMarcas" Grid.Row="2"
                           AutoGenerateColumns="False"
                           IsReadOnly="True"
                           BorderThickness="1"
@@ -564,6 +716,23 @@
 
             </Grid>
           </ScrollViewer>
+
+          <!-- Footer navigation -->
+          <Border Grid.Row="3" Background="{StaticResource SurfaceBrush}"
+                  BorderBrush="{StaticResource LineBrush}" BorderThickness="0,1,0,0"
+                  Padding="32,14">
+            <Grid>
+              <Button x:Name="btnVolver" Content="← Volver"
+                      Style="{StaticResource BtnSecondary}"
+                      HorizontalAlignment="Left" Height="42" Padding="20,0"
+                      Click="BtnVolver_Click"/>
+              <Button x:Name="btnSiguiente" Content="Siguiente →"
+                      Style="{StaticResource BtnAccent}"
+                      HorizontalAlignment="Right" Height="42" Padding="20,0"
+                      Click="BtnSiguiente_Click"/>
+            </Grid>
+          </Border>
+
         </Grid>
 
       </Grid>
