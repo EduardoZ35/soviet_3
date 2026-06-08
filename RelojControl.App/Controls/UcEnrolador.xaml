@@ -352,15 +352,17 @@
           </Border>
 
           <!-- Stepper -->
-          <Border DockPanel.Dock="Top" Background="{StaticResource Surface2Brush}"
+          <Border DockPanel.Dock="Top" Background="{StaticResource SurfaceBrush}"
                   BorderBrush="{StaticResource LineBrush}" BorderThickness="0,0,0,1"
-                  Padding="32,24" Margin="0,16,0,0">
-            <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center">
+                  Height="80" Margin="0,16,0,0">
+            <StackPanel Orientation="Horizontal" HorizontalAlignment="Center"
+                        VerticalAlignment="Center">
 
                 <Button x:Name="btnTab0" Tag="0" Click="BtnTab_Click"
                         Background="Transparent" BorderThickness="0" Cursor="Hand" FocusVisualStyle="{x:Null}">
                   <StackPanel Orientation="Horizontal">
-                    <Border x:Name="stepCircle0" Width="28" Height="28" CornerRadius="14" Margin="0,0,8,0" VerticalAlignment="Center"
+                    <Border x:Name="stepCircle0" Width="30" Height="30" CornerRadius="15"
+                            Margin="0,0,8,0" VerticalAlignment="Center"
                             Background="{StaticResource AccentBrush}" BorderThickness="0">
                       <TextBlock Text="1" Foreground="White" FontFamily="{StaticResource FontManrope}"
                                  FontWeight="Bold" FontSize="13"
@@ -378,9 +380,10 @@
                 <Button x:Name="btnTab1" Tag="1" Click="BtnTab_Click"
                         Background="Transparent" BorderThickness="0" Cursor="Hand" FocusVisualStyle="{x:Null}">
                   <StackPanel Orientation="Horizontal">
-                    <Border x:Name="stepCircle1" Width="28" Height="28" CornerRadius="14" Margin="0,0,8,0" VerticalAlignment="Center"
+                    <Border x:Name="stepCircle1" Width="30" Height="30" CornerRadius="15"
+                            Margin="0,0,8,0" VerticalAlignment="Center"
                             Background="Transparent"
-                            BorderBrush="{StaticResource Ink3Brush}" BorderThickness="1.5">
+                            BorderBrush="{StaticResource Ink3Brush}" BorderThickness="2">
                       <TextBlock Text="2" Foreground="{StaticResource Ink3Brush}" FontFamily="{StaticResource FontManrope}"
                                  FontWeight="Bold" FontSize="13"
                                  HorizontalAlignment="Center" VerticalAlignment="Center"/>
@@ -397,9 +400,10 @@
                 <Button x:Name="btnTab2" Tag="2" Click="BtnTab_Click"
                         Background="Transparent" BorderThickness="0" Cursor="Hand" FocusVisualStyle="{x:Null}">
                   <StackPanel Orientation="Horizontal">
-                    <Border x:Name="stepCircle2" Width="28" Height="28" CornerRadius="14" Margin="0,0,8,0" VerticalAlignment="Center"
+                    <Border x:Name="stepCircle2" Width="30" Height="30" CornerRadius="15"
+                            Margin="0,0,8,0" VerticalAlignment="Center"
                             Background="Transparent"
-                            BorderBrush="{StaticResource Ink3Brush}" BorderThickness="1.5">
+                            BorderBrush="{StaticResource Ink3Brush}" BorderThickness="2">
                       <TextBlock Text="3" Foreground="{StaticResource Ink3Brush}" FontFamily="{StaticResource FontManrope}"
                                  FontWeight="Bold" FontSize="13"
                                  HorizontalAlignment="Center" VerticalAlignment="Center"/>
@@ -416,9 +420,10 @@
                 <Button x:Name="btnTab3" Tag="3" Click="BtnTab_Click"
                         Background="Transparent" BorderThickness="0" Cursor="Hand" FocusVisualStyle="{x:Null}">
                   <StackPanel Orientation="Horizontal">
-                    <Border x:Name="stepCircle3" Width="28" Height="28" CornerRadius="14" Margin="0,0,8,0" VerticalAlignment="Center"
+                    <Border x:Name="stepCircle3" Width="30" Height="30" CornerRadius="15"
+                            Margin="0,0,8,0" VerticalAlignment="Center"
                             Background="Transparent"
-                            BorderBrush="{StaticResource Ink3Brush}" BorderThickness="1.5">
+                            BorderBrush="{StaticResource Ink3Brush}" BorderThickness="2">
                       <TextBlock Text="4" Foreground="{StaticResource Ink3Brush}" FontFamily="{StaticResource FontManrope}"
                                  FontWeight="Bold" FontSize="13"
                                  HorizontalAlignment="Center" VerticalAlignment="Center"/>
@@ -435,9 +440,10 @@
                 <Button x:Name="btnTab4" Tag="4" Click="BtnTab_Click"
                         Background="Transparent" BorderThickness="0" Cursor="Hand" FocusVisualStyle="{x:Null}">
                   <StackPanel Orientation="Horizontal">
-                    <Border x:Name="stepCircle4" Width="28" Height="28" CornerRadius="14" Margin="0,0,8,0" VerticalAlignment="Center"
+                    <Border x:Name="stepCircle4" Width="30" Height="30" CornerRadius="15"
+                            Margin="0,0,8,0" VerticalAlignment="Center"
                             Background="Transparent"
-                            BorderBrush="{StaticResource Ink3Brush}" BorderThickness="1.5">
+                            BorderBrush="{StaticResource Ink3Brush}" BorderThickness="2">
                       <TextBlock Text="5" Foreground="{StaticResource Ink3Brush}" FontFamily="{StaticResource FontManrope}"
                                  FontWeight="Bold" FontSize="13"
                                  HorizontalAlignment="Center" VerticalAlignment="Center"/>
